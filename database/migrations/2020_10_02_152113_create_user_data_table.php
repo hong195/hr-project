@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePharmaciesTable extends Migration
+class CreateUserDataTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,21 +13,15 @@ class CreatePharmaciesTable extends Migration
      */
     public function up()
     {
-        Schema::create('pharmacies', function (Blueprint $table) {
+        Schema::create('user_data', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->timestamps();
-        });
-
-        Schema::create('pharmacy_data', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('pharmacy_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('name')->index();
             $table->longText('value')->nullable();
 
-            $table->foreign('pharmacy_id')
+            $table->foreign('user_id')
                 ->references('id')
-                ->on('pharmacies')
+                ->on('users')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
         });
@@ -40,7 +34,6 @@ class CreatePharmaciesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pharmacy_data');
-        Schema::dropIfExists('pharmacies');
+        Schema::dropIfExists('user_data');
     }
 }
