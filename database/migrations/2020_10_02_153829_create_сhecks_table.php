@@ -17,7 +17,6 @@ class CreateсhecksTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('name')->index();
-            $table->string('sum')->index();
             $table->timestamps();
 
             $table->foreign('user_id')
@@ -27,7 +26,7 @@ class CreateсhecksTable extends Migration
                 ->cascadeOnUpdate();
         });
 
-        Schema::create('check_attribute',function(Blueprint $table){
+        Schema::create('check_attributes',function(Blueprint $table){
             $table->id();
             $table->string('name')->index();
             $table->string('type')->index();
