@@ -2,18 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Pharmacy;
+use App\Models\Check;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use function Opis\Closure\serialize;
 
-class PharmacyFactory extends Factory
+class CheckFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Pharmacy::class;
+    protected $model = Check::class;
 
     /**
      * Define the model's default state.
@@ -23,10 +22,10 @@ class PharmacyFactory extends Factory
     public function definition()
     {
         return [
+            'user_id' => function() {
+                return \App\Models\User::factory()->create()->id;
+            },
             'name' => $this->faker->name,
-            'address' => $this->faker->address,
-            'coordinates' => serialize([$this->faker->latitude,  $this->faker->longitude]),
-            'order' => mt_rand(0, 2),
         ];
     }
 }

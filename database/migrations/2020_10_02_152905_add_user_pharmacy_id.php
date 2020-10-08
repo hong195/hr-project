@@ -14,7 +14,7 @@ class AddUserPharmacyId extends Migration
     public function up()
     {
         Schema::table('users', function ($table) {
-            $table->unsignedBigInteger('pharmacy_id')->after('id');
+            $table->unsignedBigInteger('pharmacy_id')->after('id')->nullable();
 
             $table->foreign('pharmacy_id')
                 ->references('id')

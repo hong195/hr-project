@@ -15,21 +15,11 @@ class CreatePharmaciesTable extends Migration
     {
         Schema::create('pharmacies', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->timestamps();
-        });
-
-        Schema::create('pharmacy_data', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('pharmacy_id');
             $table->string('name')->index();
-            $table->longText('value')->nullable();
-
-            $table->foreign('pharmacy_id')
-                ->references('id')
-                ->on('pharmacies')
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
+            $table->string('address')->nullable();
+            $table->string('coordinates')->nullable();
+            $table->integer('order')->default(0)->index();
+            $table->timestamps();
         });
     }
 
@@ -40,7 +30,6 @@ class CreatePharmaciesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pharmacy_data');
         Schema::dropIfExists('pharmacies');
     }
 }

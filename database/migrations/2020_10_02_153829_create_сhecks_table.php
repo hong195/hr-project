@@ -13,7 +13,7 @@ class CreateсhecksTable extends Migration
      */
     public function up()
     {
-        Schema::create('сhecks', function (Blueprint $table) {
+        Schema::create('checks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('name')->index();
@@ -40,6 +40,7 @@ class CreateсhecksTable extends Migration
             $table->unsignedBigInteger('check_id');
             $table->string('name')->index();
             $table->longText('value')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -51,7 +52,7 @@ class CreateсhecksTable extends Migration
     public function down()
     {
         Schema::dropIfExists('check_data');
-        Schema::dropIfExists('сhecks');
+        Schema::dropIfExists('checks');
         Schema::dropIfExists('check_attribute');
     }
 }
