@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -18,6 +21,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'pharmacy_id',
         'email',
         'password',
     ];
@@ -30,6 +34,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'email_verified_at'
     ];
 
     /**
@@ -40,4 +45,44 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims() : array
+    {
+        return [];
+    }
+
+    public function checks() : HasMany
+    {
+        return $this->hasMany(Check::class);
+    }
+
+    public function pharmacy() : BelongsTo
+    {
+        return $this->belongsTo(Pharmacy::class);
+    }
+
+    public function meta() : HasMany
+    {
+        return $this->hasMany(UserData::class);
+    }
+
+    public function ratings() : HasMany
+    {
+        return $this->hasMany(Rating::class);
+    }
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
+
+    public function getNameAttribute()
+    {
+        return "$this->first_name $this->last_name $this->patronymic";
+    }
 }

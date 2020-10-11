@@ -25,7 +25,7 @@ class PharmacyFactory extends Factory
         return [
             'name' => $this->faker->name,
             'address' => $this->faker->address,
-            'coordinates' => serialize([$this->faker->latitude,  $this->faker->longitude]),
+            'coordinates' => [$this->faker->latitude,  $this->faker->longitude],
             'order' => mt_rand(0, 2),
         ];
     }

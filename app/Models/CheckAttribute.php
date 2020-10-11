@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\CastJsonAttribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,19 +13,9 @@ class CheckAttribute extends Model
 {
     use HasFactory;
 
-    /**
-     * @param $value
-     * @return mixed
-     */
-    public function setOptionsAttribute($value) : void
-    {
-        $this->attributes['options'] = json_encode($value);
-    }
+    protected $guarded = [];
 
-    /**
-     * @return mixed
-     */
-    public function getOptionsAttribute()  {
-        return json_decode($this->attributes['options'], true);
-    }
+    protected $casts = [
+        'options' => CastJsonAttribute::class,
+    ];
 }
