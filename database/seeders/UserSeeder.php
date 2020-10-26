@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
             'last_name' => 'admin2',
             'patronymic' => 'admin3',
             'email' => 'admin@gmail.com',
-            'password' => bcrypt('qwerty123')
+            'password' => 'qwerty123'
         ]);
 
         $adminRole = Role::create(['name' => 'Admin'])
@@ -46,7 +46,7 @@ class UserSeeder extends Seeder
             'last_name' => 'user2',
             'patronymic' => 'user3',
             'email' => 'user@gmail.com',
-            'password' => bcrypt('qwerty123')
+            'password' => 'qwerty123'
         ]);
 
         $userRole->givePermissionTo($this->createPermissions()->first());

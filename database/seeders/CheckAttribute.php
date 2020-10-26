@@ -28,6 +28,7 @@ class CheckAttribute extends Seeder
                     'label' => 'Этика поведения',
                     'options' => ['Да' => 1, 'Нет' => 0],
                     'use_in_rating' => true,
+                    'validation_rule' => ''
                 ],
                 'order' => 0,
             ],
@@ -38,6 +39,7 @@ class CheckAttribute extends Seeder
                     'label' => 'Консультация',
                     'options' => ['Да' => 1, 'Нет' => 0],
                     'use_in_rating' => true,
+                    'validation_rule' => ''
                 ],
                 'order' => 0,
             ],
@@ -48,6 +50,7 @@ class CheckAttribute extends Seeder
                     'label' => 'Презентация препарата',
                     'options' => ['Да' => 1, 'Нет' => 0],
                     'use_in_rating' => true,
+                    'validation_rule' => ''
                 ],
                 'order' => 0,
             ],
@@ -57,6 +60,7 @@ class CheckAttribute extends Seeder
                 'options' => [
                     'label' => 'Краткое примечание',
                     'use_in_rating' => false,
+                    'validation_rule' => ''
                 ],
                 'order' => 0,
             ],

@@ -10,17 +10,24 @@ abstract class AbstractRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
+     * By default only user with Admin role can create/update posts
      *
      * @return bool
      */
-    abstract public function authorize() : bool;
+    public function authorize(): bool
+    {
+        if ($this->user() && $this->user()->hasRole('Admin')) {
+            return true;
+        }
+        return false;
+    }
 
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    abstract public function rules() : array;
+    abstract public function rules(): array;
 
     /**
      * Handle a failed validation attempt.
@@ -28,7 +35,7 @@ abstract class AbstractRequest extends FormRequest
      * @param Validator $validator
      * @throws ValidationException
      */
-    protected function failedValidation(Validator $validator) : void
+    protected function failedValidation(Validator $validator): void
     {
         throw new ValidationException(
             $validator,
@@ -40,7 +47,7 @@ abstract class AbstractRequest extends FormRequest
      *
      * @return bool
      */
-    public function isUpdating() : bool
+    public function isUpdating(): bool
     {
         return in_array($this->getMethod(), ['PUT', 'PATCH']);
     }

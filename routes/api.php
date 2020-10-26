@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CheckAttributeController;
+use App\Http\Controllers\CheckController;
 use App\Http\Controllers\PharmacyController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,7 @@ Route::apiResources([
     'users' => UserController::class,
     'pharmacies' => PharmacyController::class,
     'check-attributes' => CheckAttributeController::class,
+    'checks' => CheckController::class,
 ]);
 
 //Route::get('/test', function() {
