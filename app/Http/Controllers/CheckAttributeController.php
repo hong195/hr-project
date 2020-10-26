@@ -30,7 +30,7 @@ class CheckAttributeController extends Controller
     {
         $checkAttribute->create($request->only('name', 'meta'));
 
-        return response()->json(['message' => 'Attribute was successfully created!'], 200);
+        return response()->json(['message' => 'Attribute was successfully created!'], 201);
     }
 
     /**

@@ -13,10 +13,6 @@ class CheckData extends Model
 
     protected $guarded = [];
 
-    protected $casts = [
-        'value' => CastJsonAttribute::class,
-    ];
-
     public function check(): BelongsTo
     {
         return $this->belongsTo(Check::class);

@@ -32,7 +32,7 @@ class UserController extends Controller
     {
         // Todo make saving user meta info to a different table
         $user->create($userRequest->validated());
-        return response()->json(['message' => 'User have been successfully created!'], 200);
+        return response()->json(['message' => 'User have been successfully created!'], 201);
     }
 
     /**

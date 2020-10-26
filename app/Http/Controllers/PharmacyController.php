@@ -38,10 +38,7 @@ class PharmacyController extends Controller
     public function store(PharmacyRequest $pharmacyRequest, Pharmacy $pharmacy)
     {
         $pharmacy->create($pharmacyRequest->validated());
-
-        return response()->json([
-            'message' => 'Pharmacy was successfully created!'
-        ]);
+        return response()->json(['message' => 'Pharmacy was successfully created!'], 201);
     }
 
     /**
@@ -76,10 +73,7 @@ class PharmacyController extends Controller
     public function update(PharmacyRequest $pharmacyRequest, Pharmacy $pharmacy)
     {
         $pharmacy->update($pharmacyRequest->validated());
-
-        return response()->json([
-            'message' => 'Pharmacy was successfully updated!'
-        ]);
+        return response()->json(['message' => 'Pharmacy was successfully updated!']);
     }
 
     /**
@@ -95,8 +89,7 @@ class PharmacyController extends Controller
         } catch (\Exception $e) {
             return response()
                 ->json(
-                    ['message' => 'There was an error while deleting the pharmacy, please try later'],
-                    503);
+                    ['message' => 'There was an error while deleting the pharmacy, please try later'], 503);
         }
 
         return response()->json(['message' => 'Pharmacy was deleted!'], 200);
