@@ -18,7 +18,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         //Todo make user search
-        return UserResource::collection(User::with(['pharmacy', 'meta'])->paginate(25));
+        //return UserResource::collection(User::with(['pharmacy', 'meta'])->paginate(25));
     }
 
     /**

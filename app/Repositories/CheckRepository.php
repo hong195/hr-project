@@ -12,9 +12,9 @@ class CheckRepository
 {
     /**
      * @param CheckRequest $checkRequest
-     * @return Check
+     * @return mixed
      */
-    public function create(CheckRequest $checkRequest): Check
+    public function create(CheckRequest $checkRequest)
     {
         $check = Check::create($checkRequest->except('meta'));
 

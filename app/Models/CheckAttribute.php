@@ -18,4 +18,9 @@ class CheckAttribute extends Model
     protected $casts = [
         'options' => CastJsonAttribute::class,
     ];
+
+    public function options() : HasMany
+    {
+        return $this->hasMany(CheckAttributeOption::class);
+    }
 }

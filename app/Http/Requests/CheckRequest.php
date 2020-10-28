@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\CheckAttribute;
+
 class CheckRequest extends AbstractRequest
 {
     protected $attributeName = 'meta';
@@ -22,12 +24,12 @@ class CheckRequest extends AbstractRequest
     }
 
     protected function getCheckAttributes() {
-        return \App\Models\CheckAttribute::all();
+        return CheckAttribute::where('use_in_filter', true)->get();
     }
 
     protected function formatCheckAttributesRules() {
         $this->getCheckAttributes()->each(function ($attr) {
-            $this->rules["$this->attributeName.$attr->name"] = $attr->options->validation_rule;
+            $this->rules["$this->attributeName.$attr->name"] = $attr->validation_rule;
         });
     }
 
