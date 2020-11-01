@@ -12,6 +12,8 @@ class CheckAttributeOption extends Model
 
     protected $table = 'check_attribute_options';
 
+    protected $guarded = [];
+
     public $timestamps = false;
 
     public function attribute() : BelongsTo

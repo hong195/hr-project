@@ -3,29 +3,45 @@
 namespace App\Observers;
 
 use App\Enums\CheckLimit;
+use App\Exceptions\UserRatingException;
 use App\Models\Check;
+use App\Repositories\Contracts\CheckRepositoryContract;
 use App\Services\RatingService;
-use Illuminate\Support\Facades\Gate;
 
 class CheckObserver
 {
-    public function created(Check $check)
-    {
-//        if (Gate::denies('create-rating', $check->created_at)) {
-//            return;
-//        }
+    private $ratingService;
+    private $checkRepository;
 
+    /**
+     * CheckObserver constructor.
+     * @param RatingService $ratingService
+     * @param CheckRepositoryContract $checkRepository
+     */
+    public function __construct(RatingService $ratingService, CheckRepositoryContract $checkRepository)
+    {
+        $this->ratingService = $ratingService;
+        $this->checkRepository = $checkRepository;
+    }
+
+    /**
+     * @param Check $check
+     */
+    public function created(Check $check): void
+    {
         $user = $check->user;
         $created_at = $check->created_at;
-        $checks = $user->checks()
-            ->whereYear('created_at', $created_at->year)
-            ->whereMonth('created_at', $created_at->month)
-            ->get();
+        $userChecks = $this->checkRepository
+            ->findUsersChecksByYearAndMonth($user->id, $created_at->year, $created_at->month);
 
-        if ($checks->count() === CheckLimit::MINIMUM_FOR_CREATING_RATING) {
-            $ratingService = new RatingService($user, $created_at, $checks);
-            $ratingService->createRating();
+        if ($userChecks->count() !== CheckLimit::MINIMUM_FOR_CREATING_RATING) {
+            return;
+        }
 
+        try {
+            $this->ratingService->setUser($user)->setCreationDate($created_at)->setChecks($userChecks)->createRating();
+        } catch (UserRatingException $e) {
+            report($e);
         }
     }
 }

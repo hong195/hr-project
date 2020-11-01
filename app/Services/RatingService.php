@@ -3,14 +3,15 @@
 
 namespace App\Services;
 
-use App\Models\CheckAttribute;
-use App\Models\Rating;
+use App\Enums\CheckLimit;
+use App\Exceptions\UserRatingException;
 use App\Models\User;
-use App\Services\Contracts\RatingCalculationsContract;
+use App\Repositories\Contracts\CheckAttributeRepositoryContract;
+use App\Repositories\Contracts\RatingRepositoryContract;
+use App\Repositories\Contracts\UserRepositoryContract;
 use Carbon\Carbon;
-use Ramsey\Collection\Collection;
 
-class RatingService implements RatingCalculationsContract
+class RatingService
 {
     /**
      * @var array|iterable
@@ -19,7 +20,7 @@ class RatingService implements RatingCalculationsContract
     /**
      * @var array|iterable
      */
-    private $checkAttributes;
+    private $checkAttributesRepository;
     /**
      * @var User
      */
@@ -28,70 +29,97 @@ class RatingService implements RatingCalculationsContract
      * @var Carbon
      */
     private $creationDate;
+    /**
+     * @var UserRepositoryContract
+     */
+    private $ratingRepository;
 
     /**
-     * RatingCalculations constructor.
-     * @param User $user
-     * @param Carbon $ratingCreationDate
-     * @param Collection|null $checks
+     * RatingService constructor.
+     * @param CheckAttributeRepositoryContract $checkAttributesRepository
+     * @param RatingRepositoryContract $ratingRepository
      */
-    public function __construct(User $user, Carbon $ratingCreationDate, Collection $checks = null)
+    public function __construct(CheckAttributeRepositoryContract $checkAttributesRepository,
+                                RatingRepositoryContract $ratingRepository)
     {
-        $this->user = $user;
-        $this->creationDate = $ratingCreationDate;
-        $this->checkAttributes = CheckAttribute::where('options->use_in_filter', true)->get();
-        $this->setUserChecksIfNotSet($checks);
+        $this->checkAttributesRepository = $checkAttributesRepository;
+        $this->ratingRepository = $ratingRepository;
     }
 
     /**
-     *
+     * @param Carbon $creationDate
+     * @return RatingService
+     */
+    public function setCreationDate(Carbon $creationDate)
+    {
+        $this->creationDate = $creationDate;
+        return $this;
+    }
+
+    /**
+     * Get possible total points, total depends on check attributes
+     * @throws UserRatingException
      */
     public function createRating()
     {
-        return $this->user->ratings()->create([
-            'result' => $this->getScoredPoints(),
-            'total' => $this->getTotalPoints(),
-            'created_at' => '',
-        ]);
+        $scored = $this->getScoredPoints();
+        $out_of = $this->getTotalPoints();
+
+
+        if ($scored > $out_of) {
+            throw new UserRatingException('Scored number cannot be larger than total');
+        }
+
+        $rating = $this->ratingRepository->create([
+                'user_id' => $this->user->id,
+                'scored' => $this->getScoredPoints(),
+                'out_of' => $this->getTotalPoints(),
+                'created_at' => $this->creationDate->toDateString()
+            ]);
+        $rating->checks()->sync($this->checks->map->id);
+
+        return $rating;
+    }
+
+    protected function getTotalPoints(): int
+    {
+        return $this->checkAttributesRepository->getUsedInRating()->sum(function ($attribute) {
+            return $attribute->options->max->value * CheckLimit::MINIMUM_FOR_CREATING_RATING;
+        });
     }
 
     /**
-     * @param Rating $rating
+     * Get Users scored points, depends on checks criteria
      * @return int
      */
-    public function updateRating(Rating $rating)
+    protected function getScoredPoints(): int
     {
-        return $rating->update([
-            'result' => $this->getScoredPoints(),
-            'total' => $this->getTotalPoints(),
-            'created_at' => '',
-        ]);
-    }
-
-    public function getTotalPoints(): int
-    {
-        $this->checkAttributes->sum(function ($attribute) {
-
+        return $this->checks->sum(function ($check) {
+            return collect($check->criteria)->filter->use_in_rating->sum(function ($criteria) {
+                return collect($criteria->options)->sum(function ($option) {
+                    return $option->selected ? $option->value : 0;
+                });
+            });
         });
-
-        return 0;
-    }
-
-    public function getScoredPoints(): int
-    {
-        return 0;
     }
 
     /**
-     * set user checks for generating ratings
-     * @param Collection|null $checks
-     * @return void
+     * @param array|iterable $checks
+     * @return RatingService
      */
-    public function setUserChecksIfNotSet(Collection $checks = null): void
+    public function setChecks($checks)
     {
-        $this->checks = $checks ? $checks : $this->user->checks()
-            ->whereYear('created_at', $this->creationDate->year)
-            ->whereMonth('created_at', $this->creationDate->month)
-            ->get();
+        $this->checks = $checks;
+        return $this;
+    }
+
+    /**
+     * @param User $user
+     * @return RatingService
+     */
+    public function setUser(User $user)
+    {
+        $this->user = $user;
+        return $this;
     }
 }

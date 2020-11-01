@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\CheckExpcetion;
+use App\Exceptions\UserRatingException;
 use App\Http\Requests\CheckRequest;
 use App\Http\Resources\CheckResource;
 use App\Models\Check;
-use App\Repositories\CheckRepository;
+use App\Repositories\Contracts\CheckRepositoryContract;
 
 class CheckController extends Controller
 {
@@ -14,11 +16,12 @@ class CheckController extends Controller
      */
     private $checkRepository;
 
-    public function __construct(CheckRepository $checkRepository)
+    public function __construct(CheckRepositoryContract $checkRepository)
     {
         $this->middleware('auth:api', ['except' => ['index', 'show']]);
         $this->checkRepository = $checkRepository;
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -29,40 +32,48 @@ class CheckController extends Controller
         return new CheckResource(Check::with('meta')->paginate(25));
     }
 
+
     /**
-     * Store a newly created resource in storage.
-     *
      * @param CheckRequest $checkRequest
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(CheckRequest $checkRequest)
     {
-        $check = $this->checkRepository->create($checkRequest);
-        return response()->json(['message' => 'Check was successfully created', 'check' => $check], 201);
+        try {
+            $this->checkRepository->create($checkRequest->validated());
+        } catch (CheckExpcetion $e) {
+            return response()->json(['message' => $e->getMessage()], 403);
+        }
+        return response()->json(['message' => 'Check was successfully created'], 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param Check $check
+     * @param $id
      * @return CheckResource
      */
-    public function show(Check $check)
+    public function show($id)
     {
-        return new CheckResource($check->with('meta'));
+        return new CheckResource($this->checkRepository->findById($id));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param CheckRequest $checkRequest
-     * @param Check $check
+     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(CheckRequest $checkRequest, Check $check)
+    public function update(CheckRequest $checkRequest, $id)
     {
-        $check = $this->checkRepository->update($check, $checkRequest);
-        return response()->json(['message' => 'Check was successfully updated', 'check' => $check], 200);
+        try {
+            $this->checkRepository->update($id, $checkRequest->validated());
+        }catch (CheckExpcetion $e) {
+            return response()->json(['message' => $e->getMessage()], 403);
+        }
+
+        return response()->json(['message' => 'Check was successfully updated'], 200);
     }
 
     /**

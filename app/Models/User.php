@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -79,5 +80,15 @@ class User extends Authenticatable implements JWTSubject
     public function getNameAttribute()
     {
         return "$this->first_name $this->last_name $this->patronymic";
+    }
+
+    public function hasRating($created_at) : bool
+    {
+        $created_at = $created_at instanceof Carbon ? $created_at : Carbon::parse($created_at);
+
+        return $this->ratings()
+            ->whereYear('created_at', $created_at->year)
+            ->whereMonth('created_at', $created_at->month)
+            ->exists();
     }
 }

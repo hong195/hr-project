@@ -5,7 +5,16 @@ namespace App\Providers;
 use App\Models\Check;
 use App\Models\User;
 use App\Observers\CheckObserver;
-use Carbon\Carbon;
+use App\Repositories\CheckAttributeRepository;
+use App\Repositories\CheckRepository;
+use App\Repositories\Contracts\CheckAttributeRepositoryContract;
+use App\Repositories\Contracts\CheckRepositoryContract;
+use App\Repositories\Contracts\RatingRepositoryContract;
+use App\Repositories\Contracts\UserRepositoryContract;
+use App\Repositories\RatingRepository;
+use App\Repositories\UserRepository;
+use App\Services\Contracts\CriteriaInterface;
+use App\Services\CriteriaService;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -18,7 +27,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(CriteriaInterface::class, CriteriaService::class);
+        $this->app->bind(UserRepositoryContract::class, UserRepository::class);
+        $this->app->bind(CheckAttributeRepositoryContract::class, CheckAttributeRepository::class);
+        $this->app->bind(CheckRepositoryContract::class, CheckRepository::class);
+        $this->app->bind(RatingRepositoryContract::class, RatingRepository::class);
     }
 
     /**
@@ -29,15 +42,5 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Check::observe(CheckObserver::class);
-
-        Gate::define('create-rating', function (User $user, $created_at) {
-
-            $created_at = $created_at instanceof Carbon ? $created_at : Carbon::parse($created_at);
-
-            return $user->ratings()
-                ->whereYear('created_at', $created_at->year)
-                ->whereMonth('created_at', $created_at->month)
-                ->exists();
-        });
     }
 }

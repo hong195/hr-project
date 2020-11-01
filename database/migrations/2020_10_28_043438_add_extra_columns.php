@@ -23,7 +23,6 @@ class AddExtraColumns extends Migration
         });
 
         Schema::table('check_attributes', function (Blueprint $table) {
-            $table->string('validation_rule')->after('type');
             $table->string('label')->after('type');
             $table->dropColumn('options');
             $table->boolean('use_in_rating')->default(0)->after('options');
@@ -34,7 +33,7 @@ class AddExtraColumns extends Migration
             $table->unsignedBigInteger('check_attribute_id');
             $table->string('name');
             $table->string('label');
-            $table->longText('value');
+            $table->string('value')->default(0);
 
             $table->foreign('check_attribute_id')
                 ->references('id')
@@ -62,7 +61,7 @@ class AddExtraColumns extends Migration
 
         Schema::table('check_attributes', function (Blueprint $table) {
             $table->dropColumn('label');
-            $table->dropColumn(['use_in_rating', 'validation_rule']);
+            $table->dropColumn(['use_in_rating']);
         });
 
         Schema::dropIfExists('check_attributes_options');

@@ -4,60 +4,125 @@
 namespace App\Repositories;
 
 
-use App\Http\Requests\CheckRequest;
+use App\Exceptions\CheckExpcetion;
 use App\Models\Check;
 use App\Models\CheckData;
+use App\Repositories\Contracts\CheckRepositoryContract;
+use App\Repositories\Contracts\UserRepositoryContract;
+use App\Services\Contracts\CriteriaInterface;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection as SupportCollection;
 
-class CheckRepository
+class CheckRepository extends AbstractRepository implements CheckRepositoryContract
 {
+
     /**
-     * @param CheckRequest $checkRequest
+     * @var CriteriaInterface
+     */
+    private $criteriaService;
+    /**
+     * @var UserRepositoryContract
+     */
+    private $userRepository;
+    /**
+     * @var array
+     */
+    private $modelAttributes = [];
+
+
+    public function __construct(Check $check,
+                                CriteriaInterface $criteriaService,
+                                UserRepositoryContract $userRepository)
+    {
+        parent::__construct($check);
+        $this->criteriaService = $criteriaService;
+        $this->userRepository = $userRepository;
+    }
+
+    /**
+     * @param array $checkRequest
      * @return mixed
+     * @throws CheckExpcetion
      */
-    public function create(CheckRequest $checkRequest)
+    public function create(array $checkRequest)
     {
-        $check = Check::create($checkRequest->except('meta'));
+        $checkRequest = collect($checkRequest);
+        $user = $this->userRepository->findById($checkRequest->get('user_id'));
 
-        if ($checkRequest->exists('meta') && $checkRequest->filled('meta')) {
-            $this->saveMeta($check, $checkRequest->only('meta'));
+        if ($user->hasRating($checkRequest->get('created_at'))) {
+            throw new CheckExpcetion(sprintf(
+                'Failed to create check, user has already have rating for given period - %s %s',
+                Carbon::parse($checkRequest->get('created_at'))->format('F'),
+                Carbon::parse($checkRequest->get('created_at'))->format('Y')
+            ));
         }
 
-        return $check;
+        $this->setAttributes($checkRequest);
+        $this->model = parent::create($this->modelAttributes);
+
+        if ($checkRequest->has('meta')) {
+            $this->saveMeta($checkRequest->get('meta'));
+        }
+
+        return $this->model;
+    }
+
+    public function setAttributes(SupportCollection $checkRequest)
+    {
+        $this->modelAttributes = $checkRequest->except('meta')->toArray();
+        $this->modelAttributes['criteria'] = $this->criteriaService
+            ->generate($checkRequest->get('meta'))->getCriteriaList();
     }
 
     /**
-     * @param CheckRequest $checkRequest
-     * @param Check $check
-     * @return Check
+     * @param $id
+     * @param array $checkRequest
+     * @return bool
+     * @throws CheckExpcetion
      */
-    public function update(Check $check, CheckRequest $checkRequest)
+    public function update($id, array $checkRequest)
     {
-        $check->update($checkRequest->except('meta'));
+        $checkRequest = collect($checkRequest);
+        $this->model = $this->findById($id);
+        $user = $this->model->user;
 
-        if ($check->meta->isNotEmpty()) {
-            $check->meta()->delete();
+        if ($user->hasRating($this->model->created_at)) {
+            throw new CheckExpcetion(sprintf(
+                'Failed to update check, user`s rating already generated for given period - %s %s',
+                $this->model->created_at->format('F'),
+                $this->model->created_at->format('Y')
+            ));
         }
 
-        if ($checkRequest->exists('meta') && $checkRequest->filled('meta')) {
-            $this->saveMeta($check, $checkRequest->only('meta'));
+        if ($checkRequest->has('meta')) {
+            $this->saveMeta($checkRequest->get('meta'));
         }
 
-        return $check;
+        $this->setAttributes($checkRequest);
+
+        return $this->model->update($this->modelAttributes);
     }
-    /**
-     * @param Check $check
-     * @param array $metas
-     */
-    public function saveMeta(Check $check, array $metas) : void
+
+    public function saveMeta(array $meta)
     {
-        $data = [];
+        $meta = collect($meta);
+        //Todo refactor deleting model
+        $this->model->meta()->delete();
 
-        foreach ($metas as $meta) {
-            foreach ($meta as $key => $value) {
-                $data[] = new CheckData(['name' => $key, 'value' => $value]);
-            }
-        }
 
-        $check->meta()->saveMany($data);
+        $meta = $meta->map(function ($value, $key) {
+            return ['value' => $value, 'name' => $key];
+        })
+            ->values()
+            ->all();
+
+        $this->model->meta()->createMany($meta);
+    }
+
+    public function findUsersChecksByYearAndMonth(int $user_id, int $year, int $month): Collection
+    {
+        return $this->model->whereUserId($user_id)
+            ->whereMonth('created_at', $month)->whereYear('created_at', $year)->get();
     }
 }

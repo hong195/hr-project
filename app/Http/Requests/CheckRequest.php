@@ -2,34 +2,57 @@
 
 namespace App\Http\Requests;
 
-use App\Models\CheckAttribute;
+use App\Repositories\Contracts\CheckAttributeRepositoryContract;
 
 class CheckRequest extends AbstractRequest
 {
     protected $attributeName = 'meta';
+
+    private $checkAttributeRepository;
+
+    public function __construct(CheckAttributeRepositoryContract $checkAttributeRepository,
+                                array $query = [],
+                                array $request = [],
+                                array $attributes = [],
+                                array $cookies = [],
+                                array $files = [],
+                                array $server = [],
+                                $content = null)
+    {
+        $this->checkAttributeRepository = $checkAttributeRepository;
+        parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
+    }
 
     protected $rules = [
         'user_id' => 'required|exists:users,id',
         'name' => 'required',
         'created_at' => 'required|date|before:today'
     ];
+
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules() : array
+    public function rules(): array
     {
         return $this->getRules();
     }
 
-    protected function getCheckAttributes() {
-        return CheckAttribute::where('use_in_filter', true)->get();
+    protected function getCheckAttributes()
+    {
+        return $this->checkAttributeRepository->all();
     }
 
-    protected function formatCheckAttributesRules() {
+    protected function formatCheckAttributesRules()
+    {
         $this->getCheckAttributes()->each(function ($attr) {
-            $this->rules["$this->attributeName.$attr->name"] = $attr->validation_rule;
+            //Todo make field proper validation, ie field must match 1 or 10
+            $rule = ['string', 'nullable'];
+            if ($attr->use_in_rating) {
+                $rule = ['numeric', 'nullable'];
+            }
+            $this->rules["$this->attributeName.$attr->name"] = $rule;
         });
     }
 

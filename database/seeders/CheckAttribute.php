@@ -41,7 +41,6 @@ class CheckAttribute extends Seeder
                 'name' => 'ethics',
                 'type' => 'radio',
                 'label' => 'Этика поведения',
-                'validation_rule' => 'integer',
                 'use_in_rating' => true,
                 'order' => 0,
             ],
@@ -50,7 +49,6 @@ class CheckAttribute extends Seeder
                 'type' => 'radio',
                 'label' => 'Консультация',
                 'use_in_rating' => true,
-                'validation_rule' => 'integer',
                 'order' => 0,
             ],
             [
@@ -58,14 +56,12 @@ class CheckAttribute extends Seeder
                 'type' => 'radio',
                 'label' => 'Презентация препарата',
                 'use_in_rating' => true,
-                'validation_rule' => 'integer',
                 'order' => 0,
             ],
             [
                 'name' => 'desc',
                 'type' => 'textarea',
                 'label' => 'Краткое примечание',
-                'validation_rule' => 'string',
                 'order' => 0,
             ],
         ]);
