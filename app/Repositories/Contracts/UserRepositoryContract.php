@@ -6,9 +6,11 @@ namespace App\Repositories\Contracts;
 
 interface UserRepositoryContract
 {
-    /**
-     * @param array $meta
-     * @return mixed
-     */
-    public function saveMeta(array $meta);
+    public function saveUserMeta(array $meta);
+
+    public function deleteUserMeta();
+
+    public function attachRole(int $id);
+
+    public function detachRole(int $id = null);
 }

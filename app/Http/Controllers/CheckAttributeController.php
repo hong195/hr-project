@@ -29,6 +29,7 @@ class CheckAttributeController extends Controller
     public function store(CheckAttributeRequest $checkAttributeRequest)
     {
         $this->checkAttributeRepository->create($checkAttributeRequest->validated());
+
         return response()->json(['message' => 'Attribute was successfully created!'], 201);
     }
 
