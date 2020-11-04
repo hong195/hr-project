@@ -13,9 +13,13 @@ trait ToCarbonTrait
      * @param $date
      * @return Carbon
      */
-    public function transformDate($date) : Carbon
+    public function castToCarbon($date = null) : Carbon
     {
+        if (!$date) {
+            $date = Carbon::parse($date);
+        }
         $date = $date instanceof Carbon ? $date : Carbon::parse($date);
+
         return $date;
     }
 }

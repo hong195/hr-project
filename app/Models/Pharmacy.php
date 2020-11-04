@@ -21,4 +21,9 @@ class Pharmacy extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function ratings()
+    {
+        return $this->hasManyThrough(Rating::class, User::class);
+    }
 }
