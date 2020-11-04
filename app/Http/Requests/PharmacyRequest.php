@@ -14,10 +14,10 @@ class PharmacyRequest extends AbstractRequest
     public function rules() : array
     {
         return [
-            'name' => 'required|min:2|alpha_dash',
-            'address' => 'string',
-            'coordinates' => 'array',
-            'order' => 'numeric'
+            'name' => ['required','min:2','alpha_dash'],
+            'address' => ['string', 'nullable'],
+            'coordinates' => ['array', 'nullable'],
+            'order' => ['numeric', 'nullable']
         ];
     }
 }

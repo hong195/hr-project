@@ -5,92 +5,61 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PharmacyRequest;
 use App\Http\Resources\PharmacyResource;
 use App\Models\Pharmacy;
+use App\Repositories\PharmacyRepository;
 
 class PharmacyController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @var PharmacyRepository
      */
+    private $pharmacyRepository;
+
+    public function __construct(PharmacyRepository $pharmacyRepository)
+    {
+        $this->pharmacyRepository = $pharmacyRepository;
+    }
+
     public function index()
     {
         // Todo make search
-        return PharmacyResource::collection(Pharmacy::with('users')->paginate(25));
+        return PharmacyResource::collection($this->pharmacyRepository->all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     */
+
     public function create()
     {
         // Todo Make pharmacy form
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param PharmacyRequest $pharmacyRequest
-     * @param Pharmacy $pharmacy
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function store(PharmacyRequest $pharmacyRequest, Pharmacy $pharmacy)
+    public function store(PharmacyRequest $pharmacyRequest)
     {
-        $pharmacy->create($pharmacyRequest->validated());
+        $this->pharmacyRepository->create($pharmacyRequest->validated());
+
         return response()->json(['message' => 'Pharmacy was successfully created!'], 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\Models\Pharmacy $pharmacy
-     * @return PharmacyResource
-     */
-    public function show(Pharmacy $pharmacy)
+
+    public function show($id)
     {
-        return new PharmacyResource($pharmacy->load('users'));
+        return new PharmacyResource($this->pharmacyRepository->findById($id));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Pharmacy  $pharmacy
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit(Pharmacy $pharmacy)
     {
         // Todo Make pharmacy form
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param PharmacyRequest $pharmacyRequest
-     * @param \App\Models\Pharmacy $pharmacy
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function update(PharmacyRequest $pharmacyRequest, Pharmacy $pharmacy)
+    public function update(PharmacyRequest $pharmacyRequest, $id)
     {
-        $pharmacy->update($pharmacyRequest->validated());
+        $this->pharmacyRepository->update($id, $pharmacyRequest->validated());
+
         return response()->json(['message' => 'Pharmacy was successfully updated!']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Pharmacy  $pharmacy
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function destroy(Pharmacy $pharmacy)
+    public function destroy($id)
     {
-        try {
-            $pharmacy->delete();
-        } catch (\Exception $e) {
-            return response()
-                ->json(
-                    ['message' => 'There was an error while deleting the pharmacy, please try later'], 503);
-        }
+        $this->pharmacyRepository->delete($id);
 
         return response()->json(['message' => 'Pharmacy was deleted!'], 200);
     }

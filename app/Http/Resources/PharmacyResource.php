@@ -18,7 +18,7 @@ class PharmacyResource extends JsonResource
             'name' => $this->name,
             'address' => $this->address,
             'coordinates' => $this->coordinates,
-            'users_count' => $this->whenLoaded('users')->count(),
+            'users_count' => $this->users->count(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];
