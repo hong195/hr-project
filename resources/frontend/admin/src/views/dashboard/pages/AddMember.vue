@@ -129,6 +129,10 @@
         },
       ],
     }),
+    async mounted () {
+      const response = await this.$http.get('create/user')
+      this.schema = response.data.fields
+    },
 
     methods: {
       zoomOut () {

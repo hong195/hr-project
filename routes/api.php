@@ -29,6 +29,8 @@ Route::apiResources([
 ]);
 
 Route::post('user-rating', [UserRatingController::class, 'show']);
+//Route::get('user/create', [UserController::class, 'create']);
+Route::get('create/user', 'App\Http\Controllers\UserController@create');
 Route::resource('pharmacy-rating',PharmaciesRatingController::class)->only(['index', 'show']);
 //Route::post('pharmacy-rating', [PharmacyController::class, 'show']);
 //Route::get('/test', function() {

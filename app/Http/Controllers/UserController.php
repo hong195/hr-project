@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Forms\UserForm;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -21,6 +22,11 @@ class UserController extends Controller
     {
         //Todo make user search
         return UserResource::collection($this->userRepository->all());
+    }
+
+    public function create(UserForm $form)
+    {
+        return response()->json($form->buildForm());
     }
 
     public function store(UserRequest $userRequest)

@@ -1,71 +1,70 @@
 <template>
-  <v-container id="login" class="fill-height" tag="section">
-    <v-row justify="center">
+  <v-container
+    id="login"
+    class="fill-height"
+    tag="section"
+  >
+    <v-row
+      justify="center"
+      align="center"
+    >
       <v-slide-y-transition appear>
         <base-material-card
-          color="success"
           light
-          max-width="100%"
-          width="400"
-          class="px-5 py-3"
+          background-color="#fff"
+          color="success"
+          max-width="400"
+          width="100%"
+          icon="mdi-account-check"
+          title="Авторизация"
+          class="pt-4"
         >
-          <template v-slot:heading>
-            <div class="text-center">
-              <h1 class="display-2 font-weight-bold mb-2">
-                Login
-              </h1>
-
-              <!-- <v-btn
-                v-for="(social, i) in socials"
-                :key="i"
-                :href="social.href"
-                class="ma-1"
-                icon
-                rel="noopener"
-                target="_blank"
-              >
-                <v-icon v-text="social.icon" />
-              </v-btn> -->
-            </div>
-          </template>
-
-          <v-card-text class="text-center">
-            <!-- <div class="text-center grey--text body-1 font-weight-light">
-              Or Be Classical
-            </div> -->
-
+          <v-form
+            ref="form"
+            class="px-3"
+            lazy-validation
+            @submit.prevent="auth"
+          >
             <v-text-field
-              v-model="username"
-              color="secondary"
-              label="Username"
-              prepend-icon="mdi-face"
-              class="mt-10"
+              id="email"
+              v-model="email"
+              :rules="emailRules"
+              label="Электронная почта"
             />
-
-            <!-- <v-text-field
-              color="secondary"
-              label="Email..."
-              prepend-icon="mdi-email"
-            /> -->
-
             <v-text-field
+              id="password"
               v-model="password"
-              class="mb-8"
-              color="secondary"
-              label="Password..."
-              prepend-icon="mdi-lock-outline"
+              :type="showPassword ? 'text' : 'password'"
+              :rules="passwordRules"
+              label="Пароль"
+              :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+              @click:append="() => (showPassword = !showPassword)"
             />
-
-            <v-btn
-              large
-              color=""
-              depressed
-              class="v-btn--text success--text"
-              @click="login(username, password)"
+<!--            <v-checkbox-->
+<!--              v-model="rememberMe"-->
+<!--              label="Запомнить меня"-->
+<!--            />-->
+            <v-card-actions>
+              <v-spacer />
+              <v-btn
+                :loading="loading"
+                color="success"
+                default
+                type="submit"
+                x-large
+              >
+                Войти
+              </v-btn>
+              <v-spacer />
+            </v-card-actions>
+            <base-material-alert
+              v-show="error"
+              align="center"
+              :color="color"
             >
-              Let's Go
-            </v-btn>
-          </v-card-text>
+              {{ message }}
+            </base-material-alert>
+          </v-form>
         </base-material-card>
       </v-slide-y-transition>
     </v-row>
@@ -74,35 +73,58 @@
 
 <script>
   import { mapActions } from 'vuex'
+
   export default {
     name: 'PagesLogin',
 
-    components: {
-      PagesBtn: () => import('./components/Btn'),
+    data () {
+      return {
+        email: '',
+        password: '',
+        showPassword: false,
+        rememberMe: false,
+        emailRules: [
+          v => !!v || 'Пожалуйста, введите значение',
+          v =>
+            /.+@.+\..+/.test(v || 'name@mail.uz') ||
+            'E-mail должен быть действительным',
+        ],
+        passwordRules: [v => !!v || 'Пожалуйста, введите значение'],
+        scope: 'login-form',
+        loading: false,
+        message: '',
+        error: false,
+      }
     },
-
-    data: () => ({
-      username: '',
-      password: '',
-      socials: [
-        {
-          href: '#',
-          icon: 'mdi-facebook-box',
-        },
-        {
-          href: '#',
-          icon: 'mdi-twitter',
-        },
-        {
-          href: '#',
-          icon: 'mdi-github-box',
-        },
-      ],
-    }),
+    computed: {
+      color () {
+        return this.error ? 'error' : 'success'
+      },
+    },
     methods: {
-      ...mapActions(['login']),
+      ...mapActions('user', ['login']),
+      auth () {
+        this.error = false
+        const data = {
+          email: this.email,
+          password: this.password,
+        }
+        if (this.$refs.form.validate()) {
+          this.loading = true
+
+          this.login(data)
+            .then(() => {
+              this.loading = false
+              this.$router.push({ name: 'home' })
+            })
+            .catch(({ response }) => {
+              console.error(response)
+              this.message = response.data.error
+              this.loading = false
+              this.error = true
+            })
+        }
+      },
     },
   }
 </script>
-<style lang="scss">
-</style>

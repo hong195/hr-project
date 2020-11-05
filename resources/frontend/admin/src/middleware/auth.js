@@ -1,5 +1,5 @@
 export default function auth ({ next, store }) {
-  if (!store.getters.user.id || localStorage.getItem('token')) {
+  if (!store.state.user.isLoggedIn) {
     return next({
       name: 'login',
     })

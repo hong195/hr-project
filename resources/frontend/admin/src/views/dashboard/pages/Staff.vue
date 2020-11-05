@@ -43,24 +43,16 @@
     data: () => ({
       headers: [
         {
+          text: 'First Name',
+          value: 'first_name',
+        },
+        {
+          text: 'Last Name',
+          value: 'last_name',
+        },
+        {
           text: 'Name',
-          value: 'name',
-        },
-        {
-          text: 'Position',
-          value: 'position',
-        },
-        {
-          text: 'Office',
-          value: 'office',
-        },
-        {
-          text: 'Age',
-          value: 'age',
-        },
-        {
-          text: 'Date',
-          value: 'date',
+          value: 'email',
         },
         {
           sortable: false,
@@ -68,44 +60,12 @@
           value: 'actions',
         },
       ],
-      items: [
-        {
-          name: 'Airi Satou',
-          position: 'Accountant',
-          office: 'Tokyo',
-          age: 33,
-          date: '2008/11/28',
-        },
-        {
-          name: 'Angelica Ramos',
-          position: 'Chief Executive Officer (CEO)',
-          office: 'London',
-          age: 47,
-          date: '2009/10/09',
-        },
-        {
-          name: 'Ashton Cox',
-          position: 'Junior Technical Author',
-          office: 'San Francisco',
-          age: 66,
-          date: '2009/01/12',
-        },
-        {
-          name: 'Bradley Greer',
-          position: 'Software Engineer',
-          office: 'London',
-          age: 41,
-          date: '2012/10/13',
-        },
-        {
-          name: 'Brenden Wagner',
-          position: 'Software Engineer',
-          office: 'San Francisco',
-          age: 28,
-          date: '2011/06/07',
-        },
-      ],
+      items: [],
       search: undefined,
     }),
+    async mounted () {
+      const response = await this.$http.get('users')
+      this.items = response.data.data
+    },
   }
 </script>

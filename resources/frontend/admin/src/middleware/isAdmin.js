@@ -1,5 +1,5 @@
 export default function isAdmin ({ next, store }) {
-  if (!store.getters.isAdmin) {
+  if (!store.state.user.isAdmin) {
     return next({
       name: 'login',
     })

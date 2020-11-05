@@ -71,7 +71,7 @@
         {
           icon: 'mdi-view-dashboard',
           title: 'mainPage',
-          to: '/main',
+          to: '/home',
         },
         {
           to: '/pharmacy',
@@ -88,7 +88,7 @@
         {
           icon: 'mdi-view-dashboard',
           title: 'mainPage',
-          to: '/main',
+          to: '/home',
         },
         {
           to: '/pharmacy',
@@ -117,7 +117,7 @@
 
     computed: {
       ...mapState(['barColor', 'barImage']),
-      ...mapGetters(['user']),
+      ...mapGetters(['currentUser']),
       drawer: {
         get () {
           return this.$store.state.drawer
@@ -127,7 +127,7 @@
         },
       },
       computedItems () {
-        return this.$store.getters.isAdmin
+        return this.$store.state.user.isAdmin
           ? this.itemsAdmin.map(this.mapItem)
           : this.items.map(this.mapItem)
       },
@@ -135,7 +135,7 @@
         return {
           avatar: true,
           group: '',
-          title: this.user.name,
+          title: 'fdf',
           children: [
             {
               href: '',

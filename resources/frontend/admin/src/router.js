@@ -48,8 +48,8 @@ const router = new Router({
       },
       children: [
         {
-          name: 'Dashboard',
-          path: 'main',
+          name: 'home',
+          path: 'home',
           component: () => import('@/views/dashboard/Dashboard'),
         },
         {
