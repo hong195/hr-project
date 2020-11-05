@@ -1,9 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
+import store from './store'
+import auth from './middleware/auth'
+// import hasPermission from './middleware/hasPermission'
+import middlewarePipeline from './middleware/middlewarePipeline'
+import isAdmin from './middleware/isAdmin'
+import isSubscriber from './middleware/isSubscriber'
 Vue.use(Router)
-
-export default new Router({
+const router = new Router({
   mode: 'hash',
   base: process.env.BASE_URL,
   routes: [
@@ -17,7 +21,7 @@ export default new Router({
           component: () => import('@/views/pages/Lock'),
         },
         {
-          name: 'Login',
+          name: 'login',
           path: 'login',
           component: () => import('@/views/pages/Login'),
         },
@@ -36,17 +40,37 @@ export default new Router({
     {
       path: '/',
       component: () => import('@/views/dashboard/Index'),
+      name: 'App',
+      meta: {
+        middleware: [
+          auth,
+        ],
+      },
       children: [
-        // Dashboard
         {
           name: 'Dashboard',
-          path: '',
+          path: 'main',
           component: () => import('@/views/dashboard/Dashboard'),
         },
         {
           name: 'pharmacy',
           path: 'pharmacy',
           component: () => import('@/views/dashboard/pages/Pharmacy'),
+          meta: {
+            middleware: [
+              isAdmin,
+            ],
+          },
+        },
+        {
+          name: 'staff',
+          path: 'staff',
+          component: () => import('@/views/dashboard/pages/Staff'),
+          meta: {
+            middleware: [
+              isAdmin,
+            ],
+          },
         },
         {
           name: 'addMember',
@@ -58,6 +82,11 @@ export default new Router({
           name: 'RTL',
           path: 'pages/rtl',
           component: () => import('@/views/dashboard/pages/Rtl'),
+          meta: {
+            middleware: [
+              isSubscriber,
+            ],
+          },
         },
         {
           name: 'User Profile',
@@ -179,3 +208,21 @@ export default new Router({
     },
   ],
 })
+
+router.beforeEach((to, from, next) => {
+  if (!to.meta.middleware) {
+    return next()
+  }
+  const middleware = to.meta.middleware
+  const context = {
+    to,
+    from,
+    next,
+    store,
+  }
+  return middleware[0]({
+    ...context,
+    next: middlewarePipeline(context, middleware, 1),
+  })
+})
+export default router

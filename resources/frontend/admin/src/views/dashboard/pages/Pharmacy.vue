@@ -1,137 +1,96 @@
 <template>
-  <v-container
-    id="regular-forms"
-    fluid
-    tag="section"
-  >
-    <base-v-component
-      heading="Forms"
-      link="components/forms"
-    />
+  <v-container id="extended-tables" fluid tag="section">
     <base-material-card
       color="success"
-      icon="mdi-email"
-      title="Stacked Form"
-      class="px-5 py-3 mb-10"
+      icon="mdi-clipboard-text"
+      inline
+      title="Список аптек с рейтингом аптек"
+      class="px-5 py-3 my-6"
     >
-      <form-base
-        v-model="val"
-        :schema="schema"
-        :scope="'test-form'"
-        :on-submit="submit"
-      />
+      <v-simple-table>
+        <thead>
+          <tr>
+            <th>Номер аптеки</th>
+            <th>Количество сотрудников</th>
+            <th>Рейтинг аптеки</th>
+            <th class="text-right">
+              **Действия
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr v-for="(item, i) in pharmacies" :key="i">
+            <td v-text="item.number" />
+            <td v-text="item.staffNumber" />
+            <td v-text="item.rating" />
+            <td class="text-right">
+              <v-btn
+                v-for="(action, i) in actions"
+                :key="i"
+                v-can="action.can"
+                class="px-2 ml-1"
+                :color="action.color"
+                min-width="0"
+                small
+              >
+                <v-icon small v-text="action.icon" />
+              </v-btn>
+            </td>
+          </tr>
+        </tbody>
+      </v-simple-table>
     </base-material-card>
+    <div class="py-3" />
   </v-container>
 </template>
 
 <script>
-  import FormBase from '@/components/Form/FormBase'
-
+  import { mapGetters } from 'vuex'
+  import can from '@/plugins/directives/v-can'
   export default {
-    name: 'DashboardFormsRegularForms',
-    components: {
-      FormBase,
+    name: 'DashboardExtendedTables',
+    directives: {
+      can: can,
+    },
+    computed: {
+      ...mapGetters(['user']),
     },
     data: () => ({
-      checkbox: true,
-      items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
-      radioGroup: 1,
-      switch1: true,
-      zoom: 0,
-      val: '',
-      files: 'null',
-      schema: [
+      actions: [
         {
-          component: 'text',
-          name: 'name',
-          type: 'text',
-          rule: 'required',
-          label: 'Имя',
-          value: '',
-          attributes: {
-            dense: true,
-            class: 'text-field',
-            'open-on-clear': true,
-          },
+          color: 'info',
+          icon: 'mdi-eye',
+          can: 'view',
         },
         {
-          component: 'text',
-          name: 'familyName',
-          type: 'text',
-          rule: 'required',
-          label: 'Фамиля',
-          value: '',
-          attributes: {
-            dense: true,
-            class: 'text-field',
-            'open-on-clear': true,
-          },
+          color: 'success',
+          icon: 'mdi-pencil',
+          can: 'edit',
         },
         {
-          component: 'text',
-          name: 'middleName',
-          type: 'text',
-          rule: 'required',
-          label: 'Отчество',
-          value: '',
-          attributes: {
-            dense: true,
-            class: 'text-field',
-            'open-on-clear': true,
-          },
+          color: 'error',
+          icon: 'mdi-close',
+          can: 'delete',
+        },
+      ],
+      pharmacies: [
+        {
+          number: 1,
+          staffNumber: 3355,
+          rating: 7,
         },
         {
-          component: 'select',
-          label: 'Пол сотрудника',
-          attributes: {
-            outlined: true,
-            class: 'select-field',
-            'open-on-clear': true,
-          },
-          name: 'gender',
-          rule: 'required',
-          value: '',
-          options: [
-            {
-              id: '1',
-              name: 'Мужской',
-            },
-            {
-              id: '2',
-              name: 'Женский',
-            },
-          ],
+          number: 1,
+          staffNumber: 5767,
+          rating: 9,
         },
         {
-          component: 'text',
-          name: 'role',
-          type: 'text',
-          rule: 'required',
-          label: 'Роль Сотрудника',
-          value: '',
-          attributes: {
-            dense: true,
-            class: 'text-field',
-            'open-on-clear': true,
-          },
+          number: 1,
+          staffNumber: 1212,
+          rating: 10,
         },
       ],
     }),
-
-    methods: {
-      zoomOut () {
-        this.zoom = (this.zoom - 10) || 0
-      },
-      zoomIn () {
-        this.zoom = (this.zoom + 10) || 100
-      },
-      submit ({ resolve }) {
-        this.axios.post('http://media-manager.loc/test', this.val)
-        resolve()
-      },
-      test ($event) {
-        console.log(this.files)
-      },
-    },
   }
 </script>

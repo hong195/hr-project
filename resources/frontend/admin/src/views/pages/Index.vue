@@ -3,7 +3,7 @@
     <pages-core-app-bar />
 
     <pages-core-view />
-
+    <base-snackbar-message />
     <pages-core-footer />
   </v-app>
 </template>

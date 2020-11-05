@@ -1,9 +1,5 @@
 <template>
-  <v-container
-    id="login"
-    class="fill-height"
-    tag="section"
-  >
+  <v-container id="login" class="fill-height" tag="section">
     <v-row justify="center">
       <v-slide-y-transition appear>
         <base-material-card
@@ -19,7 +15,7 @@
                 Login
               </h1>
 
-              <v-btn
+              <!-- <v-btn
                 v-for="(social, i) in socials"
                 :key="i"
                 :href="social.href"
@@ -28,46 +24,47 @@
                 rel="noopener"
                 target="_blank"
               >
-                <v-icon
-                  v-text="social.icon"
-                />
-              </v-btn>
+                <v-icon v-text="social.icon" />
+              </v-btn> -->
             </div>
           </template>
 
           <v-card-text class="text-center">
-            <div class="text-center grey--text body-1 font-weight-light">
+            <!-- <div class="text-center grey--text body-1 font-weight-light">
               Or Be Classical
-            </div>
+            </div> -->
 
             <v-text-field
+              v-model="username"
               color="secondary"
-              label="First Name..."
+              label="Username"
               prepend-icon="mdi-face"
               class="mt-10"
             />
 
-            <v-text-field
+            <!-- <v-text-field
               color="secondary"
               label="Email..."
               prepend-icon="mdi-email"
-            />
+            /> -->
 
             <v-text-field
+              v-model="password"
               class="mb-8"
               color="secondary"
               label="Password..."
               prepend-icon="mdi-lock-outline"
             />
 
-            <pages-btn
+            <v-btn
               large
               color=""
               depressed
               class="v-btn--text success--text"
+              @click="login(username, password)"
             >
               Let's Go
-            </pages-btn>
+            </v-btn>
           </v-card-text>
         </base-material-card>
       </v-slide-y-transition>
@@ -76,6 +73,7 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
   export default {
     name: 'PagesLogin',
 
@@ -84,6 +82,8 @@
     },
 
     data: () => ({
+      username: '',
+      password: '',
       socials: [
         {
           href: '#',
@@ -99,8 +99,10 @@
         },
       ],
     }),
+    methods: {
+      ...mapActions(['login']),
+    },
   }
 </script>
 <style lang="scss">
-
 </style>

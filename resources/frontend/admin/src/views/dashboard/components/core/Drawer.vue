@@ -54,7 +54,7 @@
 
 <script>
   // Utilities
-  import { mapState } from 'vuex'
+  import { mapState, mapGetters } from 'vuex'
 
   export default {
     name: 'DashboardCoreDrawer',
@@ -71,7 +71,7 @@
         {
           icon: 'mdi-view-dashboard',
           title: 'mainPage',
-          to: '/',
+          to: '/main',
         },
         {
           to: '/pharmacy',
@@ -83,16 +83,41 @@
           icon: 'mdi-view-comfy',
           title: 'staff',
         },
+      ],
+      itemsAdmin: [
         {
-          to: '/add-member',
-          icon: 'mdi-clipboard-outline',
-          title: 'addMember',
+          icon: 'mdi-view-dashboard',
+          title: 'mainPage',
+          to: '/main',
+        },
+        {
+          to: '/pharmacy',
+          icon: 'mdi-image',
+          title: 'pharmacy',
+        },
+        {
+          icon: 'mdi-account-multiple',
+          title: 'staff',
+          group: '',
+          children: [
+            {
+              to: 'staff',
+              avatar: 'mdi-view-comfy',
+              title: 'staff',
+            },
+            {
+              to: 'add-member',
+              avatar: 'mdi-clipboard-outline',
+              title: 'addMember',
+            },
+          ],
         },
       ],
     }),
 
     computed: {
       ...mapState(['barColor', 'barImage']),
+      ...mapGetters(['user']),
       drawer: {
         get () {
           return this.$store.state.drawer
@@ -102,13 +127,15 @@
         },
       },
       computedItems () {
-        return this.items.map(this.mapItem)
+        return this.$store.getters.isAdmin
+          ? this.itemsAdmin.map(this.mapItem)
+          : this.items.map(this.mapItem)
       },
       profile () {
         return {
           avatar: true,
           group: '',
-          title: this.$t('avatar'),
+          title: this.user.name,
           children: [
             {
               href: '',

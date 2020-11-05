@@ -4,7 +4,11 @@
     :prepend-icon="item.icon"
     :sub-group="subGroup"
     append-icon="mdi-menu-down"
-    :color="barColor !== 'rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.7)' ? 'white' : 'grey darken-1'"
+    :color="
+      barColor !== 'rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.7)'
+        ? 'white'
+        : 'grey darken-1'
+    "
   >
     <template v-slot:activator>
       <v-list-item-icon
@@ -18,7 +22,9 @@
         class="align-self-center"
         color="grey"
       >
-        <v-img src="https://demos.creative-tim.com/material-dashboard-pro/assets/img/faces/avatar.jpg" />
+        <v-img
+          src="https://demos.creative-tim.com/material-dashboard-pro/assets/img/faces/avatar.jpg"
+        />
       </v-list-item-avatar>
 
       <v-list-item-content>
@@ -33,12 +39,7 @@
         :item="child"
       />
 
-      <base-item
-        v-else
-        :key="`item-${i}`"
-        :item="child"
-        text
-      />
+      <base-item v-else :key="`item-${i}`" :item="child" text />
     </template>
   </v-list-group>
 </template>
@@ -76,7 +77,7 @@
     computed: {
       ...mapState(['barColor']),
       children () {
-        return this.item.children.map(item => ({
+        return this.item.children.map((item) => ({
           ...item,
           to: !item.to ? undefined : `${this.item.group}/${item.to}`,
         }))
@@ -86,7 +87,7 @@
 
         let text = ''
 
-        this.item.title.split(' ').forEach(val => {
+        this.item.title.split(' ').forEach((val) => {
           text += val.substring(0, 1)
         })
 
@@ -100,8 +101,8 @@
     methods: {
       genGroup (children) {
         return children
-          .filter(item => item.to)
-          .map(item => {
+          .filter((item) => item.to)
+          .map((item) => {
             const parent = item.group || this.item.group
             let group = `${parent}/${kebabCase(item.to)}`
 
@@ -110,7 +111,8 @@
             }
 
             return group
-          }).join('|')
+          })
+          .join('|')
       },
     },
   }

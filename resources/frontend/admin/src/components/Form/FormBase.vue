@@ -1,12 +1,6 @@
 <template>
-  <validation-observer
-    ref="obs"
-    v-slot="{ handleSubmit }"
-  >
-    <v-form
-      :data-vv-scope="scope"
-      @submit.prevent="handleSubmit(handle)"
-    >
+  <validation-observer ref="obs" v-slot="{ handleSubmit }">
+    <v-form :data-vv-scope="scope" @submit.prevent="handleSubmit(handle)">
       <v-row>
         <v-col
           v-for="(field, index) in schema"
@@ -27,14 +21,8 @@
           />
         </v-col>
       </v-row>
-      <slot
-        :loading="loading"
-        name="actions"
-      >
-        <v-card-actions
-          align="center"
-          class="pa-0 py-3"
-        >
+      <slot :loading="loading" name="actions">
+        <v-card-actions align="center" class="pa-0 py-3">
           <v-btn
             :loading="loading"
             color="success"
@@ -46,7 +34,7 @@
             {{ buttonText }}
           </v-btn>
           <v-btn @click="reset">
-            Reset
+            сброс
           </v-btn>
         </v-card-actions>
       </slot>
@@ -118,14 +106,14 @@
       },
       fieldsValue () {
         const values = {}
-        this.schema.forEach(field => {
+        this.schema.forEach((field) => {
           values[field.name] = field.value
         })
         return values
       },
     },
     created () {
-      this.schema.forEach(field => {
+      this.schema.forEach((field) => {
         if (!field.value) {
           this.$set(field, 'value', null)
         }
@@ -133,7 +121,7 @@
     },
     methods: {
       getFieldByName (fieldName) {
-        return Object.values(this.schema).find(el => el.name === fieldName)
+        return Object.values(this.schema).find((el) => el.name === fieldName)
       },
       updateFieldValue (fieldData) {
         this.setFieldValue(fieldData)
@@ -144,15 +132,15 @@
         field.value = value
       },
       async reset () {
-        this.schema.forEach(field => this.setFieldValue({ name: field.name, value: null }))
+        this.schema.forEach((field) =>
+          this.setFieldValue({ name: field.name, value: null })
+        )
         requestAnimationFrame(() => {
           this.$refs.obs.reset()
           this.$emit('input', this.fieldsValue)
         })
       },
-      setSchemaValues () {
-
-      },
+      setSchemaValues () {},
     },
   }
 </script>
