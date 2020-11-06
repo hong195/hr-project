@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Forms\PharmacyForm;
 use App\Http\Requests\PharmacyRequest;
 use App\Http\Resources\PharmacyResource;
 use App\Models\Pharmacy;
@@ -26,10 +27,11 @@ class PharmacyController extends Controller
     }
 
 
-    public function create()
+    public function create(PharmacyForm $form)
     {
-        // Todo Make pharmacy form
+        return response()->json($form->buildForm());
     }
+
 
     public function store(PharmacyRequest $pharmacyRequest)
     {

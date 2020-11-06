@@ -5,7 +5,7 @@
         <v-col
           v-for="(field, index) in schema"
           :key="index"
-          :cols="field.cols || 12"
+          :md="field.attributes.cols || 12"
         >
           <component
             :is="`${field.component}-field`"
@@ -51,7 +51,7 @@
   import TextareaField from './Fields/TextareaField'
   import TreeselectField from './Fields/TreeselectField'
   import FileField from './Fields/FileField'
-  import BirthdayField from './Fields/BirthdayField'
+  import DateField from './Fields/DateField'
   import FormActionMixin from '@/components/Form/Mixins/FormActionsMixin'
 
   export default {
@@ -65,7 +65,7 @@
       FileField,
       TreeselectField,
       ValidationObserver,
-      BirthdayField,
+      DateField,
     },
     mixins: [FormActionMixin],
     props: {

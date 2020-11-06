@@ -91,9 +91,21 @@
           to: '/home',
         },
         {
-          to: '/pharmacy',
-          icon: 'mdi-image',
+          icon: 'mdi-account-multiple',
           title: 'pharmacy',
+          group: '',
+          children: [
+            {
+              to: 'pharmacy',
+              avatar: 'mdi-view-comfy',
+              title: 'pharmacy',
+            },
+            {
+              to: 'create-pharmacy',
+              avatar: 'mdi-clipboard-outline',
+              title: 'createPharmacy',
+            },
+          ],
         },
         {
           icon: 'mdi-account-multiple',
@@ -106,9 +118,9 @@
               title: 'staff',
             },
             {
-              to: 'add-member',
+              to: 'create-staff',
               avatar: 'mdi-clipboard-outline',
-              title: 'addMember',
+              title: 'createStaff',
             },
           ],
         },

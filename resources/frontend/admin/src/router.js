@@ -63,6 +63,11 @@ const router = new Router({
           },
         },
         {
+          name: 'createPharmacy',
+          path: 'create-pharmacy',
+          component: () => import('@/views/dashboard/pages/create/Pharmacy'),
+        },
+        {
           name: 'staff',
           path: 'staff',
           component: () => import('@/views/dashboard/pages/Staff'),
@@ -73,9 +78,9 @@ const router = new Router({
           },
         },
         {
-          name: 'addMember',
-          path: 'add-member',
-          component: () => import('@/views/dashboard/pages/AddMember'),
+          name: 'createStaff',
+          path: 'create-staff',
+          component: () => import('@/views/dashboard/pages/create/Staff'),
         },
         // Pages
         {

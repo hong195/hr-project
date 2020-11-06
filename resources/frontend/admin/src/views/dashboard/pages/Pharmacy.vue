@@ -10,9 +10,9 @@
       <v-simple-table>
         <thead>
           <tr>
-            <th>Номер аптеки</th>
+            <th>Название аптеки</th>
             <th>Количество сотрудников</th>
-            <th>Рейтинг аптеки</th>
+            <th>Адресс аптеки</th>
             <th class="text-right">
               **Действия
             </th>
@@ -21,9 +21,15 @@
 
         <tbody>
           <tr v-for="(item, i) in pharmacies" :key="i">
-            <td v-text="item.number" />
-            <td v-text="item.staffNumber" />
-            <td v-text="item.rating" />
+            <td v-text="item.name" />
+            <td v-text="item.users_count" />
+            <td>
+              <a :href="`http://www.google.com/maps/place/${item.coordinates[1]},${item.coordinates[0]}`"
+                 target="_blank"
+                 v-text="item.address"
+              />
+            </td>
+
             <td class="text-right">
               <v-btn
                 v-for="(action, i) in actions"
@@ -92,5 +98,9 @@
         },
       ],
     }),
+    async mounted () {
+      const response = await this.$http.get('pharmacies')
+      this.pharmacies = response.data.data
+    },
   }
 </script>
