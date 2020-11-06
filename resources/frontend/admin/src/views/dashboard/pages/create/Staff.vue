@@ -40,7 +40,7 @@
       schema: [
         {
           component: 'text',
-          name: 'name',
+          name: 'first_name',
           type: 'text',
           rule: 'required',
           label: 'Имя',
@@ -53,7 +53,7 @@
         },
         {
           component: 'text',
-          name: 'familyName',
+          name: 'last_name',
           type: 'text',
           rule: 'required',
           label: 'Фамиля',
@@ -66,7 +66,7 @@
         },
         {
           component: 'text',
-          name: 'middleName',
+          name: 'patronymic',
           type: 'text',
           rule: 'required',
           label: 'Отчество',
@@ -114,13 +114,13 @@
           ],
         },
         {
-          component: 'text',
+          component: 'select',
           name: 'role',
-          type: 'text',
           rule: 'required',
           label: 'Роль Сотрудника',
           cols: '6',
           value: '',
+          options: [],
           attributes: {
             outlined: true,
             class: 'text-field',
@@ -130,23 +130,32 @@
       ],
     }),
     async mounted () {
+      // this.fetchRoles()
       const response = await this.$http.get('create/user')
       this.schema = response.data.fields
+
+    // 'pharmacy_id' => ['exists:pharmacies,id'],
+    //   'first_name' => ['required', 'alpha'],
+    //   'last_name' => ['required', 'alpha'],
+    //   'patronymic' => ['required', 'alpha'],
+    //   'email' => ['required', 'email', 'unique:users,email'],
+    //   'password' => ['required', 'min:6', 'alpha_dash'],
+    //   'role' => ['required', 'exists:roles,id'],
+    //   'meta.gender' => ['nullable'],
+    //   'meta.birthday' => ['date', 'nullable'],
     },
 
     methods: {
-      zoomOut () {
-        this.zoom = (this.zoom - 10) || 0
-      },
-      zoomIn () {
-        this.zoom = (this.zoom + 10) || 100
+      fetchRoles () {
+        this.$http.get('roles')
+          .then(({ data }) => {
+            const roles = this.schema.find((el) => el.name === 'role')
+            roles.options = data.data
+          })
       },
       submit ({ resolve }) {
         this.axios.post('http://media-manager.loc/test', this.val)
         resolve()
-      },
-      test ($event) {
-        console.log(this.files)
       },
     },
   }

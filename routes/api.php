@@ -28,6 +28,8 @@ Route::apiResources([
     'checks' => CheckController::class,
 ]);
 
+Route::get('/roles', 'App\Http\Controllers\RoleController@index');
+
 Route::post('user-rating', [UserRatingController::class, 'show']);
 //Route::get('user/create', [UserController::class, 'create']);
 Route::get('create/user', 'App\Http\Controllers\UserController@create');
