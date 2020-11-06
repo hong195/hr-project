@@ -19,8 +19,8 @@ export default {
       localStorage.setItem('token', payload.access_token)
     }
 
-    // if (payload.user.role && ['admin', 'Админ'].includes(payload.user.role.name)) {
+    if (payload.user.role && ['Admin', 'Админ'].includes(payload.user.role.name)) {
       state.isAdmin = true
-    // }
+    }
   },
 }

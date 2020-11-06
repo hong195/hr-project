@@ -21,6 +21,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'meta' => $this->meta,
             'pharmacy' => new PharmacyResource($this->whenLoaded('pharmacy')),
+            'role' => RoleResource::make(($this->roles)->first()),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
