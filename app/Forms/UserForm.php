@@ -26,7 +26,7 @@ class UserForm extends FormBase\FormBase
             ->addField('password', 'password', 'Пароль', $attributes)
             ->addField('select', 'role', 'Роль', $this->getUserRoles(), $attributes)
             ->addField('select', 'meta.gender', 'Пол', $options, $attributes)
-            ->addField('date', 'meta.birthday', 'День рождения', $options, $attributes);
+            ->addField('date', 'meta.birthday', 'День рождения', $attributes);
     }
 
     public function getPharmacies()

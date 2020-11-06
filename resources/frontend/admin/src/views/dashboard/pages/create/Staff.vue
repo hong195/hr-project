@@ -154,7 +154,8 @@
           })
       },
       submit ({ resolve }) {
-        this.axios.post('http://media-manager.loc/test', this.val)
+        console.log(this.val)
+        this.axios.post('users', this.val)
         resolve()
       },
     },
