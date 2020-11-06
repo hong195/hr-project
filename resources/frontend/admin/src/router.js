@@ -51,6 +51,11 @@ const router = new Router({
           name: 'home',
           path: 'home',
           component: () => import('@/views/dashboard/Dashboard'),
+          meta: {
+            middleware: [
+              auth,
+            ],
+          },
         },
         {
           name: 'pharmacy',
@@ -66,6 +71,11 @@ const router = new Router({
           name: 'createPharmacy',
           path: 'create-pharmacy',
           component: () => import('@/views/dashboard/pages/create/Pharmacy'),
+          meta: {
+            middleware: [
+              auth,
+            ],
+          },
         },
         {
           name: 'staff',
@@ -81,6 +91,11 @@ const router = new Router({
           name: 'createStaff',
           path: 'create-staff',
           component: () => import('@/views/dashboard/pages/create/Staff'),
+          meta: {
+            middleware: [
+              auth,
+            ],
+          },
         },
         // Pages
         {

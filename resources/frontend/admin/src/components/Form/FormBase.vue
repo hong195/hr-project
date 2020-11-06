@@ -69,6 +69,10 @@
     },
     mixins: [FormActionMixin],
     props: {
+      loading: {
+        type: Boolean,
+        default: false,
+      },
       schema: {
         type: Array,
         default: () => [],
@@ -91,9 +95,6 @@
         },
       },
     },
-    data: () => ({
-      loading: false,
-    }),
     computed: {
       buttonText () {
         let text

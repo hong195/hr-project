@@ -1,5 +1,5 @@
 <template>
-  <v-snackbar v-model="message" :color="$store.getters.color" :timeout="2000">
+  <v-snackbar v-model="snackBar" :color="$store.getters.color" :timeout="3000">
     <base-material-alert
       :dismissible="true"
       :color="$store.getters.color"
@@ -16,6 +16,7 @@
     data () {
       return {
         timeoutCallback: null,
+        snackBar: false,
       }
     },
     computed: {
@@ -36,18 +37,20 @@
       },
     },
     watch: {
-      message (value) {
-        const self = this
-        if (this.timeoutCallback) {
-          clearTimeout(self.timeoutCallback)
-        }
-        this.timeoutCallback = setTimeout(self.closeSnackbar(), 3000)
+      message () {
+        // const self = this
+        this.snackBar = true
+        // if (this.timeoutCallback) {
+        //   clearTimeout(self.timeoutCallback)
+        // }
+        // this.timeoutCallback = setTimeout(self.closeSnackbar(), 3000)
       },
     },
     methods: {
       closeSnackbar () {
-        this.$store.commit('message', '')
-        this.$store.commit('color', '')
+        this.snackBar = false
+        // this.$store.commit('message', '')
+        // this.$store.commit('color', '')
       },
     },
   }
