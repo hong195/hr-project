@@ -108,7 +108,8 @@
       fieldsValue () {
         const values = {}
         this.schema.forEach((field) => {
-          values[field.name] = field.value
+          const name = field.name.split('.')
+          this.assign(values, name, field.value)
         })
         return values
       },
@@ -121,6 +122,17 @@
       })
     },
     methods: {
+      assign (obj, keyPath, value) {
+        const lastKeyIndex = keyPath.length - 1
+        for (var i = 0; i < lastKeyIndex; ++i) {
+          const key = keyPath[i]
+          if (!(key in obj)) {
+            obj[key] = {}
+          }
+          obj = obj[key]
+        }
+        obj[keyPath[lastKeyIndex]] = value
+      },
       getFieldByName (fieldName) {
         return Object.values(this.schema).find((el) => el.name === fieldName)
       },
@@ -141,7 +153,6 @@
           this.$emit('input', this.fieldsValue)
         })
       },
-      setSchemaValues () {},
     },
   }
 </script>

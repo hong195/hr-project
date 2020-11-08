@@ -38,7 +38,6 @@ class UserRepository extends AbstractRepository implements UserRepositoryContrac
         return $this->model;
     }
 
-
     public function update(int $id, array $data)
     {
         $this->model = $this->findById($id);

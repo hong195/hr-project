@@ -39,7 +39,7 @@
       this.isLoading = true
       try {
         const response = await this.$http.get('create/user')
-        this.schema = response.data.fields
+        this.schema = response.data
       } catch (e) {
         this.$store.commit('errorMessage', e.data)
         console.log(e)

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Forms\UserForm;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
-use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryContract;
 use Illuminate\Http\Request;
 
@@ -26,7 +25,7 @@ class UserController extends Controller
 
     public function create(UserForm $form)
     {
-        return response()->json($form->buildForm());
+        return response()->json($form->get());
     }
 
     public function store(UserRequest $userRequest)
@@ -34,6 +33,13 @@ class UserController extends Controller
         $this->userRepository->create($userRequest->validated());
 
         return response()->json(['message' => 'User have been successfully created!'], 201);
+    }
+
+    public function edit(UserForm $form, $id)
+    {
+        $user = $this->userRepository->findByid($id);
+
+        return $form->fill($user)->getSchema();
     }
 
     public function show($id)

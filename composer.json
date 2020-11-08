@@ -6,6 +6,12 @@
         "framework",
         "laravel"
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/saodat1998/formbase-laravel-package.git"
+        }
+    ],
     "license": "MIT",
     "require": {
         "php": "^7.3",
@@ -17,7 +23,8 @@
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
         "spatie/laravel-permission": "^3.17",
-        "tymon/jwt-auth": "^1.0"
+        "tymon/jwt-auth": "^1.0",
+        "saodat/formbase": "v3.x-dev"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",
@@ -40,8 +47,7 @@
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/",
-            "Saodat\\FormBase\\": "packages/formbase/src/"
+            "Database\\Seeders\\": "database/seeders/"
         }
     },
     "autoload-dev": {

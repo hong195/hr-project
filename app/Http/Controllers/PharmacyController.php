@@ -26,12 +26,10 @@ class PharmacyController extends Controller
         return PharmacyResource::collection($this->pharmacyRepository->all());
     }
 
-
     public function create(PharmacyForm $form)
     {
-        return response()->json($form->buildForm());
+        return response()->json($form->get());
     }
-
 
     public function store(PharmacyRequest $pharmacyRequest)
     {
@@ -40,16 +38,16 @@ class PharmacyController extends Controller
         return response()->json(['message' => 'Pharmacy was successfully created!'], 201);
     }
 
-
     public function show($id)
     {
         return new PharmacyResource($this->pharmacyRepository->findById($id));
     }
 
-
-    public function edit(Pharmacy $pharmacy)
+    public function edit(PharmacyForm $pharmacyForm, int $id)
     {
-        // Todo Make pharmacy form
+        $pharmacy = $this->pharmacyRepository->findById($id);
+
+        return $pharmacyForm->fill($pharmacy)->getSchema();
     }
 
     public function update(PharmacyRequest $pharmacyRequest, $id)

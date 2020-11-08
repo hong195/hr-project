@@ -28,7 +28,15 @@
         type: String,
         default: 'text',
         validator: (type) => {
-          return ['text', 'password', 'email'].indexOf(type) !== -1
+          return [
+            'text',
+            'email',
+            'url',
+            'tel',
+            'search',
+            'password',
+            'hidden',
+            'number'].indexOf(type) !== -1
         },
       },
     },

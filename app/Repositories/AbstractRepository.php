@@ -31,10 +31,10 @@ abstract class AbstractRepository implements BaseEloquentRepositoryContract
     }
 
     /**
-     * @param int $id
+     * @param $id
      * @return mixed
      */
-    public function findById(int $id)
+    public function findById($id)
     {
         return $this->findBy('id', $id)->firstOrFail();
     }
@@ -49,7 +49,7 @@ abstract class AbstractRepository implements BaseEloquentRepositoryContract
         return $this->model->where($field, $value);
     }
 
-    public function delete(int $id)
+    public function delete($id)
     {
         $this->model->destroy($id);
     }

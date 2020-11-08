@@ -10,9 +10,9 @@ interface BaseEloquentRepositoryContract
 
     public function update(int $id, array $data);
 
-    public function delete(int $id);
+    public function delete($id);
 
-    public function findById(int $id);
+    public function findById($id);
 
     public function findBy(string $field, $value);
 

@@ -1,105 +1,116 @@
 <?php
+
 namespace App\Forms;
 
 use App\Models\Pharmacy;
-use Saodat\FormBase\Services\Contracts\FieldManager;
+use App\Models\User;
+use Saodat\FormBase\Contracts\FormBuilderInterface;
 use Spatie\Permission\Models\Role;
 
-class UserForm
+class UserForm extends AbstractForm
 {
     /**
-     * @var FieldManager
+     * @var string[]
      */
-    protected $fieldManager;
+    private $genderOptions = ["Мужской", "Женский"];
 
     /**
-     * PostForm constructor.
-     * @param FieldManager $fieldManager
+     * @var array
      */
-    public function __construct(FieldManager $fieldManager)
+    protected $defaultFieldsAttributes = ['outlined' => true, "cols" => 6];
+
+    public function __construct(FormBuilderInterface $formBuilder)
     {
-        $this->fieldManager = $fieldManager;
+        $formBuilder->setDefaultsFieldsAttributes($this->defaultFieldsAttributes);
+        parent::__construct($formBuilder);
     }
 
-    /**
-     * @return array
-     */
-    public function buildForm()
+    protected $fieldsDefinitions = [];
+
+    protected function buildForm()
     {
-        /**
-         * addField(type, name, label, options, validationRule, value, placeholder)
-         */
-        $options = ["Мужской", "Женский"];
-        $attributes = ['outlined'=>true, "cols"=>6, 'class'=> 'my-class'];
+        $this->formBuilder
+            ->add('select', 'pharmacy_id', 'Аптека',
+                [
+                    'validationRule' => 'required',
+                    'options' => $this->getPharmacies(),
+                ]
+            );
 
-        $this->fieldManager
-            ->addField('select', 'pharmacy_id', 'Аптека', $this->getPharmacies())
-            ->setAttributes($attributes)
-            ->setValidationRule('required')->get();
+        $this->formBuilder
+            ->add('text', 'first_name', 'Имя');
 
-        $this->fieldManager
-            ->addField('text', 'first_name', 'Имя')
-            ->setAttributes($attributes)
-            ->setValidationRule('required')->get();
+        $this->formBuilder
+            ->add('text', 'last_name', 'Фамилия');
 
-        $this->fieldManager
-            ->addField('text', 'last_name', 'Фамилия')
-            ->setAttributes($attributes)
-            ->setValidationRule('required')->get();
+        $this->formBuilder
+            ->add('text', 'patronymic', 'Отчество');
 
-        $this->fieldManager
-            ->addField('text', 'patronymic', 'Отчество')
-            ->setAttributes($attributes)
-            ->setValidationRule('required')->get();
+        $this->formBuilder
+            ->add('email', 'email', 'Электронная почта');
 
-        $this->fieldManager
-            ->addField('email', 'email', 'Электронная почта')
-            ->setAttributes($attributes)
-            ->setValidationRule('required|email')->get();
+        $this->formBuilder
+            ->add('password', 'password', 'Пароль');
 
-        $this->fieldManager
-            ->addField('password', 'password', 'Пароль')
-            ->setAttributes($attributes)
-            ->setValidationRule('required|min:6')->get();
+        $this->formBuilder
+            ->add('select', 'role', 'Роль', ['options' => $this->getUserRoles()]);
 
-        $this->fieldManager
-            ->addField('select', 'role', 'Роль', $this->getUserRoles())
-            ->setAttributes($attributes)
-            ->setValidationRule('required')->get();
+        $this->formBuilder
+            ->add('select', 'meta.gender', 'Пол', ['options' => $this->genderOptions]);
 
-        $this->fieldManager
-            ->addField('select', 'meta.gender', 'Пол', $options)
-            ->setAttributes($attributes)->get();
-
-        $this->fieldManager->addField('date', 'meta.birthday', 'День рождения')
-            ->setAttributes($attributes)->get();
-
-        return  $this->fieldManager->all();
-//            ->addField('text', 'last_name', 'Фамилия', $attributes)
-//            ->addField('text', 'patronymic', 'Отчество', $attributes)
-//            ->addField('email', 'email', 'Электронная почта', $attributes)
-//            ->addField('password', 'password', 'Пароль', $attributes)
-//            ->addField('select', 'role', 'Роль', $this->getUserRoles(), $attributes)
-//            ->addField('select', 'meta.gender', 'Пол', $options, $attributes)
-//            ->addField('date', 'meta.birthday', 'День рождения', $attributes);
+        $this->formBuilder
+            ->add('date', 'meta.birthday', 'День рождения');
     }
 
-    public function getPharmacies()
+    protected function getPharmacies()
     {
         $data = Pharmacy::all();
         $data = $data->map(function ($item) {
             return ['id' => $item->id, 'name' => $item->name];
         })->toArray();
+
         return $data;
     }
 
-    public function getUserRoles()
+    protected function getUserRoles()
     {
         $roles = Role::all();
         $roles = $roles->map(function ($role) {
             return ['id' => $role->id, 'name' => $role->name];
         })->toArray();
-       return $roles;
+
+        return $roles;
     }
 
+    public function fill(User $user)
+    {
+        $user = $user->load(['meta', 'pharmacy', 'roles']);
+
+        foreach ($this->formBuilder->getFields() as $field) {
+            $value = null;
+
+            //Todo make custom fill
+            if ($field->getName() === 'role') {
+                $value = $user->roles->first()->id;
+            }else if($field->getName() === 'pharmacy_id') {
+                $value = $user->pharmacy->id;
+            }else if($field->getName() === 'password') {
+                $value = $user->getAuthPassword();
+            }else if($field->getName() === 'meta.gender') {
+                $value = $user->meta;
+            }else if($field->getName() === 'meta.birthday') {
+                $value = $user->meta;
+            }else if($field->getName() === 'first_name') {
+                $value = $user->first_name;
+            }else if($field->getName() === 'patronymic') {
+                $value = $user->patronymic;
+            }else if($field->getName() === 'email') {
+                $value = $user->email;
+            }
+
+            $field->setValue($value);
+        }
+
+        return $this->formBuilder;
+    }
 }

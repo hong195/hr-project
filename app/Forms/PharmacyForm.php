@@ -1,20 +1,37 @@
 <?php
 namespace App\Forms;
 
-use Saodat\FormBase;
+use App\Models\Pharmacy;
 
-class PharmacyForm extends FormBase\FormBase
+class PharmacyForm extends AbstractForm
 {
-    public function buildForm()
+    protected function buildForm()
     {
-        /**
-         * addField(type, name, label, options, validationRule, value, placeholder)
-         */
-        $attributes = ['outlined'=>true, "cols"=>6, 'class'=> 'my-class'];
-        return $this
-            ->addField('text', 'name', 'Название', $attributes)
-            ->addField('text', 'address', 'Адрес', $attributes)
-            ->addField('text', 'coordinates', 'Локация', $attributes)
-            ->addField('number', 'order', 'Номер', $attributes);
+        //Todo coordinates fields
+        $this->formBuilder
+            ->add('text', 'name', 'Название компании', [
+                'validationRule' => 'required'
+            ]);
+
+        $this->formBuilder
+            ->add('text', 'address', 'Адрес');
+
+    }
+
+    public function fill(Pharmacy $pharmacy)
+    {
+        foreach ($this->formBuilder->getFields() as $field) {
+            $value = null;
+
+            if ('name' === $field->getName()) {
+                $value = $pharmacy->name;
+            }else if('address' === $field->getName()) {
+                $value = $pharmacy->address;
+            }
+
+            $field->setValue($value);
+        }
+
+        return $this->formBuilder;
     }
 }

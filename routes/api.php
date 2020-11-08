@@ -21,7 +21,7 @@ Route::group([
     Route::post('me', 'AuthController@me');
 });
 
-Route::apiResources([
+Route::resources([
     'users' => UserController::class,
     'pharmacies' => PharmacyController::class,
     'check-attributes' => CheckAttributeController::class,

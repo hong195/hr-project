@@ -167,7 +167,7 @@ return [
          */
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
-        \Saodat\FormBase\Providers\FormBaseServiceProvider::class,
+        Saodat\FormBase\FormBaseServiceProvider::class,
         /*
          * Application Service Providers...
          */
