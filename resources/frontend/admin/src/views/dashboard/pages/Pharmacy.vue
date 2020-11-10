@@ -20,28 +20,21 @@
         </thead>
 
         <tbody>
-          <tr v-for="(item, i) in pharmacies" :key="i">
+          <tr v-for="(item, i) in items" :key="i">
             <td v-text="item.name" />
             <td v-text="item.users_count" />
-            <td>
+            <td v-if="item.coordinates">
               <a :href="`http://www.google.com/maps/place/${item.coordinates[1]},${item.coordinates[0]}`"
                  target="_blank"
                  v-text="item.address"
               />
             </td>
+            <td v-else>
+              {{ item.address }}
+            </td>
 
             <td class="text-right">
-              <v-btn
-                v-for="(action, i) in actions"
-                :key="i"
-                v-can="action.can"
-                class="px-2 ml-1"
-                :color="action.color"
-                min-width="0"
-                small
-              >
-                <v-icon small v-text="action.icon" />
-              </v-btn>
+              <actions :item="item" @actionDeletedResponse="actionDeletedResponse" />
             </td>
           </tr>
         </tbody>
@@ -52,55 +45,28 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
   import can from '@/plugins/directives/v-can'
+  import Actions from '@/views/dashboard/components/Actions/PharmacyActions'
   export default {
-    name: 'DashboardExtendedTables',
+    name: 'Pharmacy',
+    components: { Actions },
     directives: {
       can: can,
     },
-    computed: {
-      ...mapGetters(['user']),
-    },
     data: () => ({
-      actions: [
-        {
-          color: 'info',
-          icon: 'mdi-eye',
-          can: 'view',
-        },
-        {
-          color: 'success',
-          icon: 'mdi-pencil',
-          can: 'edit',
-        },
-        {
-          color: 'error',
-          icon: 'mdi-close',
-          can: 'delete',
-        },
-      ],
-      pharmacies: [
-        {
-          number: 1,
-          staffNumber: 3355,
-          rating: 7,
-        },
-        {
-          number: 1,
-          staffNumber: 5767,
-          rating: 9,
-        },
-        {
-          number: 1,
-          staffNumber: 1212,
-          rating: 10,
-        },
-      ],
+      items: [],
     }),
     async mounted () {
       const response = await this.$http.get('pharmacies')
-      this.pharmacies = response.data.data
+      this.items = response.data.data
+    },
+    methods: {
+      actionDeletedResponse (val) {
+        this.items.splice(
+          this.items.findIndex(({ id }) => id === val),
+          1,
+        )
+      },
     },
   }
 </script>

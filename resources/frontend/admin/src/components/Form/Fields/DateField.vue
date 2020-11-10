@@ -9,12 +9,15 @@
           :rules="validationRule"
           :name="label"
         >
-          <v-select v-model="day" name="day" label="День"
-                    :items="days"
-                    :error-messages="errors"
-                    v-bind="attributes"
-                    item-text="name"
-                    item-value="id"
+          <v-select
+            v-model="day"
+            name="day"
+            label="День"
+            :items="days"
+            :error-messages="errors"
+            v-bind="attributes"
+            item-text="name"
+            item-value="id"
           />
         </validation-provider>
       </v-col>
@@ -25,12 +28,15 @@
           :rules="validationRule"
           :name="label"
         >
-          <v-select v-model="month" name="month" label="Месяц"
-                    :items="months"
-                    :error-messages="errors"
-                    v-bind="attributes"
-                    item-text="name"
-                    item-value="id"
+          <v-select
+            v-model="month"
+            name="month"
+            label="Месяц"
+            :items="months"
+            :error-messages="errors"
+            v-bind="attributes"
+            item-text="name"
+            item-value="id"
           />
         </validation-provider>
       </v-col>
@@ -41,12 +47,15 @@
           :rules="validationRule"
           :name="label"
         >
-          <v-select v-model="year" name="year" label="Год"
-                    :items="years"
-                    :error-messages="errors"
-                    v-bind="attributes"
-                    item-text="name"
-                    item-value="id"
+          <v-select
+            v-model="year"
+            name="year"
+            label="Год"
+            :items="years"
+            :error-messages="errors"
+            v-bind="attributes"
+            item-text="name"
+            item-value="id"
           />
         </validation-provider>
       </v-col>
@@ -54,11 +63,9 @@
   </div>
 </template>
 <script>
-  // import SelectField from './SelectField'
   import FieldMixin from '@/components/Form/Mixins/FieldMixin'
   export default {
     name: 'BirthdayField',
-    // components: { SelectField },
     mixins: [FieldMixin],
     data () {
       return {
@@ -68,10 +75,9 @@
       }
     },
     computed: {
-
       years () {
         const arr = []
-        for (let i = 1950; i <= 2004; i++) arr.push({ id: i, name: i })
+        for (let i = 1920; i <= 2030; i++) arr.push({ id: i, name: i })
         return arr
       },
       days () {
@@ -87,18 +93,18 @@
       },
       months () {
         return [
-          { id: '01', name: this.$t('january') },
-          { id: '02', name: this.$t('february') },
-          { id: '03', name: this.$t('march') },
-          { id: '04', name: this.$t('april') },
-          { id: '05', name: this.$t('may') },
-          { id: '06', name: this.$t('june') },
-          { id: '07', name: this.$t('july') },
-          { id: '08', name: this.$t('august') },
-          { id: '09', name: this.$t('september') },
-          { id: '10', name: this.$t('october') },
-          { id: '11', name: this.$t('november') },
-          { id: '12', name: this.$t('december') },
+          { id: '01', name: 'Январь' },
+          { id: '02', name: 'Февраль' },
+          { id: '03', name: 'Март' },
+          { id: '04', name: 'Апрел' },
+          { id: '05', name: 'Май' },
+          { id: '06', name: 'Июнь' },
+          { id: '07', name: 'Июль' },
+          { id: '08', name: 'Август' },
+          { id: '09', name: 'Сентябрь' },
+          { id: '10', name: 'Октябрь' },
+          { id: '11', name: 'Ноябрь' },
+          { id: '12', name: 'Декабрь' },
         ]
       },
     },
@@ -112,6 +118,16 @@
       day () {
         this.innerValue = this.day + '.' + this.month + '.' + this.year
       },
+    },
+    mounted () {
+      const self = this
+      setTimeout(function () {
+        if (self.value) {
+          self.day = self.value.slice(0, 2)
+          self.month = self.value.slice(3, 5)
+          self.year = parseInt(self.value.slice(6, 10))
+        }
+      }, 1000)
     },
   }
 </script>

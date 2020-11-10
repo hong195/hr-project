@@ -32,28 +32,55 @@ class UserForm extends AbstractForm
         $this->formBuilder
             ->add('select', 'pharmacy_id', 'Аптека',
                 [
+                    'attributes' => ['outlined' => true, "cols" => 12],
                     'validationRule' => 'required',
                     'options' => $this->getPharmacies(),
                 ]
             );
 
         $this->formBuilder
-            ->add('text', 'first_name', 'Имя');
+            ->add('text', 'first_name', 'Имя',
+                [
+                    'attributes' => ['outlined' => true, "cols" => 4],
+                    'validationRule' => 'required',
+                ]);
 
         $this->formBuilder
-            ->add('text', 'last_name', 'Фамилия');
+            ->add('text', 'last_name', 'Фамилия',
+                [
+                    'attributes' => ['outlined' => true, "cols" => 4],
+                    'validationRule' => 'required',
+                ]
+            );
 
         $this->formBuilder
-            ->add('text', 'patronymic', 'Отчество');
+            ->add('text', 'patronymic', 'Отчество',
+                [
+                    'attributes' => ['outlined' => true, "cols" => 4],
+                    'validationRule' => 'required',
+                ]
+            );
 
         $this->formBuilder
-            ->add('email', 'email', 'Электронная почта');
+            ->add('email', 'email', 'Электронная почта',
+                [
+                    'validationRule' => 'required|email',
+                ]
+            );
 
         $this->formBuilder
-            ->add('password', 'password', 'Пароль');
+            ->add('password', 'password', 'Пароль',
+                [
+                    'validationRule' => 'required|min:6',
+                ]
+            );
 
         $this->formBuilder
-            ->add('select', 'role', 'Роль', ['options' => $this->getUserRoles()]);
+            ->add('select', 'role', 'Роль',
+                [
+                    'options' => $this->getUserRoles(),
+                    'validationRule' => 'required',
+                ]);
 
         $this->formBuilder
             ->add('select', 'meta.gender', 'Пол', ['options' => $this->genderOptions]);
@@ -88,23 +115,28 @@ class UserForm extends AbstractForm
 
         foreach ($this->formBuilder->getFields() as $field) {
             $value = null;
+            $meta = $user->meta;
 
             //Todo make custom fill
             if ($field->getName() === 'role') {
                 $value = $user->roles->first()->id;
-            }else if($field->getName() === 'pharmacy_id') {
+            } else if ($field->getName() === 'pharmacy_id') {
                 $value = $user->pharmacy->id;
-            }else if($field->getName() === 'password') {
+            } else if ($field->getName() === 'password') {
                 $value = $user->getAuthPassword();
-            }else if($field->getName() === 'meta.gender') {
-                $value = $user->meta;
-            }else if($field->getName() === 'meta.birthday') {
-                $value = $user->meta;
-            }else if($field->getName() === 'first_name') {
+            } else if ($field->getName() === 'meta.gender') {
+                $key = array_search('gender', array_column( $meta->toArray(), 'name'));
+                $value = $meta[$key]->value;
+            } else if ($field->getName() === 'meta.birthday') {
+                $key = array_search('birthday', array_column( $meta->toArray(), 'name'));
+                $value = $meta[$key]->value;
+            } else if ($field->getName() === 'first_name') {
                 $value = $user->first_name;
-            }else if($field->getName() === 'patronymic') {
+            } else if ($field->getName() === 'last_name') {
+                $value = $user->last_name;
+            } else if ($field->getName() === 'patronymic') {
                 $value = $user->patronymic;
-            }else if($field->getName() === 'email') {
+            } else if ($field->getName() === 'email') {
                 $value = $user->email;
             }
 

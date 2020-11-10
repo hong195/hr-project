@@ -60,5 +60,8 @@
   "pharmacy": "Аптека",
   "staff": "Сотрудники",
   "createStaff": "Добавить сотрудника",
-  "createPharmacy": "Создать аптеку"
+  "createPharmacy": "Создать аптеку",
+    "gender": "Пол",
+    "birthday": "День рождение",
+    "edit_info": "Редактировать"
 }

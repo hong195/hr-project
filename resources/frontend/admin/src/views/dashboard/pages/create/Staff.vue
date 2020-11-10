@@ -8,12 +8,13 @@
     <base-material-card
       color="success"
       icon="mdi-account"
-      title="Добавить сотрудника"
+      :title="$route.query.edit ? $t('edit_info') : 'Добавить сотрудника'"
       class="px-5 py-3 mb-10"
     >
       <form-base
         v-model="val"
         :schema="schema"
+        :method="method"
         :loading="isLoading"
         :scope="'test-form'"
         :on-submit="submit"
@@ -34,24 +35,36 @@
       val: '',
       isLoading: false,
       schema: [],
+      method: 'post',
+      url: 'users',
     }),
     async mounted () {
-      this.isLoading = true
-      try {
-        const response = await this.$http.get('create/user')
-        this.schema = response.data
-      } catch (e) {
-        this.$store.commit('errorMessage', e.data)
-        console.log(e)
+      let url = 'users/create'
+      if (this.$route.query.edit) {
+        this.method = 'put'
+        this.url = `users/${this.$route.query.id}`
+        url = `users/${this.$route.query.id}/edit`
       }
-      this.isLoading = false
+      await this.createForm(url)
     },
     methods: {
+      async createForm (url) {
+        this.isLoading = true
+        try {
+          const response = await this.$http.get(url)
+          this.schema = response.data
+        } catch (e) {
+          this.$store.commit('errorMessage', e.data)
+          console.log(e)
+        }
+        this.isLoading = false
+      },
       async submit ({ resolve }) {
         this.isLoading = true
         try {
-          const response = await this.axios.post('users', this.val)
+          const response = await this.axios[this.method](this.url, this.val)
           this.$store.commit('successMessage', response.data.message)
+          this.$router.push({ name: 'staff' })
         } catch (e) {
           this.$store.commit('errorMessage', e)
           console.log(e)

@@ -8,12 +8,14 @@
     <base-material-card
       color="success"
       icon="mdi-account"
-      title="Добавить сотрудника"
+      :title="$route.query.edit ? $t('edit_info') : 'Создать аптеку'"
       class="px-5 py-3 mb-10"
     >
       <form-base
         v-model="val"
         :schema="schema"
+        :method="method"
+        :loading="isLoading"
         :scope="'test-form'"
         :on-submit="submit"
       />
@@ -25,38 +27,48 @@
   import FormBase from '@/components/Form/FormBase'
 
   export default {
-    name: 'DashboardFormsRegularForms',
+    name: 'CreatePharmacy',
     components: {
       FormBase,
     },
     data: () => ({
-      checkbox: true,
-      items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
-      radioGroup: 1,
-      switch1: true,
-      zoom: 0,
       val: '',
-      files: 'null',
+      isLoading: false,
       schema: [],
+      method: 'post',
+      url: 'pharmacies',
     }),
     async mounted () {
-      const response = await this.$http.get('create/pharmacy')
-      this.schema = response.data
+      let url = 'pharmacies/create'
+      if (this.$route.query.edit) {
+        this.method = 'put'
+        this.url = `pharmacies/${this.$route.query.id}`
+        url = `pharmacies/${this.$route.query.id}/edit`
+      }
+      await this.createForm(url)
     },
-
     methods: {
-      zoomOut () {
-        this.zoom = (this.zoom - 10) || 0
+      async createForm (url) {
+        this.isLoading = true
+        try {
+          const response = await this.$http.get(url)
+          this.schema = response.data
+        } catch (e) {
+          this.$store.commit('errorMessage', e.data)
+        }
+        this.isLoading = false
       },
-      zoomIn () {
-        this.zoom = (this.zoom + 10) || 100
-      },
-      submit ({ resolve }) {
-        this.axios.post('http://media-manager.loc/test', this.val)
+      async submit ({ resolve }) {
+        this.isLoading = true
+        try {
+          const response = await this.axios[this.method](this.url, this.val)
+          this.$store.commit('successMessage', response.data.message)
+          this.$router.push({ name: 'pharmacy' })
+        } catch (e) {
+          this.$store.commit('errorMessage', e)
+        }
+        this.isLoading = false
         resolve()
-      },
-      test ($event) {
-        console.log(this.files)
       },
     },
   }

@@ -1,18 +1,11 @@
 <template>
   <v-container id="data-tables" tag="section">
-    <base-v-component heading="Data Tables" link="components/data-tables" />
     <base-material-card
       color="indigo"
-      icon="mdi-vuetify"
+      icon="mdi-account-multiple"
       inline
-      class="px-5 py-3"
+      class="px-5 py-3 mt-6"
     >
-      <template v-slot:after-heading>
-        <div class="display-2 font-weight-light">
-          DataTables
-        </div>
-      </template>
-
       <v-text-field
         v-model="search"
         append-icon="mdi-magnify"
@@ -34,17 +27,7 @@
         multi-sort
       >
         <template v-slot:item.actions="{ item }">
-          <v-btn
-            v-for="(action, i) in actions"
-            :key="i"
-            class="px-2 ml-1"
-            :color="action.color"
-            min-width="0"
-            small
-            @click="actionMethod(action.method, item)"
-          >
-            <v-icon small v-text="action.icon" />
-          </v-btn>
+          <actions :item="item" @actionDeletedResponse="actionDeletedResponse" />
         </template>
       </v-data-table>
     </base-material-card>
@@ -52,52 +35,42 @@
 </template>
 
 <script>
+  import Actions from '@/views/dashboard/components/Actions/StaffActions'
   export default {
-    name: 'DashboardDataTables',
+    name: 'Staff',
+    components: { Actions },
     data () {
       return {
-        actions: [
-          {
-            color: 'info',
-            icon: 'mdi-eye',
-            can: 'view',
-            method: 'viewItem',
-          },
-          {
-            color: 'success',
-            icon: 'mdi-pencil',
-            can: 'edit',
-            method: 'editItem',
-          },
-          {
-            color: 'error',
-            icon: 'mdi-close',
-            can: 'delete',
-            method: 'deleteItem',
-          },
-        ],
         headers: [
           {
-            text: 'First Name',
+            text: 'Имя',
             value: 'first_name',
           },
           {
-            text: 'Last Name',
+            text: 'Фамилия',
             value: 'last_name',
           },
           {
-            text: 'Name',
+            text: 'Аптека',
+            value: 'pharmacy',
+          },
+          {
+            text: 'Роль',
+            value: 'role.name',
+          },
+          {
+            text: 'Электронная почта',
             value: 'email',
           },
           {
             sortable: false,
-            text: 'Actions',
+            text: 'Действия',
             value: 'actions',
             align: 'right',
           },
         ],
         items: [],
-        search: undefined,
+        search: null,
       }
     },
     async mounted () {
@@ -105,32 +78,11 @@
       this.items = response.data.data
     },
     methods: {
-      actionMethod (funcName, item) {
-        this[funcName](item)
-      },
-      editItem (item) {
-        this.$router.push({
-          name: 'post_edit',
-          query: { edit: true, id: item.id },
-        })
-      },
-      viewItem (item) {
-        console.log(item)
-        this.activeItem = item
-        this.dialog = true
-      },
-      deleteItem (item) {
-        this.$http
-          .delete(`users/${item.id}`)
-          .then(() => {
-            this.items.splice(
-              this.items.findIndex(({ id }) => id === item.id),
-              1,
-            )
-          })
-          .catch(error => {
-            console.error(error)
-          })
+      actionDeletedResponse (val) {
+        this.items.splice(
+          this.items.findIndex(({ id }) => id === val),
+          1,
+        )
       },
     },
   }

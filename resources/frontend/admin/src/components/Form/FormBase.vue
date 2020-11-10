@@ -27,13 +27,18 @@
             :loading="loading"
             color="success"
             default
-            x-large
+            large
             type="submit"
             :errors-messages="123"
           >
             {{ buttonText }}
           </v-btn>
-          <v-btn @click="reset">
+          <v-spacer />
+          <v-btn
+            default
+            large
+            @click="reset"
+          >
             сброс
           </v-btn>
         </v-card-actions>
