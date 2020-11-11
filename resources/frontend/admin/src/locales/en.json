@@ -60,5 +60,7 @@
   "pharmacy": "Аптека",
   "staff": "Сотрудники",
   "createStaff": "Добавить сотрудника",
-  "createPharmacy": "Создать аптеку"
+  "createPharmacy": "Создать аптеку",
+  "rating": "Рейтинг",
+  "ratings": "Рейтинги"
 }

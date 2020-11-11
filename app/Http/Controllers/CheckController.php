@@ -8,6 +8,7 @@ use App\Http\Requests\CheckRequest;
 use App\Http\Resources\CheckResource;
 use App\Models\Check;
 use App\Repositories\Contracts\CheckRepositoryContract;
+use Illuminate\Http\Request;
 
 class CheckController extends Controller
 {
@@ -22,21 +23,22 @@ class CheckController extends Controller
         $this->checkRepository = $checkRepository;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return CheckResource
-     */
-    public function index()
+
+    public function index(Request $request)
     {
-        return new CheckResource(Check::with('meta')->paginate(25));
+        if ($ratingId = $request->get('rating_id')) {
+            $checks = Check::whereHas('ratings', function($query) use ($ratingId){
+                return $query->where('ratings.id', $ratingId);
+            })
+                ->get();
+        }else {
+            $checks = Check::with('meta')->get();
+        }
+
+        return new CheckResource($checks);
     }
 
 
-    /**
-     * @param CheckRequest $checkRequest
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function store(CheckRequest $checkRequest)
     {
         try {
@@ -47,24 +49,11 @@ class CheckController extends Controller
         return response()->json(['message' => 'Check was successfully created'], 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param $id
-     * @return CheckResource
-     */
     public function show($id)
     {
         return new CheckResource($this->checkRepository->findById($id));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param CheckRequest $checkRequest
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function update(CheckRequest $checkRequest, $id)
     {
         try {
@@ -76,13 +65,6 @@ class CheckController extends Controller
         return response()->json(['message' => 'Check was successfully updated'], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Check $check
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Exception
-     */
     public function destroy(Check $check)
     {
         try {

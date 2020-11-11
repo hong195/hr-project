@@ -21,6 +21,7 @@ class UserResource extends JsonResource
             'patronymic' => $this->patronymic,
             'email' => $this->email,
             'meta' => $this->meta,
+            'ratings' => $this->whenLoaded('ratings'),
             'pharmacy' => new PharmacyResource($this->whenLoaded('pharmacy')),
             'role' => RoleResource::make(($this->roles)->first()),
             'created_at' => $this->created_at,

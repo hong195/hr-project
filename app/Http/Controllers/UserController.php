@@ -19,7 +19,6 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        //Todo make user search
         return UserResource::collection($this->userRepository->all());
     }
 

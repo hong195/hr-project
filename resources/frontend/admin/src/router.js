@@ -88,6 +88,16 @@ const router = new Router({
           },
         },
         {
+          name: 'ratings-staff',
+          path: 'ratings-staff',
+          component: () => import('@/views/dashboard/pages/ratings/Staff'),
+          meta: {
+            middleware: [
+              auth,
+            ],
+          },
+        },
+        {
           name: 'createStaff',
           path: 'create-staff',
           component: () => import('@/views/dashboard/pages/create/Staff'),

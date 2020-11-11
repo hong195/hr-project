@@ -33,21 +33,10 @@
     <v-divider class="mb-2" />
 
     <v-list expand nav>
-      <!-- Style cascading bug  -->
-      <!-- https://github.com/vuetifyjs/vuetify/pull/8574 -->
-      <div />
-
       <template v-for="(item, i) in computedItems">
-        <base-item-group v-if="item.children" :key="`group-${i}`" :item="item">
-          <!--  -->
-        </base-item-group>
-
+        <base-item-group v-if="item.children" :key="`group-${i}`" :item="item" />
         <base-item v-else :key="`item-${i}`" :item="item" />
       </template>
-
-      <!-- Style cascading bug  -->
-      <!-- https://github.com/vuetifyjs/vuetify/pull/8574 -->
-      <div />
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -82,6 +71,11 @@
           to: '/staff',
           icon: 'mdi-view-comfy',
           title: 'staff',
+        },
+        {
+          to: '/ratings-staff',
+          icon: 'mdi-view-comfy',
+          title: 'ratings',
         },
       ],
       itemsAdmin: [
@@ -121,6 +115,11 @@
               to: 'create-staff',
               avatar: 'mdi-clipboard-outline',
               title: 'createStaff',
+            },
+            {
+              to: 'ratings-staff',
+              icon: 'mdi-view-comfy',
+              title: 'ratings',
             },
           ],
         },

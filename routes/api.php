@@ -31,6 +31,7 @@ Route::resources([
 Route::get('/roles', 'App\Http\Controllers\RoleController@index');
 
 Route::post('user-rating', [UserRatingController::class, 'show']);
+Route::get('user-rating', [UserRatingController::class, 'index']);
 //Route::get('user/create', [UserController::class, 'create']);
 Route::get('create/user', 'App\Http\Controllers\UserController@create');
 Route::get('create/pharmacy', 'App\Http\Controllers\PharmacyController@create');
