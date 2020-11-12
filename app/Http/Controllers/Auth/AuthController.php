@@ -28,8 +28,8 @@ class AuthController extends Controller
     public function login()
     {
         $credentials = request(['email', 'password']);
-
-        if (! $token = auth()->attempt($credentials)) {
+        $remember = request('remember');
+        if (! $token = auth()->attempt($credentials, $remember)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 

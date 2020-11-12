@@ -8,12 +8,12 @@ export default {
         commit('authSuccess', data)
       })
       .catch((error) => {
-        console.error(error)
         commit('authFailed')
         return Promise.reject(error)
       })
   },
   logOut ({ commit }) {
+    console.log('call')
     return axios.post('auth/logout', '', authConfig())
       .then(() => {
         commit('authFailed')

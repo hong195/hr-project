@@ -6,8 +6,6 @@
 
     <dashboard-core-view />
 
-    <!--    <dashboard-core-settings v-model="expandOnHover" />-->
-    <!-- <base-material-snackbar /> -->
     <base-snackbar-message />
   </v-app>
 </template>
@@ -19,7 +17,6 @@
     components: {
       DashboardCoreAppBar: () => import('./components/core/AppBar'),
       DashboardCoreDrawer: () => import('./components/core/Drawer'),
-      // DashboardCoreSettings: () => import('./components/core/Settings'),
       DashboardCoreView: () => import('./components/core/View'),
     },
 

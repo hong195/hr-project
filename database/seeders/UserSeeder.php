@@ -8,7 +8,7 @@ use Spatie\Permission\Models\Role;
 
 class UserSeeder extends Seeder
 {
-    protected $permissions = ['view', 'create', 'update'];
+    protected $permissions = ['view', 'Pharmacy', 'update'];
 
     /**
      * Run the database seeds.

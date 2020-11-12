@@ -126,10 +126,10 @@ class UserForm extends AbstractForm
                 $value = $user->getAuthPassword();
             } else if ($field->getName() === 'meta.gender') {
                 $key = array_search('gender', array_column( $meta->toArray(), 'name'));
-                $value = $meta[$key]->value;
+                $value = $key ? $meta[$key]->value : '';
             } else if ($field->getName() === 'meta.birthday') {
                 $key = array_search('birthday', array_column( $meta->toArray(), 'name'));
-                $value = $meta[$key]->value;
+                $value = $key ? $meta[$key]->value : '';
             } else if ($field->getName() === 'first_name') {
                 $value = $user->first_name;
             } else if ($field->getName() === 'last_name') {

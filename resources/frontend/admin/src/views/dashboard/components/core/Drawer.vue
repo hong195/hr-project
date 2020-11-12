@@ -18,8 +18,7 @@
     <v-list-item two-line>
       <v-list-item-content>
         <v-list-item-title class="text-uppercase font-weight-regular display-2">
-          <span class="logo-mini">{{ $t("ct") }}</span>
-          <span class="logo-normal">{{ $t("tim") }}</span>
+          <span class="logo-mini">Hr Project</span>
         </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
@@ -33,10 +32,6 @@
     <v-divider class="mb-2" />
 
     <v-list expand nav>
-      <!-- Style cascading bug  -->
-      <!-- https://github.com/vuetifyjs/vuetify/pull/8574 -->
-      <div />
-
       <template v-for="(item, i) in computedItems">
         <base-item-group v-if="item.children" :key="`group-${i}`" :item="item">
           <!--  -->
@@ -44,9 +39,6 @@
 
         <base-item v-else :key="`item-${i}`" :item="item" />
       </template>
-
-      <!-- Style cascading bug  -->
-      <!-- https://github.com/vuetifyjs/vuetify/pull/8574 -->
       <div />
     </v-list>
   </v-navigation-drawer>
@@ -54,7 +46,7 @@
 
 <script>
   // Utilities
-  import { mapState, mapGetters } from 'vuex'
+  import { mapState, mapGetters, mapActions } from 'vuex'
 
   export default {
     name: 'DashboardCoreDrawer',
@@ -129,7 +121,8 @@
 
     computed: {
       ...mapState(['barColor', 'barImage']),
-      ...mapGetters(['currentUser']),
+      ...mapActions('user', ['logOut']),
+      ...mapGetters({ user: 'user/currentUser' }),
       drawer: {
         get () {
           return this.$store.state.drawer
@@ -144,25 +137,33 @@
           : this.items.map(this.mapItem)
       },
       profile () {
-        return {
-          avatar: true,
-          group: '',
-          title: 'fdf',
-          children: [
-            {
-              href: '',
-              title: this.$t('my-profile'),
-            },
-            {
-              to: '',
-              title: this.$t('edit-profile'),
-            },
-            {
-              to: '',
-              title: this.$t('settings'),
-            },
-          ],
-        }
+        if (this.user) {
+          return {
+            avatar: true,
+            group: '',
+            title: this.user.first_name + ' ' + this.user.last_name,
+            children: [
+              {
+                to: `create-staff?edit=true&id=${this.user.id}`,
+                title: this.$t('edit_profile'),
+              },
+              {
+                to: undefined,
+                name: 'logout',
+                title: 'Выйти',
+                callback: () => {
+                  try {
+                    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+                    this.$router.push({ name: 'login' })
+                    this.logOut()
+                  } catch (e) {
+                    console.log(e)
+                  }
+                },
+              },
+            ],
+          }
+        } else { return {} }
       },
     },
 
