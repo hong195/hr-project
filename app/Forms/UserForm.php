@@ -42,14 +42,14 @@ class UserForm extends AbstractForm
             ->add('text', 'first_name', 'Имя',
                 [
                     'attributes' => ['outlined' => true, "cols" => 4],
-                    'validationRule' => 'required',
+                    'validationRule' => 'required|alpha',
                 ]);
 
         $this->formBuilder
             ->add('text', 'last_name', 'Фамилия',
                 [
                     'attributes' => ['outlined' => true, "cols" => 4],
-                    'validationRule' => 'required',
+                    'validationRule' => 'required|alpha',
                 ]
             );
 
@@ -57,7 +57,7 @@ class UserForm extends AbstractForm
             ->add('text', 'patronymic', 'Отчество',
                 [
                     'attributes' => ['outlined' => true, "cols" => 4],
-                    'validationRule' => 'required',
+                    'validationRule' => 'required|alpha',
                 ]
             );
 
@@ -86,7 +86,9 @@ class UserForm extends AbstractForm
             ->add('select', 'meta.gender', 'Пол', ['options' => $this->genderOptions]);
 
         $this->formBuilder
-            ->add('date', 'meta.birthday', 'День рождения');
+            ->add('date', 'meta.birthday', 'День рождения',
+                ['attributes' => ['min' => '1920-01-01', 'max'=> date("Y-m-d")]]
+            );
     }
 
     protected function getPharmacies()
@@ -125,10 +127,10 @@ class UserForm extends AbstractForm
             } else if ($field->getName() === 'password') {
                 $value = $user->getAuthPassword();
             } else if ($field->getName() === 'meta.gender') {
-                $key = array_search('gender', array_column( $meta->toArray(), 'name'));
+                $key = array_search('gender', array_column($meta->toArray(), 'name'));
                 $value = $key ? $meta[$key]->value : '';
             } else if ($field->getName() === 'meta.birthday') {
-                $key = array_search('birthday', array_column( $meta->toArray(), 'name'));
+                $key = array_search('birthday', array_column($meta->toArray(), 'name'));
                 $value = $key ? $meta[$key]->value : '';
             } else if ($field->getName() === 'first_name') {
                 $value = $user->first_name;
