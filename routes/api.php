@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CheckAttributeController;
+use App\Http\Controllers\CheckAttributeOptionController;
 use App\Http\Controllers\CheckController;
 use App\Http\Controllers\PharmaciesRatingController;
 use App\Http\Controllers\PharmacyController;
@@ -26,6 +27,7 @@ Route::resources([
     'pharmacies' => PharmacyController::class,
     'check-attributes' => CheckAttributeController::class,
     'checks' => CheckController::class,
+    'check-attribute-option' => CheckAttributeOptionController::class,
 ]);
 
 Route::get('/roles', 'App\Http\Controllers\RoleController@index');

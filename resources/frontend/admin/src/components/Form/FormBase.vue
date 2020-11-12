@@ -7,20 +7,23 @@
           :key="index"
           :md="field.attributes.cols || 12"
         >
-          <component
-            :is="`${field.component}-field`"
-            :scope="scope"
-            :type="field.type"
-            :name="field.name"
-            :label="field.label"
-            :value="field.value"
-            :validation-rule="field.rule"
-            :options="field.options"
-            :attributes="field.attributes"
-            @input="updateFieldValue"
-          />
+          <slot :name="`field-${field.component}`" :field="field">
+            <component
+              :is="`${field.component}-field`"
+              :scope="scope"
+              :type="field.type"
+              :name="field.name"
+              :label="field.label"
+              :value="field.value"
+              :validation-rule="field.rule"
+              :options="field.options"
+              :attributes="field.attributes"
+              @input="updateFieldValue"
+            />
+          </slot>
         </v-col>
       </v-row>
+      <slot name="after-fields" />
       <slot :loading="loading" name="actions">
         <v-card-actions align="center" class="pa-0 py-3">
           <v-btn
@@ -111,9 +114,8 @@
     },
     created () {
       this.schema.forEach((field) => {
-        if (!field.value) {
-          this.$set(field, 'value', null)
-        }
+        const value = field.value !== undefined ? field.value : null
+        this.$set(field, 'value', value)
       })
     },
     methods: {

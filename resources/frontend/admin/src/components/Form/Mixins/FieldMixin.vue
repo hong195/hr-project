@@ -19,8 +19,8 @@
         default: '',
       },
       validationRule: {
-        type: String,
-        default: '',
+        type: [String, Object, Array],
+        default: () => ([]),
       },
       attributes: {
         type: [Array, Object],
@@ -52,7 +52,7 @@
     },
     methods: {
       setComponentValue () {
-        if (this.value) {
+        if (this.value !== undefined) {
           this.innerValue = this.value
         }
       },

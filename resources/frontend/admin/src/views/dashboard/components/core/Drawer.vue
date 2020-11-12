@@ -101,6 +101,25 @@
         },
         {
           icon: 'mdi-account-multiple',
+          title: 'attributes',
+          group: '',
+          children: [
+            {
+              to: 'attributes',
+              title: 'attributes',
+            },
+            {
+              to: 'create-attributes',
+              title: 'create-attributes',
+            },
+            {
+              to: 'create-attribute-options',
+              title: 'create-attribute-options',
+            },
+          ],
+        },
+        {
+          icon: 'mdi-account-multiple',
           title: 'pharmacy',
           group: '',
           children: [

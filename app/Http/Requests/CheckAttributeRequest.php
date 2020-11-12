@@ -17,11 +17,8 @@ class CheckAttributeRequest extends AbstractRequest
             'type' => ['required'],
             'label' => ['required'],
             'validation_rule' => ['nullable'],
-            'use_in_rating' => ['boolean'],
-            'order' => ['nullable'],
-            'options.*.name' => ['string'],
-            'options.*.value' => ['numeric'],
-            'options.*.label' => ['string'],
+            'use_in_rating' => ['boolean', 'nullable'],
+            'order' => ['nullable', 'integer'],
         ];
     }
 }

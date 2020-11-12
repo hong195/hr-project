@@ -18,15 +18,15 @@
       </v-col>
       <v-radio-group
         v-model="innerValue"
-        :mandatory="false"
         class="ml-4 mt-0"
         :error-messages="errors"
       >
         <v-radio
           v-for="(option, index) in options"
           :key="`checkbox-${id}-${index}`"
-          :label="option.name"
-          :name="option.label"
+          :label="option.label"
+          :name="option.name"
+          :value="option.value"
         />
       </v-radio-group>
     </validation-provider>

@@ -65,5 +65,8 @@
   "ratings": "Рейтинги",
   "ratings-staff": "Рейтинг сотрудников",
   "checks": "Чеки",
-  "checks-create": "Создать чек"
+  "checks-create": "Создать чек",
+  "attributes": "Атрибуты",
+  "create-attributes": "Создать атрибут",
+  "create-attribute-options": "Создать опцию"
 }

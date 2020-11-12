@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Forms\CheckAttributeForm;
 use App\Http\Requests\CheckAttributeRequest;
 use App\Http\Resources\CheckAttributeResource;
 use App\Repositories\Contracts\CheckAttributeRepositoryContract;
@@ -15,11 +16,11 @@ class CheckAttributeController extends Controller
         $this->checkAttributeRepository = $checkAttributeRepository;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return CheckAttributeResource
-     */
+    public function create(CheckAttributeForm $form)
+    {
+        return response()->json(['form' => $form->get()]);
+    }
+
     public function index()
     {
         // Todo make search by attribute
@@ -31,6 +32,13 @@ class CheckAttributeController extends Controller
         $this->checkAttributeRepository->create($checkAttributeRequest->validated());
 
         return response()->json(['message' => 'Attribute was successfully created!'], 201);
+    }
+
+    public function edit(CheckAttributeForm $form, $id)
+    {
+        $attr = $this->checkAttributeRepository->findById($id);
+
+        return response()->json(['form' => $form->fill($attr)->get()]);
     }
 
     public function show(int $id)

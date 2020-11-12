@@ -118,6 +118,36 @@ const router = new Router({
           },
         },
         {
+          name: 'attributes',
+          path: 'attributes',
+          component: () => import('@/views/dashboard/pages/attributes/Index'),
+          meta: {
+            middleware: [
+              isAdmin,
+            ],
+          },
+        },
+        {
+          name: 'create-attributes',
+          path: 'create-attributes',
+          component: () => import('@/views/dashboard/pages/attributes/Create'),
+          meta: {
+            middleware: [
+              isAdmin,
+            ],
+          },
+        },
+        {
+          name: 'create-attribute-options',
+          path: 'create-attribute-options',
+          component: () => import('@/views/dashboard/pages/options/Create'),
+          meta: {
+            middleware: [
+              isAdmin,
+            ],
+          },
+        },
+        {
           name: 'createStaff',
           path: 'create-staff',
           component: () => import('@/views/dashboard/pages/create/Staff'),
