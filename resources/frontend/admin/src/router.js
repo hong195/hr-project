@@ -98,6 +98,26 @@ const router = new Router({
           },
         },
         {
+          name: 'checks',
+          path: 'checks',
+          component: () => import('@/views/dashboard/pages/checks/Index'),
+          meta: {
+            middleware: [
+              isAdmin,
+            ],
+          },
+        },
+        {
+          name: 'checks-create',
+          path: 'checks-create',
+          component: () => import('@/views/dashboard/pages/checks/Create'),
+          meta: {
+            middleware: [
+              isAdmin,
+            ],
+          },
+        },
+        {
           name: 'createStaff',
           path: 'create-staff',
           component: () => import('@/views/dashboard/pages/create/Staff'),

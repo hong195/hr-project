@@ -85,6 +85,21 @@
           to: '/home',
         },
         {
+          icon: 'mdi-animation',
+          title: 'checks',
+          group: '',
+          children: [
+            {
+              to: 'checks',
+              title: 'checks',
+            },
+            {
+              to: 'checks-create',
+              title: 'checks-create',
+            },
+          ],
+        },
+        {
           icon: 'mdi-account-multiple',
           title: 'pharmacy',
           group: '',

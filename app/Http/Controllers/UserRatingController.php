@@ -51,9 +51,4 @@ class UserRatingController extends Controller
 
         return response()->json(['rating' => $rating]);
     }
-
-    public function getRatingChecks(int $id)
-    {
-
-    }
 }

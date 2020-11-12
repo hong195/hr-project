@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\CheckExpcetion;
 use App\Exceptions\UserRatingException;
+use App\Forms\CheckForm;
 use App\Http\Requests\CheckRequest;
 use App\Http\Resources\CheckResource;
 use App\Models\Check;
@@ -31,6 +32,8 @@ class CheckController extends Controller
                 return $query->where('ratings.id', $ratingId);
             })
                 ->get();
+        }else if($request->get('with_user')) {
+            $checks = Check::with('user')->get();
         }else {
             $checks = Check::with('meta')->get();
         }
@@ -38,6 +41,11 @@ class CheckController extends Controller
         return new CheckResource($checks);
     }
 
+
+    public function create(CheckForm $form)
+    {
+        return response()->json(['form' => $form->get()]);
+    }
 
     public function store(CheckRequest $checkRequest)
     {
@@ -52,6 +60,13 @@ class CheckController extends Controller
     public function show($id)
     {
         return new CheckResource($this->checkRepository->findById($id));
+    }
+
+    public function edit(CheckForm $form, $id)
+    {
+        $check = $this->checkRepository->findById($id);
+
+        return response()->json(['form' => $form->fill($check)->get()]);
     }
 
     public function update(CheckRequest $checkRequest, $id)

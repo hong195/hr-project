@@ -62,5 +62,8 @@
   "createStaff": "Добавить сотрудника",
   "createPharmacy": "Создать аптеку",
   "rating": "Рейтинг",
-  "ratings": "Рейтинги"
+  "ratings": "Рейтинги",
+  "ratings-staff": "Рейтинг сотрудников",
+  "checks": "Чеки",
+  "checks-create": "Создать чек"
 }
