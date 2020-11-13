@@ -5,6 +5,7 @@
     :target="href && href !== '#' ? '_blank' : undefined"
     :to="item.to"
     :active-class="`primary ${!isDark ? 'black' : 'white'}--text`"
+    @click="onClick(item)"
   >
     <v-list-item-icon
       v-if="text"
@@ -63,6 +64,13 @@
       },
       href () {
         return this.item.href || (!this.item.to ? '#' : undefined)
+      },
+    },
+    methods: {
+      onClick (item) {
+        if (item.callback) {
+          item.callback()
+        }
       },
     },
   }

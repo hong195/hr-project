@@ -10,7 +10,7 @@ abstract class AbstractRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     * By default only user with Admin role can create/update posts
+     * By default only user with Admin role can Pharmacy/update posts
      *
      * @return bool
      */

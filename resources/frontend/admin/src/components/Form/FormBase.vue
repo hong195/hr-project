@@ -7,29 +7,27 @@
           :key="index"
           :md="field.attributes.cols || 12"
         >
-          <slot :name="`field-${field.component}`" :field="field">
-            <component
-              :is="`${field.component}-field`"
-              :scope="scope"
-              :type="field.type"
-              :name="field.name"
-              :label="field.label"
-              :value="field.value"
-              :validation-rule="field.rule"
-              :options="field.options"
-              :attributes="field.attributes"
-              @input="updateFieldValue"
-            />
-          </slot>
+          <component
+            :is="`${field.component}-field`"
+            :scope="scope"
+            :type="field.type"
+            :name="field.name"
+            :label="field.label"
+            :value="field.value"
+            :validation-rule="field.rule"
+            :options="field.options"
+            :attributes="field.attributes"
+            @input="updateFieldValue"
+          />
         </v-col>
       </v-row>
-      <slot name="after-fields" />
       <slot :loading="loading" name="actions">
         <v-card-actions align="center" class="pa-0 py-3">
           <v-btn
             :loading="loading"
             color="success"
             default
+            large
             type="submit"
           >
             {{ buttonText }}

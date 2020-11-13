@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Forms;
 
 use App\Models\Pharmacy;
@@ -10,11 +11,14 @@ class PharmacyForm extends AbstractForm
         //Todo coordinates fields
         $this->formBuilder
             ->add('text', 'name', 'Название компании', [
-                'validationRule' => 'required'
+                'attributes' => ['outlined' => true],
+                'validationRule' => 'required|alpha_dash'
             ]);
 
         $this->formBuilder
-            ->add('text', 'address', 'Адрес');
+            ->add('text', 'address', 'Адрес', [
+                'attributes' => ['outlined' => true]
+            ]);
 
     }
 
@@ -25,7 +29,7 @@ class PharmacyForm extends AbstractForm
 
             if ('name' === $field->getName()) {
                 $value = $pharmacy->name;
-            }else if('address' === $field->getName()) {
+            } else if ('address' === $field->getName()) {
                 $value = $pharmacy->address;
             }
 

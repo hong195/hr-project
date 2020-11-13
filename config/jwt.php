@@ -271,7 +271,7 @@ return [
         | JWT Provider
         |--------------------------------------------------------------------------
         |
-        | Specify the provider that is used to create and decode the tokens.
+        | Specify the provider that is used to Pharmacy and decode the tokens.
         |
         */
 
