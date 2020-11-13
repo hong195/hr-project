@@ -52,7 +52,7 @@
           },
           {
             text: 'Аптека',
-            value: 'pharmacy',
+            value: 'pharmacy.name',
           },
           {
             text: 'Роль',
