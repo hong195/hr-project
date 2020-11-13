@@ -26,7 +26,7 @@
               Аптека
             </td>
             <td>
-              {{ item.pharmacy }}
+              {{ item.pharmacy.name }}
             </td>
           </tr>
           <tr>

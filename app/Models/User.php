@@ -15,6 +15,7 @@ class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable, HasRoles;
 
+    protected $with = ['pharmacy'];
     /**
      * The attributes that are mass assignable.
      *

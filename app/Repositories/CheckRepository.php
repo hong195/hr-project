@@ -52,7 +52,7 @@ class CheckRepository extends AbstractRepository implements CheckRepositoryContr
 
         if ($user->hasRating($checkRequest->get('created_at'))) {
             throw new CheckExpcetion(sprintf(
-                'Failed to Pharmacy check, user has already have rating for given period - %s %s',
+                'Failed to pharmacies check, user has already have rating for given period - %s %s',
                 Carbon::parse($checkRequest->get('created_at'))->format('F'),
                 Carbon::parse($checkRequest->get('created_at'))->format('Y')
             ));

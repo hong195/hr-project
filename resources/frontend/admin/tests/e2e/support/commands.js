@@ -1,6 +1,6 @@
 // ***********************************************
 // This example commands.js shows you how to
-// Pharmacy various custom commands and overwrite
+// pharmacies various custom commands and overwrite
 // existing commands.
 //
 // For more comprehensive examples of custom

@@ -35,7 +35,7 @@ class PharmacyController extends Controller
     {
         $this->pharmacyRepository->create($pharmacyRequest->validated());
 
-        return response()->json(['message' => 'Pharmacy was successfully created!'], 201);
+        return response()->json(['message' => 'pharmacies was successfully created!'], 201);
     }
 
     public function show($id)
@@ -54,13 +54,13 @@ class PharmacyController extends Controller
     {
         $this->pharmacyRepository->update($id, $pharmacyRequest->validated());
 
-        return response()->json(['message' => 'Pharmacy was successfully updated!']);
+        return response()->json(['message' => 'pharmacies was successfully updated!']);
     }
 
     public function destroy($id)
     {
         $this->pharmacyRepository->delete($id);
 
-        return response()->json(['message' => 'Pharmacy was deleted!'], 200);
+        return response()->json(['message' => 'pharmacies was deleted!'], 200);
     }
 }
