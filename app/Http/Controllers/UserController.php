@@ -38,7 +38,7 @@ class UserController extends Controller
     {
         $user = $this->userRepository->findByid($id);
 
-        return $form->fill($user)->getSchema();
+        return $form->fill($user)->get();
     }
 
     public function show($id)

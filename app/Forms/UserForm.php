@@ -117,34 +117,31 @@ class UserForm extends AbstractForm
 
         foreach ($this->formBuilder->getFields() as $field) {
             $value = null;
-            $meta = $user->meta;
+            $userMeta = $user->meta->toArray();
 
-            //Todo make custom fill
+            //password can be nullable, because laravel has only hashed password
+            if ($field->getName() === 'password') {
+                $field->setValidationRule('');
+            }
+
+            if ($user->{$field->getName()} && $field->getName() !== 'password') {
+                $value = $user->{$field->getName()};
+            }
+
             if ($field->getName() === 'role') {
                 $value = $user->roles->first()->id;
-            } else if ($field->getName() === 'pharmacy_id') {
-                $value = $user->pharmacy->id;
-            } else if ($field->getName() === 'password') {
-                $value = $user->getAuthPassword();
-            } else if ($field->getName() === 'meta.gender') {
-                $key = array_search('gender', array_column($meta->toArray(), 'name'));
-                $value = $key ? $meta[$key]->value : '';
-            } else if ($field->getName() === 'meta.birthday') {
-                $key = array_search('birthday', array_column($meta->toArray(), 'name'));
-                $value = $key ? $meta[$key]->value : '';
-            } else if ($field->getName() === 'first_name') {
-                $value = $user->first_name;
-            } else if ($field->getName() === 'last_name') {
-                $value = $user->last_name;
-            } else if ($field->getName() === 'patronymic') {
-                $value = $user->patronymic;
-            } else if ($field->getName() === 'email') {
-                $value = $user->email;
+            }
+
+            foreach ($userMeta as $meta) {
+                if ($meta['name'] && $field->getName() !== "meta.{$meta['name']}") {
+                    continue;
+                }
+                $value = $meta['value'];
             }
 
             $field->setValue($value);
         }
 
-        return $this->formBuilder;
+        return $this;
     }
 }

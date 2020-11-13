@@ -10,7 +10,10 @@ class CheckAttributeForm extends AbstractForm
 {
     protected function buildForm()
     {
-        $this->formBuilder->add('text', 'name', 'Название',
+        $this->formBuilder->add('text', 'label', 'Название',
+            ['validationRule' => 'required']);
+
+        $this->formBuilder->add('text', 'name', 'Слаг',
             ['validationRule' => 'required']);
 
         $this->formBuilder->add('select', 'type', 'Тип', [
@@ -46,7 +49,14 @@ class CheckAttributeForm extends AbstractForm
 
     public function fill(CheckAttribute $checkAttribute)
     {
-        // Todo fill method logic
+        foreach ($this->formBuilder->getFields() as $field) {
+            $fieldName = $field->getName();
+            if (!$value = $checkAttribute->{$fieldName}) {
+                continue;
+            }
+            $field->setValue($value);
+        }
+
         return $this;
     }
 }

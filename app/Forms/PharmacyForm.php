@@ -12,7 +12,7 @@ class PharmacyForm extends AbstractForm
         $this->formBuilder
             ->add('text', 'name', 'Название компании', [
                 'attributes' => ['outlined' => true],
-                'validationRule' => 'required|alpha_dash'
+                'validationRule' => 'required'
             ]);
 
         $this->formBuilder

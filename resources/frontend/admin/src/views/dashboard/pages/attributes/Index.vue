@@ -14,13 +14,6 @@
         :sort-by="['id']"
         :sort-desc="[false, true]"
       >
-        <template v-slot:item.options="{ item }">
-          <tr>
-            <td v-for="(option, index) in (item.options)" :key="`index-${option.id}-${index}`">
-              {{ option.label }} {{ item.options.length - 1 !== index ? ',' : '' }}
-            </td>
-          </tr>
-        </template>
         <template v-slot:item.type="{ item }">
           <tr>
             <td>{{ item.type === 'radio' ? 'Радио кнопка' : 'Текстовое поле' }}</td>
@@ -46,24 +39,27 @@
         </template>
       </v-data-table>
     </base-material-card>
+    <detail ref="detail" :item="activeItem" />
     <div class="py-3" />
   </v-container>
 </template>
 
 <script>
+  import Detail from './Detail'
   export default {
     name: 'Index',
+    components: {
+      Detail,
+    },
     data: () => ({
-      search: null,
       attributes: [],
+      search: null,
+      dialog: false,
+      activeItem: null,
       headers: [
         {
           text: 'Идентефикатор',
           value: 'id',
-        },
-        {
-          text: 'Тип',
-          value: 'type',
         },
         {
           text: 'Название',
@@ -72,10 +68,6 @@
         {
           text: 'Учитывается при создания рейтинга',
           value: 'use_in_rating',
-        },
-        {
-          text: 'Опции',
-          value: 'options',
         },
         {
           text: 'Порядок',
@@ -113,14 +105,31 @@
       this.fetchAttributes()
     },
     methods: {
-      actionMethod (method, item) {
-
+      actionMethod (funcName, item) {
+        this[funcName](item)
       },
       fetchAttributes () {
         this.axios.get('check-attributes')
           .then(({ data }) => {
             this.attributes = data.data
           })
+      },
+      deleteItem (item) {
+        this.axios.delete(`check-attributes/${item.id}`)
+          .then(({ data }) => {
+            this.fetchAttributes()
+            this.$store.commit('successMessage', data.message)
+          })
+          .catch(error => {
+            this.$store.commit('errorMessage', error)
+          })
+      },
+      editItem (item) {
+        this.$router.push({ name: 'update-attributes', params: { id: item.id } })
+      },
+      viewItem (item) {
+        this.activeItem = item
+        this.$refs.detail.dialog = true
       },
     },
   }

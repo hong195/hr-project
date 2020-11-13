@@ -1,29 +1,26 @@
 <template>
   <v-container
-    id="regular-forms"
     fluid
     tag="section"
     class="mt-3"
   >
     <default-form :base-url="baseUrl"
-                  title-create="Создать чек"
-                  title-update="Обновить чек"
+                  title-create="Создать опцию"
+                  title-update="Создать атрибут"
     />
   </v-container>
 </template>
-
 <script>
   import DefaultForm from '@/views/dashboard/components/DefaultForm'
-
   export default {
-    name: 'CreateUpdate',
+    name: 'Create',
     components: {
       DefaultForm,
     },
     data: () => ({
       schema: [],
       formValue: null,
-      baseUrl: 'checks',
+      baseUrl: 'check-attributes',
     }),
     computed: {
       isUpdate () {
@@ -32,3 +29,7 @@
     },
   }
 </script>
+
+<style scoped>
+
+</style>

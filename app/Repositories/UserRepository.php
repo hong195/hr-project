@@ -44,6 +44,10 @@ class UserRepository extends AbstractRepository implements UserRepositoryContrac
         $data = collect($data);
         $this->setMainAttributes($data);
 
+        if (!$data->get('password')) {
+            $data->forget('password');
+        }
+
         if ($data->has('role')) {
             $this->detachRole();
             $this->attachRole($data->get('role'));

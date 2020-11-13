@@ -22,7 +22,6 @@ class PharmacyController extends Controller
 
     public function index()
     {
-        // Todo make search
         return PharmacyResource::collection($this->pharmacyRepository->all());
     }
 

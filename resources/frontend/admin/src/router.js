@@ -120,7 +120,17 @@ const router = new Router({
         {
           name: 'create-attributes',
           path: 'create-attributes',
-          component: () => import('@/views/dashboard/pages/attributes/Create'),
+          component: () => import('@/views/dashboard/pages/attributes/CreateUpdate'),
+          meta: {
+            middleware: [
+              isAdmin,
+            ],
+          },
+        },
+        {
+          name: 'update-attributes',
+          path: 'update-attributes/:id',
+          component: () => import('@/views/dashboard/pages/attributes/CreateUpdate'),
           meta: {
             middleware: [
               isAdmin,

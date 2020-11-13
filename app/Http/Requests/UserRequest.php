@@ -4,6 +4,14 @@ namespace App\Http\Requests;
 
 class UserRequest extends AbstractRequest
 {
+    public function authorize(): bool
+    {
+        return true;
+        if ($this->user() && $this->user()->hasRole('Admin')) {
+            return true;
+        }
+        return false;
+    }
     /**
      * @var \string[][]
      */
@@ -28,6 +36,7 @@ class UserRequest extends AbstractRequest
     {
         if ($this->isUpdating()) {
             $this->rules['email'] = 'required|email';
+            $this->rules['password'] = 'nullable';
         }
 
         return $this->rules;
