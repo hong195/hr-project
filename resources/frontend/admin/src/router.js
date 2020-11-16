@@ -6,6 +6,7 @@ import auth from './middleware/auth'
 import middlewarePipeline from './middleware/middlewarePipeline'
 import isAdmin from './middleware/isAdmin'
 import isSubscriber from './middleware/isSubscriber'
+import isEditor from './middleware/isEditor'
 Vue.use(Router)
 const router = new Router({
   mode: 'hash',
@@ -53,7 +54,7 @@ const router = new Router({
           component: () => import('@/views/dashboard/pages/pharmacies/Index'),
           meta: {
             middleware: [
-              isAdmin,
+              isEditor,
             ],
           },
         },
@@ -63,7 +64,7 @@ const router = new Router({
           component: () => import('@/views/dashboard/pages/pharmacies/CreateUpdate'),
           meta: {
             middleware: [
-              isAdmin,
+              isEditor,
             ],
           },
         },
@@ -103,7 +104,7 @@ const router = new Router({
           component: () => import('@/views/dashboard/pages/staffs/CreateUpdate'),
           meta: {
             middleware: [
-              isAdmin,
+              isEditor,
             ],
           },
         },
@@ -123,7 +124,7 @@ const router = new Router({
           component: () => import('@/views/dashboard/pages/checks/Index'),
           meta: {
             middleware: [
-              isAdmin,
+              isEditor,
             ],
           },
         },
@@ -143,7 +144,7 @@ const router = new Router({
           component: () => import('@/views/dashboard/pages/checks/Create'),
           meta: {
             middleware: [
-              isAdmin,
+              isEditor,
             ],
           },
         },

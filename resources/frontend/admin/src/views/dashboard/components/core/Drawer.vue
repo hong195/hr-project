@@ -44,6 +44,9 @@
 <script>
   // Utilities
   import { mapState, mapGetters, mapActions } from 'vuex'
+  import subscriberItems from './sidebarMenuItems/subscriberItems'
+  import adminItems from './sidebarMenuItems/adminItems'
+  import editorItems from './sidebarMenuItems/editorItems'
 
   export default {
     name: 'DashboardCoreDrawer',
@@ -56,108 +59,9 @@
     },
 
     data: () => ({
-      items: [
-        {
-          icon: 'mdi-view-dashboard',
-          title: 'mainPage',
-          to: '/home',
-        },
-        {
-          to: '/pharmacy',
-          icon: 'mdi-image',
-          title: 'pharmacy',
-        },
-        {
-          to: '/staff',
-          icon: 'mdi-view-comfy',
-          title: 'staff',
-        },
-        {
-          to: '/ratings-staff',
-          icon: 'mdi-view-comfy',
-          title: 'ratings',
-        },
-      ],
-      itemsAdmin: [
-        {
-          icon: 'mdi-view-dashboard',
-          title: 'mainPage',
-          to: '/home',
-        },
-        {
-          icon: 'mdi-animation',
-          title: 'checks',
-          group: '',
-          children: [
-            {
-              to: 'checks',
-              title: 'checks',
-            },
-            {
-              to: 'create-checks',
-              title: 'create-checks',
-            },
-          ],
-        },
-        {
-          icon: 'mdi-account-multiple',
-          title: 'attributes',
-          group: '',
-          children: [
-            {
-              to: 'attributes',
-              title: 'attributes',
-            },
-            {
-              to: 'create-attributes',
-              title: 'create-attributes',
-            },
-            {
-              to: 'create-attribute-options',
-              title: 'create-attribute-options',
-            },
-          ],
-        },
-        {
-          icon: 'mdi-account-multiple',
-          title: 'pharmacy',
-          group: '',
-          children: [
-            {
-              to: 'pharmacy',
-              avatar: 'mdi-view-comfy',
-              title: 'pharmacy',
-            },
-            {
-              to: 'create-pharmacy',
-              avatar: 'mdi-clipboard-outline',
-              title: 'createPharmacy',
-            },
-          ],
-        },
-        {
-          icon: 'mdi-account-multiple',
-          title: 'staff',
-          group: '',
-          children: [
-            {
-              to: 'staff',
-              avatar: 'mdi-view-comfy',
-              title: 'staff',
-            },
-            {
-              to: 'create-staff',
-              avatar: 'mdi-clipboard-outline',
-              title: 'createStaff',
-            },
-            {
-              to: 'ratings-staff',
-              icon: 'mdi-view-comfy',
-              title: 'ratings',
-            },
-          ],
-        },
-      ],
+      items: subscriberItems,
+      itemsAdmin: adminItems,
+      itemsEditor: editorItems,
     }),
 
     computed: {
@@ -173,9 +77,17 @@
         },
       },
       computedItems () {
-        return this.$store.state.user.isAdmin
-          ? this.itemsAdmin.map(this.mapItem)
-          : this.items.map(this.mapItem)
+        const user = this.$store.state.user
+
+        if (user.isAdmin) {
+          return this.itemsAdmin.map(this.mapItem)
+        }
+
+        if (user.isEditor) {
+          return this.itemsEditor.map(this.mapItem)
+        }
+
+        return this.items.map(this.mapItem)
       },
       profile () {
         if (!this.user) {

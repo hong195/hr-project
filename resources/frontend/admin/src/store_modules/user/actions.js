@@ -13,7 +13,6 @@ export default {
       })
   },
   logOut ({ commit }) {
-    console.log('call')
     return axios.post('auth/logout', '', authConfig())
       .then(() => {
         commit('authFailed')
