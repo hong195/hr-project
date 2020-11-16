@@ -3,6 +3,7 @@
     <v-btn
       v-for="(action, i) in actions"
       :key="i"
+      v-can="action.can"
       dark
       class="px-2 ml-1"
       :color="action.color"
@@ -16,8 +17,13 @@
 </template>
 
 <script>
+  import can from '@/plugins/directives/v-can'
+
   export default {
     name: 'Actions',
+    directives: {
+      can: can,
+    },
     props: ['item'],
     data () {
       return {
@@ -26,7 +32,7 @@
           {
             color: 'success',
             icon: 'mdi-pencil',
-            can: 'edit',
+            can: 'update',
             method: 'editItem',
           },
           {

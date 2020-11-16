@@ -8,7 +8,8 @@ use Spatie\Permission\Models\Role;
 
 class UserSeeder extends Seeder
 {
-    protected $permissions = ['view', 'pharmacies', 'update'];
+//    todo permission delegation
+    protected $permissions = ['read', 'create', 'update', 'delete'];
 
     /**
      * Run the database seeds.
@@ -19,6 +20,7 @@ class UserSeeder extends Seeder
     {
         $this->createAdmin();
         $this->createSubscriber();
+        $this->createEditor();
     }
 
     private function createAdmin()
@@ -52,6 +54,24 @@ class UserSeeder extends Seeder
         $userRole->givePermissionTo($this->createPermissions()->first());
 
         $user->assignRole($userRole);
+    }
+
+    public function createEditor()
+    {
+        $editor = $this->createUser([
+            'first_name' => 'editor',
+            'last_name' => 'editor',
+            'patronymic' => 'editor',
+            'email' => 'editor@gmail.com',
+            'password' => 'qwerty123'
+        ]);
+
+        $editorRole = Role::create(['name' => 'Editor'])
+            ->givePermissionTo($this->createPermissions()->filter(function($permission) {
+            return $permission->name !== 'delete';
+        }));
+
+        $editor->assignRole($editorRole);
     }
 
     private function createPermissions()

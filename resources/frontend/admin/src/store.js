@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import main from './store_modules/main'
 import user from './store_modules/user'
 import ui from './store_modules/ui'
 // eslint-disable-next-line camelcase
@@ -9,6 +8,6 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-    ui, alert_message, user, main,
+    ui, alert_message, user,
   },
 })

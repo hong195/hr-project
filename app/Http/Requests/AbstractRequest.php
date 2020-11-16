@@ -8,25 +8,15 @@ use Illuminate\Validation\ValidationException;
 
 abstract class AbstractRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     * By default only user with Admin role can pharmacies/update posts
-     *
-     * @return bool
-     */
     public function authorize(): bool
     {
-        if ($this->user() && $this->user()->hasRole('Admin')) {
+        if ($this->user() && $this->user()->hasRole(['Admin', 'Editor'])) {
             return true;
         }
+
         return false;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     abstract public function rules(): array;
 
     /**
@@ -43,10 +33,6 @@ abstract class AbstractRequest extends FormRequest
         );
     }
 
-    /**
-     *
-     * @return bool
-     */
     public function isUpdating(): bool
     {
         return in_array($this->getMethod(), ['PUT', 'PATCH']);

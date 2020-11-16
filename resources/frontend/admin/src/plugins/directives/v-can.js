@@ -2,7 +2,7 @@ import store from '@/store'
 
 export default {
   bind: function (el, binding, vnode) {
-    if (!store.getters.hasPermission(binding.value)) {
+    if (!store.getters['user/permissions'].includes(binding.value)) {
       const comment = document.createComment(' ')
       Object.defineProperty(comment, 'setAttribute', {
         value: () => undefined,

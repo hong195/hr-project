@@ -3,6 +3,7 @@
     <v-btn
       v-for="(action, i) in actions"
       :key="i"
+      v-can="action.can"
       dark
       class="px-2 ml-1"
       :color="action.color"
@@ -17,9 +18,14 @@
 </template>
 
 <script>
+  import can from '@/plugins/directives/v-can'
+
   import StaffDetail from '@/views/dashboard/pages/staffs/Detail'
   export default {
     name: 'Actions',
+    directives: {
+      can,
+    },
     components: { StaffDetail },
     props: ['item'],
     data () {
@@ -29,13 +35,13 @@
           {
             color: 'info',
             icon: 'mdi-eye',
-            can: 'view',
+            can: 'read',
             method: 'viewItem',
           },
           {
             color: 'success',
             icon: 'mdi-pencil',
-            can: 'edit',
+            can: 'update',
             method: 'editItem',
           },
           {
@@ -53,8 +59,8 @@
       },
       editItem () {
         this.$router.push({
-          name: 'update-staff',
-          params: { id: this.item.id },
+          name: 'createStaff',
+          query: { edit: true, id: this.item.id },
         })
       },
       viewItem () {

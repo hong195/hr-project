@@ -24,6 +24,7 @@ class UserResource extends JsonResource
             'ratings' => $this->whenLoaded('ratings'),
             'pharmacy' => new PharmacyResource($this->whenLoaded('pharmacy')),
             'role' => RoleResource::make(($this->roles)->first()),
+            'permissions' => $this->getPermissionsViaRoles()->map->name,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
