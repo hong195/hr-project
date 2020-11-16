@@ -5,6 +5,7 @@ namespace App\Forms;
 
 
 use App\Models\Check;
+use App\Models\User;
 use App\Repositories\Contracts\CheckAttributeRepositoryContract;
 use Saodat\FormBase\Contracts\FormBuilderInterface;
 
@@ -12,12 +13,13 @@ class CheckForm extends AbstractForm
 {
     private $checkAttributes;
 
-    protected $defaultFieldsAttributes = ['outlined' => true, "cols" => 6];
+    protected $defaultFieldsAttributes = ['outlined' => true];
 
 
     public function __construct(FormBuilderInterface $formBuilder,
                                 CheckAttributeRepositoryContract $checkAttributeRepository)
     {
+        $formBuilder->setDefaultsFieldsAttributes($this->defaultFieldsAttributes);
         $this->checkAttributes = $checkAttributeRepository->all();
         parent::__construct($formBuilder);
     }
@@ -28,8 +30,16 @@ class CheckForm extends AbstractForm
             'validationRule' => 'required'
         ]);
 
+        $this->formBuilder
+            ->add('select', 'user_id', 'Сотрудник',
+                [
+                    'options' => $this->getUsers(),
+                    'validationRule' => 'required',
+                ]);
+
         $this->formBuilder->add('date', 'created_at', 'Дата проверки',[
             'validationRule' => 'required',
+            'attributes' => ['min' => '2020-01-01', 'max'=> date("Y-m-d", strtotime("-1 days"))]
         ]);
 
         $this->checkAttributes->each(function($attribute) {
@@ -49,6 +59,16 @@ class CheckForm extends AbstractForm
             }
 
         });
+    }
+
+    protected function getUsers()
+    {
+        $users = User::all();
+        $users = $users->map(function ($user) {
+            return ['id' => $user->id, 'name' => $user->first_name.' '.$user->last_name];
+        })->toArray();
+
+        return $users;
     }
 
     public function fill(Check $check)

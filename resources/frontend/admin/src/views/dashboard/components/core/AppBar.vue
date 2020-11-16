@@ -25,8 +25,6 @@
       </v-icon>
     </v-btn>
 
-    <v-toolbar-title class="hidden-sm-and-down ml-3" v-text="$route.query.edit ? $t('edit_info') : $t($route.name)" />
-
     <v-spacer />
   </v-app-bar>
 </template>

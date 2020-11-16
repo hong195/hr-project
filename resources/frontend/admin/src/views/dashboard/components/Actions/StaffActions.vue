@@ -17,7 +17,7 @@
 </template>
 
 <script>
-  import StaffDetail from '@/views/dashboard/components/DetailDialogs/StaffDetail'
+  import StaffDetail from '@/views/dashboard/pages/staffs/Detail'
   export default {
     name: 'Actions',
     components: { StaffDetail },
@@ -53,8 +53,8 @@
       },
       editItem () {
         this.$router.push({
-          name: 'createStaff',
-          query: { edit: true, id: this.item.id },
+          name: 'update-staff',
+          params: { id: this.item.id },
         })
       },
       viewItem () {

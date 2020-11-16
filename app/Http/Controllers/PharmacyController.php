@@ -27,7 +27,7 @@ class PharmacyController extends Controller
 
     public function create(PharmacyForm $form)
     {
-        return response()->json($form->get());
+        return response()->json(['form' => $form->get()]);
     }
 
     public function store(PharmacyRequest $pharmacyRequest)
@@ -42,11 +42,11 @@ class PharmacyController extends Controller
         return new PharmacyResource($this->pharmacyRepository->findById($id));
     }
 
-    public function edit(PharmacyForm $pharmacyForm, int $id)
+    public function edit(PharmacyForm $form, int $id)
     {
-        $pharmacy = $this->pharmacyRepository->findById($id);
+        $attr = $this->pharmacyRepository->findById($id);
 
-        return $pharmacyForm->fill($pharmacy)->getSchema();
+        return response()->json(['form' => $form->fill($attr)->getSchema()]);
     }
 
     public function update(PharmacyRequest $pharmacyRequest, $id)

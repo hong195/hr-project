@@ -24,7 +24,7 @@ class UserController extends Controller
 
     public function create(UserForm $form)
     {
-        return response()->json($form->get());
+        return response()->json(['form' => $form->get()]);
     }
 
     public function store(UserRequest $userRequest)
@@ -38,7 +38,7 @@ class UserController extends Controller
     {
         $user = $this->userRepository->findByid($id);
 
-        return $form->fill($user)->get();
+        return response()->json(['form' => $form->fill($user)->get()]);
     }
 
     public function show($id)

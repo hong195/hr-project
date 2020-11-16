@@ -58,12 +58,22 @@ const router = new Router({
           },
         },
         {
-          name: 'createPharmacy',
+          name: 'create-pharmacy',
           path: 'create-pharmacy',
           component: () => import('@/views/dashboard/pages/pharmacies/CreateUpdate'),
           meta: {
             middleware: [
-              auth,
+              isAdmin,
+            ],
+          },
+        },
+        {
+          name: 'update-pharmacy',
+          path: 'update-pharmacy/:id',
+          component: () => import('@/views/dashboard/pages/pharmacies/CreateUpdate'),
+          meta: {
+            middleware: [
+              isAdmin,
             ],
           },
         },
@@ -71,6 +81,26 @@ const router = new Router({
           name: 'staff',
           path: 'staff',
           component: () => import('@/views/dashboard/pages/staffs/Index'),
+          meta: {
+            middleware: [
+              isAdmin,
+            ],
+          },
+        },
+        {
+          name: 'create-staff',
+          path: 'create-staff',
+          component: () => import('@/views/dashboard/pages/staffs/CreateUpdate'),
+          meta: {
+            middleware: [
+              isAdmin,
+            ],
+          },
+        },
+        {
+          name: 'update-staff',
+          path: 'update-staff/:id',
+          component: () => import('@/views/dashboard/pages/staffs/CreateUpdate'),
           meta: {
             middleware: [
               isAdmin,
@@ -144,16 +174,6 @@ const router = new Router({
           meta: {
             middleware: [
               isAdmin,
-            ],
-          },
-        },
-        {
-          name: 'createStaff',
-          path: 'create-staff',
-          component: () => import('@/views/dashboard/pages/staffs/CreateUpdate'),
-          meta: {
-            middleware: [
-              auth,
             ],
           },
         },

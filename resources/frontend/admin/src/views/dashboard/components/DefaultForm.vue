@@ -9,6 +9,7 @@
       v-model="formValue"
       :schema="schema"
       :scope="'check-create'"
+      :method="method"
       :on-submit="createOrUpdate"
       :on-update="createOrUpdate"
     />
@@ -32,6 +33,10 @@
         default: '',
       },
       titleUpdate: {
+        type: String,
+        default: '',
+      },
+      nextRouteName: {
         type: String,
         default: '',
       },
@@ -70,17 +75,17 @@
             this.schema = data.form
           })
       },
-      createOrUpdate () {
+      createOrUpdate ({ resolve }) {
         this.axios[this.method](this.endPointUrl, this.formValue)
           .then(({ data }) => {
             this.$store.commit('successMessage', data.message)
-            this.loading = false
-            this.$router.push({ name: 'attributes' })
+            this.$router.push({ name: this.nextRouteName })
           })
           .catch(error => {
             this.$store.commit('errorMessage', error)
             console.error(error)
           })
+        resolve()
       },
     },
   }

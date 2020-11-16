@@ -44,8 +44,8 @@
       },
       editItem () {
         this.$router.push({
-          name: 'createPharmacy',
-          query: { edit: true, id: this.item.id },
+          name: 'update-pharmacy',
+          params: { id: this.item.id },
         })
       },
       deleteItem () {
