@@ -73,6 +73,9 @@
         this.axios.get(this.formUrl)
           .then(({ data }) => {
             this.schema = data.form
+            if (this.$route.query.user_id) {
+              this.schema.find(item => item.name === 'user_id').value = parseInt(this.$route.query.user_id)
+            }
           })
       },
       createOrUpdate ({ resolve }) {

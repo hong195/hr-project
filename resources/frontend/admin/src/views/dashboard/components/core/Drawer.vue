@@ -33,8 +33,7 @@
 
     <v-list expand nav>
       <template v-for="(item, i) in computedItems">
-        <base-item-group v-if="item.children" :key="`group-${i}`" :item="item">
-        </base-item-group>
+        <base-item-group v-if="item.children" :key="`group-${i}`" :item="item" />
 
         <base-item v-else :key="`item-${i}`" :item="item" />
       </template>
@@ -95,8 +94,8 @@
               title: 'checks',
             },
             {
-              to: 'checks-create',
-              title: 'checks-create',
+              to: 'create-checks',
+              title: 'create-checks',
             },
           ],
         },

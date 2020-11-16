@@ -28,13 +28,20 @@ class CheckController extends Controller
     public function index(Request $request)
     {
         if ($ratingId = $request->get('rating_id')) {
-            $checks = Check::whereHas('ratings', function($query) use ($ratingId){
+            $checks = Check::whereHas('ratings', function ($query) use ($ratingId) {
                 return $query->where('ratings.id', $ratingId);
             })
                 ->get();
-        }else if($request->get('with_user')) {
+        } else if ($request->get('with_user')) {
             $checks = Check::with('user')->get();
-        }else {
+        } else if ($userId = $request->get('user_id')) {
+            $year = $request->get('year') ? $request->get('year') : now()->year;
+            $month = $request->get('month') ? $request->get('month') : now()->month;
+            $checks = Check::where('user_id', $userId)
+                ->whereYear('created_at', $year)
+                ->whereMonth('created_at', $month)
+                ->get();
+        } else {
             $checks = Check::with('meta')->get();
         }
 
@@ -73,7 +80,7 @@ class CheckController extends Controller
     {
         try {
             $this->checkRepository->update($id, $checkRequest->validated());
-        }catch (CheckExpcetion $e) {
+        } catch (CheckExpcetion $e) {
             return response()->json(['message' => $e->getMessage()], 403);
         }
 

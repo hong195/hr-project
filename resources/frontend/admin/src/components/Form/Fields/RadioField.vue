@@ -24,9 +24,9 @@
         <v-radio
           v-for="(option, index) in options"
           :key="`checkbox-${id}-${index}`"
-          :label="option.label"
+          :label="option.name"
           :name="option.name"
-          :value="option.value"
+          :value="option.id"
         />
       </v-radio-group>
     </validation-provider>

@@ -23,12 +23,13 @@ class CriteriaService implements CriteriaInterface
         $checkAttributes = $this->checkAttributeRepository->all();
 
         $checkAttributes->each(function($attribute) use ($data){
+
             if (!$attribute->use_in_rating && $data->has($attribute->name)) {
                 $attribute->value = $data[$attribute->name];
                 return true;
             }
             $attribute->options->each(function($option) use ($attribute,$data){
-                $option->selected  = $data->has($attribute->name) && $option->value == $data[$attribute->name];
+                $option->selected  = $data->has($attribute->name) && $option->id == $data[$attribute->name];
             });
         });
 

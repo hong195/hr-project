@@ -6,15 +6,24 @@
       inline
       class="px-5 py-3 mt-6"
     >
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        class="ml-auto"
-        label="Search"
-        hide-details
-        single-line
-        style="max-width: 250px"
-      />
+      <div class="d-flex">
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          class="ml-auto mr-3"
+          label="Search"
+          hide-details
+          single-line
+          outlined
+          large
+          style="max-width: 250px"
+        />
+        <v-btn :to="{name: 'create-checks'}" x-large outlined
+               color="success"
+        >
+          Создать чек
+        </v-btn>
+      </div>
 
       <v-divider class="mt-3" />
 
@@ -29,16 +38,23 @@
         <template v-slot:item.actions="{ item }">
           <actions :item="item" @actionDeletedResponse="actionDeletedResponse" />
         </template>
+        <template v-slot:item.check="{ item }">
+          <v-btn color="info" outlined @click="openChecksDialog(item.id)">
+            Чек
+          </v-btn>
+        </template>
       </v-data-table>
     </base-material-card>
+    <checks ref="checksDialog" />
   </v-container>
 </template>
 
 <script>
   import Actions from '@/views/dashboard/components/Actions/StaffActions'
+  import Checks from '@/views/dashboard/pages/staffs/Checks'
   export default {
     name: 'Staff',
-    components: { Actions },
+    components: { Checks, Actions },
     data () {
       return {
         headers: [
@@ -63,6 +79,10 @@
             value: 'email',
           },
           {
+            text: 'Чек',
+            value: 'check',
+          },
+          {
             sortable: false,
             text: 'Действия',
             value: 'actions',
@@ -78,6 +98,11 @@
       this.items = response.data.data
     },
     methods: {
+      openChecksDialog (id) {
+        this.$refs.checksDialog.dialog = true
+        this.$refs.checksDialog.userId = id
+        this.$refs.checksDialog.fetchUserChecks()
+      },
       actionDeletedResponse (val) {
         this.items.splice(
           this.items.findIndex(({ id }) => id === val),

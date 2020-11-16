@@ -128,8 +128,18 @@ const router = new Router({
           },
         },
         {
-          name: 'checks-create',
-          path: 'checks-create',
+          name: 'create-checks',
+          path: 'create-checks',
+          component: () => import('@/views/dashboard/pages/checks/Create'),
+          meta: {
+            middleware: [
+              isAdmin,
+            ],
+          },
+        },
+        {
+          name: 'update-checks',
+          path: 'update-checks/:id',
           component: () => import('@/views/dashboard/pages/checks/Create'),
           meta: {
             middleware: [

@@ -73,6 +73,25 @@ class CheckForm extends AbstractForm
 
     public function fill(Check $check)
     {
+
+        foreach ($this->formBuilder->getFields() as $field) {
+            $value = null;
+
+            if ('name' === $field->getName()) {
+                $value = $check->name;
+            }
+
+            if ('user_id' === $field->getName()) {
+                $value = $check->user_id;
+            }
+
+            if ('created_at' === $field->getName()) {
+                $value = date("Y-m-d", strtotime($check->created_at));
+            }
+
+            $field->setValue($value);
+        }
+
         $criterias = $check->criteria;
 
         collect($this->formBuilder->getFields())->each(function($field) use ($criterias){
@@ -80,14 +99,15 @@ class CheckForm extends AbstractForm
                 if ($field->getName() === "meta.$criteria->name") {
                     $value = null;
                     if ($criteria->options) {
+
                         foreach ($criteria->options as $option) {
                             if (!$option->selected) {
                                 continue;
                             }
+
                             $value = $option->id;
                         }
                     }
-
                     if (property_exists($criteria, 'value')) {
                         $value = $criteria->value;
                     }

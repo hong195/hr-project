@@ -1,0 +1,178 @@
+<template>
+  <v-dialog
+    v-model="dialog"
+    max-width="700px"
+    transition="dialog-bottom-transition"
+  >
+    <v-card>
+      <v-card-title class="align-top">
+        <month-picker v-model="date" />
+        <v-spacer />
+        <v-btn :to="{name: 'create-checks', query: {'user_id': userId } }" x-large outlined
+               color="success"
+        >
+          Создать
+        </v-btn>
+        <v-spacer />
+        <v-icon @click="dialog=false">
+          mdi-close
+        </v-icon>
+      </v-card-title>
+      <v-card-text>
+        <v-data-table
+          :headers="headers"
+          :items="checks"
+          :search.sync="search"
+          :sort-by="['created_at']"
+          :sort-desc="[false, true]"
+          hide-default-footer
+          :single-expand="true"
+          show-expand
+          :expanded.sync="expanded"
+        >
+          <template v-slot:item.created_at="{ item }">
+            {{ item.created_at.substring(0, 10) }}
+          </template>
+          <template v-slot:expanded-item="{ headers, item }">
+            <td :colspan="headers.length">
+              <view-check :active-check="item" />
+            </td>
+          </template>
+          <template v-slot:item.actions="{ item }">
+            <v-btn
+              v-for="(action, i) in actions"
+              :key="i"
+              class="px-2 ml-1"
+              :disabled="checks.length >= 10"
+              :color="action.color"
+              min-width="0"
+              small
+              @click="actionMethod(action.method, item)"
+            >
+              <v-icon small v-text="action.icon" />
+            </v-btn>
+          </template>
+        </v-data-table>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
+</template>
+<script>
+  import MonthPicker from '@/views/dashboard/components/MonthPicker'
+  import ViewCheck from '@/views/dashboard/components/ViewCheck'
+
+  export default {
+    name: 'Checks',
+    components: { ViewCheck, MonthPicker },
+    data () {
+      return {
+        expanded: [],
+        userId: null,
+        dialog: false,
+        checks: [],
+        search: null,
+        date: null,
+        headers: [
+          {
+            text: 'ID',
+            value: 'id',
+          },
+          {
+            text: 'Наименование',
+            value: 'name',
+          },
+          {
+            text: 'Дата Чека',
+            value: 'created_at',
+            align: 'left',
+          },
+          {
+            sortable: false,
+            text: 'Действия',
+            value: 'actions',
+            align: 'right',
+          },
+          { text: '', value: 'data-table-expand', align: 'right' },
+        ],
+        actions: [
+          {
+            color: 'success',
+            icon: 'mdi-pencil',
+            can: 'edit',
+            method: 'editItem',
+          },
+          {
+            color: 'error',
+            icon: 'mdi-close',
+            can: 'delete',
+            method: 'deleteItem',
+          },
+        ],
+      }
+    },
+    watch: {
+      date () {
+        this.fetchUserChecks()
+      },
+    },
+    methods: {
+      fetchUserChecks () {
+        this.axios.get('checks', {
+          params: {
+            user_id: this.userId,
+            year: this.date ? this.date.year : null,
+            month: this.date ? this.date.month : null,
+          },
+        })
+          .then(({ data }) => {
+            this.checks = data.data
+          })
+      },
+      actionMethod (funcName, item) {
+        this[funcName](item)
+      },
+      deleteItem (item) {
+        this.axios.delete(`checks/${item.id}`)
+          .then(({ data }) => {
+            this.fetchUserChecks()
+            this.$store.commit('successMessage', data.message)
+          })
+          .catch(error => {
+            this.$store.commit('errorMessage', error)
+          })
+      },
+      editItem (item) {
+        this.$router.push({ name: 'update-checks', params: { id: item.id } })
+      },
+      viewItem (item) {
+        this.activeItem = item
+        this.$refs.detail.dialog = true
+      },
+    },
+  }
+</script>
+<style lang="scss">
+.table-detail {
+  width: 100%;
+
+  td {
+    padding: 10px 0;
+    border-bottom: 1px solid #c5c5c5;
+
+    span.meta {
+      color: rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  td:nth-child(2) {
+    color: #1a1a1a;
+    font-size: 16px;
+  }
+
+  tr:last-child {
+    td {
+      border-bottom: none;
+    }
+  }
+}
+</style>
