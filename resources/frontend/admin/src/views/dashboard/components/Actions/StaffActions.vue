@@ -59,8 +59,8 @@
       },
       editItem () {
         this.$router.push({
-          name: 'createStaff',
-          query: { edit: true, id: this.item.id },
+          name: 'update-staff',
+          params: { id: this.item.id },
         })
       },
       viewItem () {

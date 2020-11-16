@@ -39,6 +39,7 @@
               v-model.lazy="date"
               type="month"
               :scrollable="false"
+              :locale="locale"
             >
               <v-spacer />
               <v-btn
@@ -158,6 +159,11 @@
           },
         ],
       }
+    },
+    computed: {
+      locale () {
+        return process.env.VUE_APP_I18N_LOCALE || process.env.VUE_APP_I18N_FALLBACK_LOCALE
+      },
     },
     watch: {
       pharmacy_id: {

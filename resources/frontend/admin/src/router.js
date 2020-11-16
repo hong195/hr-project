@@ -74,7 +74,7 @@ const router = new Router({
           component: () => import('@/views/dashboard/pages/pharmacies/CreateUpdate'),
           meta: {
             middleware: [
-              isAdmin,
+              isEditor,
             ],
           },
         },
@@ -84,7 +84,7 @@ const router = new Router({
           component: () => import('@/views/dashboard/pages/staffs/Index'),
           meta: {
             middleware: [
-              isAdmin,
+              isEditor,
             ],
           },
         },
@@ -94,7 +94,7 @@ const router = new Router({
           component: () => import('@/views/dashboard/pages/staffs/CreateUpdate'),
           meta: {
             middleware: [
-              isAdmin,
+              isEditor,
             ],
           },
         },
@@ -134,7 +134,7 @@ const router = new Router({
           component: () => import('@/views/dashboard/pages/checks/Create'),
           meta: {
             middleware: [
-              isAdmin,
+              isEditor,
             ],
           },
         },

@@ -30,6 +30,7 @@
       ref="picker"
       v-model="innerValue"
       v-bind="attributes"
+      :locale="locale"
       @change="save"
     />
   </v-menu>
@@ -43,6 +44,11 @@
       date: null,
       menu: false,
     }),
+    computed: {
+      locale () {
+        return process.env.VUE_APP_I18N_LOCALE || process.env.VUE_APP_I18N_FALLBACK_LOCALE
+      },
+    },
     watch: {
       menu (val) {
         val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))

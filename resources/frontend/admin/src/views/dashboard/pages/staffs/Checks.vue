@@ -10,6 +10,7 @@
         <v-spacer />
         <v-btn :to="{name: 'create-checks', query: {'user_id': userId } }" x-large outlined
                color="success"
+               :disabled="canCrud"
         >
           Создать
         </v-btn>
@@ -43,7 +44,7 @@
               v-for="(action, i) in actions"
               :key="i"
               class="px-2 ml-1"
-              :disabled="checks.length >= 10"
+              :disabled="canCrud"
               :color="action.color"
               min-width="0"
               small
@@ -109,6 +110,11 @@
           },
         ],
       }
+    },
+    computed: {
+      canCrud () {
+        return this.checks.length >= 10
+      },
     },
     watch: {
       date () {
