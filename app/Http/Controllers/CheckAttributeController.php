@@ -31,7 +31,7 @@ class CheckAttributeController extends Controller
     {
         $this->checkAttributeRepository->create($checkAttributeRequest->validated());
 
-        return response()->json(['message' => 'Attribute was successfully created!'], 201);
+        return response()->json(['message' => __('crud.attribute_created')], 201);
     }
 
     public function edit(CheckAttributeForm $form, $id)
@@ -50,17 +50,12 @@ class CheckAttributeController extends Controller
     {
         $this->checkAttributeRepository->update($id, $checkAttributeRequest->validated());
 
-        return response()->json(['message' => 'Attribute was successfully updated!'], 200);
+        return response()->json(['message' => __('crud.attribute_updated')], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function destroy(int $id)
     {
         $this->checkAttributeRepository->delete($id);
-        return response()->json(['message' => 'Attribute was deleted!'], 200);
+        return response()->json(['message' => __('crud.attribute_deleted')], 200);
     }
 }

@@ -31,7 +31,7 @@ class AuthController extends Controller
 
         //Todo make remember me, correctly
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' =>  __('auth.failed')], 401);
         }
 
         return $this->respondWithToken($token);
@@ -58,7 +58,7 @@ class AuthController extends Controller
     {
         auth()->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['message' => 'auth.logout']);
     }
 
     public function register(UserRequest $userRequest, User $user)

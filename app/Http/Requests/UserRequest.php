@@ -4,17 +4,6 @@ namespace App\Http\Requests;
 
 class UserRequest extends AbstractRequest
 {
-    public function authorize(): bool
-    {
-        return true;
-        if ($this->user() && $this->user()->hasRole('Admin')) {
-            return true;
-        }
-        return false;
-    }
-    /**
-     * @var \string[][]
-     */
     protected $rules = [
         'pharmacy_id' => ['exists:pharmacies,id'],
         'first_name' => ['required', 'alpha'],

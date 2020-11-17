@@ -27,6 +27,7 @@ class CheckController extends Controller
 
     public function index(Request $request)
     {
+        //Todo move search login into search class
         if ($ratingId = $request->get('rating_id')) {
             $checks = Check::whereHas('ratings', function ($query) use ($ratingId) {
                 return $query->where('ratings.id', $ratingId);
@@ -61,7 +62,7 @@ class CheckController extends Controller
         } catch (CheckExpcetion $e) {
             return response()->json(['message' => $e->getMessage()], 403);
         }
-        return response()->json(['message' => 'Check was successfully created'], 201);
+        return response()->json(['message' => __('crud.check_created')], 201);
     }
 
     public function show($id)
@@ -84,7 +85,7 @@ class CheckController extends Controller
             return response()->json(['message' => $e->getMessage()], 403);
         }
 
-        return response()->json(['message' => 'Check was successfully updated'], 200);
+        return response()->json(['message' => __('crud.check_updated')], 200);
     }
 
     public function destroy(Check $check)
@@ -93,8 +94,9 @@ class CheckController extends Controller
             $check->delete();
         } catch (\Exception $e) {
             return response()
-                ->json(['message' => 'There was an error while deleting the check, please try later'], 503);
+                ->json(['message' => __('crud.delete_error')], 503);
         }
-        return response()->json(['message' => 'Check was successfully deleted'], 200);
+
+        return response()->json(['message' => __('crud.check_deleted')], 200);
     }
 }

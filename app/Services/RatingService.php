@@ -67,7 +67,7 @@ class RatingService
 
 
         if ($scored > $out_of) {
-            throw new UserRatingException('Scored number cannot be larger than total');
+            throw new UserRatingException(__('rating.scored_error'));
         }
 
         $rating = $this->ratingRepository->create([

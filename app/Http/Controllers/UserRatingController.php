@@ -22,6 +22,7 @@ class UserRatingController extends Controller
 
     public function index(Request $request)
     {
+        //Todo move search login into search class
         $year = $request->get('year') ? $request->get('year') : now()->year;
         $month = $request->get('month') ? $request->get('month') : now()->month;
 

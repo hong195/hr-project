@@ -6,7 +6,6 @@ namespace App\Repositories;
 
 use App\Exceptions\CheckExpcetion;
 use App\Models\Check;
-use App\Models\CheckData;
 use App\Repositories\Contracts\CheckRepositoryContract;
 use App\Repositories\Contracts\UserRepositoryContract;
 use App\Services\Contracts\CriteriaInterface;
@@ -50,12 +49,11 @@ class CheckRepository extends AbstractRepository implements CheckRepositoryContr
         $checkRequest = collect($checkRequest);
         $user = $this->userRepository->findById($checkRequest->get('user_id'));
 
-        if ($user->hasRating($checkRequest->get('created_at'))) {
-            throw new CheckExpcetion(sprintf(
-                'Failed to pharmacies check, user has already have rating for given period - %s %s',
-                Carbon::parse($checkRequest->get('created_at'))->format('F'),
-                Carbon::parse($checkRequest->get('created_at'))->format('Y')
-            ));
+        if ($user->hasRating($created_at = $checkRequest->get('created_at'))) {
+            throw new CheckExpcetion(
+                __('check.failed_to_create',
+                    ['date' => Carbon::parse($created_at)->translatedFormat('F Y')]
+                ));
         }
 
         $this->setAttributes($checkRequest);
@@ -87,11 +85,10 @@ class CheckRepository extends AbstractRepository implements CheckRepositoryContr
         $this->model = $this->findById($id);
         $user = $this->model->user;
 
-        if ($user->hasRating($this->model->created_at)) {
-            throw new CheckExpcetion(sprintf(
-                'Failed to update check, user`s rating already generated for given period - %s %s',
-                $this->model->created_at->format('F'),
-                $this->model->created_at->format('Y')
+        if ($user->hasRating($created_at = $checkRequest->get('created_at'))) {
+            throw new CheckExpcetion(
+                __('check.failed_to_update',
+                ['date' => Carbon::parse($created_at)->translatedFormat('F Y')]
             ));
         }
 

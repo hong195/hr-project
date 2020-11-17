@@ -27,7 +27,7 @@ class CheckAttributeOptionController extends Controller
     {
         $this->option->create($request->validated());
 
-        return response()->json(['message' => 'Option was created']);
+        return response()->json(['message' => __('crud.option_created')]);
     }
 
     public function edit(CheckAttributeOptionForm $form, $id)
@@ -41,13 +41,13 @@ class CheckAttributeOptionController extends Controller
     {
         $this->option->update($id,$request->validated());
 
-        return response()->json(['message' => 'Attribute option was updated']);
+        return response()->json(['message' => __('crud.option_updated')]);
     }
 
     public function delete($id)
     {
         $this->option->delete($id);
 
-        return response()->json(['message' => 'Attribute option was deleted']);
+        return response()->json(['message' => __('crud.option_deleted')]);
     }
 }

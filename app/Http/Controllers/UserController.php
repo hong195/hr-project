@@ -31,7 +31,7 @@ class UserController extends Controller
     {
         $this->userRepository->create($userRequest->validated());
 
-        return response()->json(['message' => 'User have been successfully created!'], 201);
+        return response()->json(['message' => __('crud.user_created')], 201);
     }
 
     public function edit(UserForm $form, $id)
@@ -50,13 +50,13 @@ class UserController extends Controller
     {
         $this->userRepository->update($id, $userRequest->validated());
 
-        return response()->json(['message' => 'User have been successfully updated!'], 200);
+        return response()->json(['message' => __('crud.user_updated')], 200);
     }
 
     public function destroy(int $id)
     {
         $this->userRepository->delete($id);
 
-        return response()->json(['message' => 'User was deleted!'], 200);
+        return response()->json(['message' => __('crud.user_deleted')], 200);
     }
 }
