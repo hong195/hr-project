@@ -22,13 +22,15 @@ Route::group([
     Route::post('me', 'AuthController@me');
 });
 
-Route::resources([
-    'users' => UserController::class,
-    'pharmacies' => PharmacyController::class,
-    'check-attributes' => CheckAttributeController::class,
-    'checks' => CheckController::class,
-    'check-attribute-option' => CheckAttributeOptionController::class,
-]);
+Route::group(['middleware' => 'auth:api'], function() {
+    Route::resources([
+        'users' => UserController::class,
+        'pharmacies' => PharmacyController::class,
+        'check-attributes' => CheckAttributeController::class,
+        'checks' => CheckController::class,
+        'check-attribute-option' => CheckAttributeOptionController::class,
+    ]);
+});
 
 Route::get('/roles', 'App\Http\Controllers\RoleController@index');
 

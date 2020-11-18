@@ -21,9 +21,10 @@
         v-else-if="item.avatar"
         class="align-self-center"
         color="grey"
+        style="border-radius: 0 !important;"
       >
         <v-img
-          src="@/assets/logo.jpg"
+          :src="require(`@/assets/avatar.jpg`)"
         />
       </v-list-item-avatar>
 

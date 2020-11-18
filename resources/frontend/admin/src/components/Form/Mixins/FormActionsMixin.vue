@@ -19,7 +19,10 @@
         this.loading = true
         this.submit()
           .then(() => {
-            this.loading = false
+            // todo refactor submiting logic
+            setTimeout(() => {
+              this.loading = false
+            }, 500)
           })
           .catch(error => {
             this.loading = false

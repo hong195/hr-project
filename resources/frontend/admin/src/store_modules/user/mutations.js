@@ -1,4 +1,3 @@
-// import Vue from 'vue'
 export default {
   authFailed (state) {
     state.currentUser = null
@@ -14,15 +13,17 @@ export default {
     state.authError = false
     state.isLoggedIn = true
     state.isActive = false
-    state.currentUser = payload.user
-
-    if (payload.user.permissions.length) {
-      state.permissions = payload.user.permissions
-    }
 
     if (payload.access_token) {
       state.token = payload.access_token
       localStorage.setItem('token', payload.access_token)
+    }
+  },
+  setUser (state, payload) {
+    state.currentUser = payload.user
+
+    if (payload.user.permissions.length) {
+      state.permissions = payload.user.permissions
     }
 
     if (payload.user.role && ['Admin'].includes(payload.user.role.name)) {

@@ -17,7 +17,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'refresh']]);
     }
 
     /**
@@ -61,11 +61,6 @@ class AuthController extends Controller
         return response()->json(['message' => 'auth.logout']);
     }
 
-    public function register(UserRequest $userRequest, User $user)
-    {
-        $user->create($userRequest->validated());
-        return $this->login();
-    }
     /**
      * Refresh a token.
      *
@@ -87,9 +82,6 @@ class AuthController extends Controller
     {
         return response()->json([
             'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
-            'user' => new UserResource(auth()->user())
         ]);
     }
 
