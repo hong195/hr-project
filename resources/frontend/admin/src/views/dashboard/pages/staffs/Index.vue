@@ -11,14 +11,12 @@
           v-model="search"
           append-icon="mdi-magnify"
           class="ml-auto mr-3"
-          label="Search"
+          label="Поиск"
           hide-details
-          single-line
           outlined
-          large
           style="max-width: 250px"
         />
-        <v-btn :to="{name: 'create-checks'}" x-large outlined
+        <v-btn height="56" :to="{name: 'create-checks'}" outlined
                color="success"
         >
           Создать чек
@@ -51,7 +49,7 @@
 
 <script>
   import Actions from '@/views/dashboard/components/Actions/StaffActions'
-  import Checks from '@/views/dashboard/pages/staffs/Checks'
+  import Checks from '@/views/dashboard/pages/checks/Index'
   export default {
     name: 'Staff',
     components: { Checks, Actions },

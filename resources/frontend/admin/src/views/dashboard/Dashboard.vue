@@ -1,15 +1,13 @@
 <template>
-  <v-container
-    id="dashboard"
-    fluid
-    tag="section"
-  >
-    welcome
+  <v-container>
+    <pharmacy-rating />
   </v-container>
 </template>
 
 <script>
+  import PharmacyRating from '@/views/dashboard/components/Graphs/PharmacyRating'
   export default {
-    name: 'DashboardDashboard',
+    name: 'DashBoard',
+    components: { PharmacyRating },
   }
 </script>

@@ -51,4 +51,5 @@ class RatingRepository extends AbstractRepository implements RatingRepositoryCon
 
         return $user->ratings()->whereYear('created_at', $year)->whereMonth('created_at', $month)->with('checks')->first();
     }
+
 }

@@ -119,16 +119,6 @@ const router = new Router({
           },
         },
         {
-          name: 'checks',
-          path: 'checks',
-          component: () => import('@/views/dashboard/pages/checks/Index'),
-          meta: {
-            middleware: [
-              isEditor,
-            ],
-          },
-        },
-        {
           name: 'create-checks',
           path: 'create-checks',
           component: () => import('@/views/dashboard/pages/checks/Create'),

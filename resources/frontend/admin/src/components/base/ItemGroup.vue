@@ -23,7 +23,7 @@
         color="grey"
       >
         <v-img
-          src="https://demos.creative-tim.com/material-dashboard-pro/assets/img/faces/avatar.jpg"
+          src="@/assets/logo.jpg"
         />
       </v-list-item-avatar>
 

@@ -6,7 +6,7 @@
     class="mt-3"
   >
     <default-form :base-url="baseUrl"
-                  next-route-name="checks"
+                  next-route-name="staff"
                   title-create="Создать чек"
                   title-update="Обновить чек"
     />

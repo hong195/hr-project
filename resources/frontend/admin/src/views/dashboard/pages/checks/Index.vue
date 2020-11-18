@@ -1,102 +1,147 @@
 <template>
-  <v-container id="extended-tables" fluid tag="section">
-    <base-material-card
-      color="success"
-      icon="mdi-clipboard-text"
-      inline
-      title="Список чеков"
-      class="px-5 py-3 my-6"
-    >
-      <v-data-table
-        :headers="headers"
-        :items="checks"
-        :search.sync="search"
-        :sort-by="['id']"
-        :sort-desc="[false, true]"
-      >
-        <template v-slot:item.actions="{ item }">
-          <v-btn
-            v-for="(action, i) in actions"
-            :key="i"
-            class="px-2 ml-1"
-            :color="action.color"
-            min-width="0"
-            small
-            @click="actionMethod(action.method, item)"
-          >
-            <v-icon small v-text="action.icon" />
-          </v-btn>
-        </template>
-      </v-data-table>
-    </base-material-card>
-    <div class="py-3" />
-  </v-container>
+  <v-dialog
+    v-model="dialog"
+    max-width="700px"
+    transition="dialog-bottom-transition"
+  >
+    <v-card min-height="400px">
+      <v-card-title class="align-top">
+        <month-picker v-model="date" />
+        <v-spacer />
+        <v-btn :to="{name: 'create-checks', query: {'user_id': userId } }" x-large outlined
+               color="success"
+               :disabled="canCrud"
+        >
+          Создать
+        </v-btn>
+        <v-spacer />
+        <v-icon @click="dialog=false">
+          mdi-close
+        </v-icon>
+      </v-card-title>
+      <v-card-text>
+        <v-data-table
+          :headers="headers"
+          :loading="isLoading"
+          :items="checks"
+          :search.sync="search"
+          :sort-by="['created_at']"
+          :sort-desc="[false, true]"
+          hide-default-footer
+          :single-expand="true"
+          show-expand
+          :expanded.sync="expanded"
+        >
+          <template v-slot:item.created_at="{ item }">
+            {{ formattedDate(item.created_at) }}
+          </template>
+          <template v-slot:expanded-item="{ headers, item }">
+            <td :colspan="headers.length">
+              <view-check :active-check="item" />
+            </td>
+          </template>
+          <template v-slot:item.actions="{ item }">
+            <v-btn
+              v-for="(action, i) in actions"
+              :key="i"
+              class="px-2 ml-1"
+              :disabled="canCrud"
+              :color="action.color"
+              min-width="0"
+              small
+              @click="actionMethod(action.method, item)"
+            >
+              <v-icon small v-text="action.icon" />
+            </v-btn>
+          </template>
+        </v-data-table>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
 </template>
-
 <script>
+  import MonthPicker from '@/views/dashboard/components/MonthPicker'
+  import ViewCheck from '@/views/dashboard/components/ViewCheck'
+  import moment from 'moment'
   export default {
-    name: 'Index',
-    data: () => ({
-      checks: [],
-      search: null,
-      headers: [
-        {
-          text: 'Идентефикатор',
-          value: 'id',
-        },
-        {
-          text: 'Поьзователь',
-          value: 'owner',
-        },
-        {
-          text: 'Дата созданя',
-          value: 'created_at',
-        },
-        {
-          sortable: false,
-          text: 'Actions',
-          value: 'actions',
-          align: 'right',
-        },
-      ],
-      actions: [
-        {
-          color: 'info',
-          icon: 'mdi-eye',
-          can: 'view',
-          method: 'viewItem',
-        },
-        {
-          color: 'success',
-          icon: 'mdi-pencil',
-          can: 'edit',
-          method: 'editItem',
-        },
-        {
-          color: 'error',
-          icon: 'mdi-close',
-          can: 'delete',
-          method: 'deleteItem',
-        },
-      ],
-    }),
-    created () {
-      this.fetchChecks()
+    name: 'Checks',
+    components: { ViewCheck, MonthPicker },
+    data () {
+      return {
+        isLoading: false,
+        expanded: [],
+        userId: null,
+        dialog: false,
+        checks: [],
+        search: null,
+        date: null,
+        headers: [
+          {
+            text: 'ID',
+            value: 'id',
+          },
+          {
+            text: 'Наименование',
+            value: 'name',
+          },
+          {
+            text: 'Дата Чека',
+            value: 'created_at',
+            align: 'left',
+          },
+          {
+            sortable: false,
+            text: 'Действия',
+            value: 'actions',
+            align: 'right',
+          },
+          { text: '', value: 'data-table-expand', align: 'right' },
+        ],
+        actions: [
+          {
+            color: 'success',
+            icon: 'mdi-pencil',
+            can: 'edit',
+            method: 'editItem',
+          },
+          {
+            color: 'error',
+            icon: 'mdi-close',
+            can: 'delete',
+            method: 'deleteItem',
+          },
+        ],
+      }
+    },
+    computed: {
+      canCrud () {
+        return this.checks.length >= 10
+      },
+    },
+    watch: {
+      date () {
+        this.fetchUserChecks()
+      },
     },
     methods: {
-      fetchChecks () {
+      formattedDate (val) {
+        return moment(val).locale('ru').format('D MMMM YYYY')
+      },
+      fetchUserChecks () {
+        this.isLoading = true
         this.axios.get('checks', {
           params: {
-            with_user: true,
+            user_id: this.userId,
+            year: this.date ? this.date.year : null,
+            month: this.date ? this.date.month : null,
           },
         })
           .then(({ data }) => {
-            this.checks = data.data.map(check => {
-              return {
-                ...check,
-                owner: `${check.user.first_name} ${check.user.last_name} ${check.user.patronymic}`,
-              }
-            })
+            this.isLoading = false
+            this.checks = data.data
+          }).catch(e => {
+            this.isLoading = false
+            console.log(e)
           })
       },
       actionMethod (funcName, item) {
@@ -104,19 +149,46 @@
       },
       deleteItem (item) {
         this.axios.delete(`checks/${item.id}`)
-          .then(() => {
-            this.checks.splice(
-              this.checks.findIndex(({ id }) => id === item.id), 1,
-            )
+          .then(({ data }) => {
+            this.fetchUserChecks()
+            this.$store.commit('successMessage', data.message)
           })
           .catch(error => {
-            console.error(error)
+            this.$store.commit('errorMessage', error)
           })
+      },
+      editItem (item) {
+        this.$router.push({ name: 'update-checks', params: { id: item.id } })
+      },
+      viewItem (item) {
+        this.activeItem = item
+        this.$refs.detail.dialog = true
       },
     },
   }
 </script>
+<style lang="scss">
+.table-detail {
+  width: 100%;
 
-<style scoped>
+  td {
+    padding: 10px 0;
+    border-bottom: 1px solid #c5c5c5;
 
+    span.meta {
+      color: rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  td:nth-child(2) {
+    color: #1a1a1a;
+    font-size: 16px;
+  }
+
+  tr:last-child {
+    td {
+      border-bottom: none;
+    }
+  }
+}
 </style>

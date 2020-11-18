@@ -24,7 +24,7 @@ class PharmacyRatingRequest extends AbstractRequest
     public function rules() : array
     {
         return [
-            'pharmacy_id' => ['required', 'integer'],
+            //'pharmacy_id' => ['required', 'integer'],
             'year' => ['required', 'integer'],
             'month' => ['required', 'integer'],
         ];
