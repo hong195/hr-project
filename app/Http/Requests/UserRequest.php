@@ -4,6 +4,24 @@ namespace App\Http\Requests;
 
 class UserRequest extends AbstractRequest
 {
+    public function authorize(): bool
+    {
+        $currentUser = auth()->user();
+        $userId = (int) $this->route()->user;
+
+        if ($this->isUpdating() && $currentUser && $currentUser->id === $userId) {
+            return true;
+        }
+
+        $hasAdminOrEditorRole = parent::authorize();
+
+        if ($hasAdminOrEditorRole) {
+            return true;
+        }
+
+        return false;
+    }
+
     protected $rules = [
         'pharmacy_id' => ['exists:pharmacies,id'],
         'first_name' => ['required', 'alpha'],

@@ -7,6 +7,7 @@ namespace App\Forms;
 use App\Models\Check;
 use App\Models\User;
 use App\Repositories\Contracts\CheckAttributeRepositoryContract;
+use App\Repositories\Contracts\UserRepositoryContract;
 use Saodat\FormBase\Contracts\FormBuilderInterface;
 
 class CheckForm extends AbstractForm
@@ -14,11 +15,17 @@ class CheckForm extends AbstractForm
     private $checkAttributes;
 
     protected $defaultFieldsAttributes = ['outlined' => true];
+    /**
+     * @var UserRepositoryContract
+     */
+    private $userRepository;
 
 
     public function __construct(FormBuilderInterface $formBuilder,
+                                UserRepositoryContract $userRepository,
                                 CheckAttributeRepositoryContract $checkAttributeRepository)
     {
+        $this->userRepository = $userRepository;
         $formBuilder->setDefaultsFieldsAttributes($this->defaultFieldsAttributes);
         $this->checkAttributes = $checkAttributeRepository->all();
         parent::__construct($formBuilder);
@@ -64,7 +71,7 @@ class CheckForm extends AbstractForm
 
     protected function getUsers()
     {
-        $users = User::all();
+        $users = $this->userRepository->all();
         $users = $users->map(function ($user) {
             return ['id' => $user->id, 'name' => $user->first_name.' '.$user->last_name];
         })->toArray();

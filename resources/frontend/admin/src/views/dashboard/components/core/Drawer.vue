@@ -99,7 +99,7 @@
           title: this.user.first_name + ' ' + this.user.last_name,
           children: [
             {
-              to: `create-staff?edit=true&id=${this.user.id}`,
+              to: `update-staff/${this.user.id}`,
               title: this.$t('edit_profile'),
             },
             {

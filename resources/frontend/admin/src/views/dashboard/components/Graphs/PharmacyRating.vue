@@ -26,11 +26,10 @@
   import MonthPicker from '@/views/dashboard/components/MonthPicker'
   import BarChart from '@/views/dashboard/components/Graphs/BarChart'
   import moment from 'moment'
-  import Actions from '@/views/dashboard/components/Actions/PharmacyActions'
 
   export default {
     name: 'PharmacyRating',
-    components: { Actions, BarChart, MonthPicker },
+    components: { BarChart, MonthPicker },
     data () {
       return {
         date: {

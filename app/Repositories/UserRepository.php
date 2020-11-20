@@ -42,11 +42,12 @@ class UserRepository extends AbstractRepository implements UserRepositoryContrac
     {
         $this->model = $this->findById($id);
         $data = collect($data);
-        $this->setMainAttributes($data);
 
         if (!$data->get('password')) {
             $data->forget('password');
         }
+
+        $this->setMainAttributes($data);
 
         if ($data->has('role')) {
             $this->detachRole();
@@ -73,6 +74,13 @@ class UserRepository extends AbstractRepository implements UserRepositoryContrac
         }
 
         return $this->model->detach($id);
+    }
+
+    public function all(array $relations = [])
+    {
+        return $this->model->whereHas('roles', function($role) {
+            return $role->whereNotIn('name', ['Admin', 'Editor']);
+        })->get();
     }
 
     public function deleteUserMeta()

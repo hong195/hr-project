@@ -104,7 +104,7 @@ const router = new Router({
           component: () => import('@/views/dashboard/pages/staffs/CreateUpdate'),
           meta: {
             middleware: [
-              isEditor,
+              auth,
             ],
           },
         },
@@ -199,6 +199,13 @@ router.beforeEach((to, from, next) => {
   if (!to.meta.middleware) {
     return next()
   }
+
+  if (to.path === '/') {
+    return next({
+      name: 'home',
+    })
+  }
+
   const middleware = to.meta.middleware
   const context = {
     to,
@@ -206,6 +213,7 @@ router.beforeEach((to, from, next) => {
     next,
     store,
   }
+
   return middleware[0]({
     ...context,
     next: middlewarePipeline(context, middleware, 1),

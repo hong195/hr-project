@@ -6,7 +6,7 @@
     class="mt-3"
   >
     <default-form :base-url="baseUrl"
-                  next-route-name="staff"
+                  :next-route-name="redirectUrl"
                   title-create="Добавить сотрудника"
                   title-update="Редактировать информацию о персонале "
     />
@@ -15,7 +15,7 @@
 
 <script>
   import DefaultForm from '@/views/dashboard/components/DefaultForm'
-
+  import { mapGetters } from 'vuex'
   export default {
     name: 'CreateUpdate',
     components: {
@@ -27,8 +27,15 @@
       baseUrl: 'users',
     }),
     computed: {
+      ...mapGetters('user', ['currentUser']),
       isUpdate () {
         return !!this.$route.params.id
+      },
+      redirectUrl () {
+        if (this.currentUser.role.id === 2) {
+          return 'home'
+        }
+        return 'staff'
       },
     },
   }

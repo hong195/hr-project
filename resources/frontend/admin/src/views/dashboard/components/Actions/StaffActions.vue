@@ -27,7 +27,12 @@
       can,
     },
     components: { StaffDetail },
-    props: ['item'],
+    props: {
+      item: {
+        type: Object,
+        default: () => ({}),
+      },
+    },
     data () {
       return {
         activeItem: {},
@@ -75,8 +80,8 @@
             this.$store.commit('successMessage', response.data.message)
           })
           .catch(error => {
-            console.error(error)
             this.$store.commit('errorMessage', error)
+            console.error(error)
           })
       },
     },

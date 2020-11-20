@@ -24,7 +24,12 @@
     directives: {
       can: can,
     },
-    props: ['item'],
+    props: {
+      item: {
+        type: Object,
+        default: () => ({}),
+      },
+    },
     data () {
       return {
         activeItem: {},
