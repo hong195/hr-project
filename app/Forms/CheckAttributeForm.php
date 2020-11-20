@@ -34,11 +34,13 @@ class CheckAttributeForm extends AbstractForm
             'options' => [
                 [
                     'value' => 1,
-                    'label' => 'Да'
+                    'name' => 'yes',
+                    'label' => 'Да',
                 ],
                 [
                     'value' => 0,
-                    'label' => 'Нет'
+                    'name' => 'no',
+                    'label' => 'Нет',
                 ],
             ],
             'value' => 0

@@ -5,7 +5,7 @@ export default [
     to: '/home',
   },
   {
-    icon: 'mdi-account-multiple',
+    icon: 'mdi-arrange-bring-forward',
     title: 'pharmacy',
     group: '',
     children: [

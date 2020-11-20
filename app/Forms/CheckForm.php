@@ -47,8 +47,9 @@ class CheckForm extends AbstractForm
                 $this->formBuilder->add($attribute->type, "meta.$attribute->name", $attribute->label, [
                     'options' => $attribute->options->map(function($option) {
                         return [
-                            'id' => $option->id,
-                            'name' => $option->label
+                            'value' => $option->id,
+                            'label' => $option->label,
+                            'name' => $option->name
                         ];
                     }),
                 ]);

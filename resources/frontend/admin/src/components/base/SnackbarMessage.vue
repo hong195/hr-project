@@ -1,5 +1,11 @@
 <template>
-  <v-snackbar v-model="snackBar" :color="$store.getters.color" :timeout="3000">
+  <v-snackbar
+    v-if="message"
+    v-model="snackBar"
+    class="alert-message"
+    :color="$store.getters.color"
+    :timeout="5000"
+  >
     <base-material-alert
       :dismissible="true"
       :color="$store.getters.color"
@@ -37,21 +43,26 @@
       },
     },
     watch: {
-      message () {
-        // const self = this
+      message (value) {
         this.snackBar = true
-        // if (this.timeoutCallback) {
-        //   clearTimeout(self.timeoutCallback)
-        // }
-        // this.timeoutCallback = setTimeout(self.closeSnackbar(), 3000)
+      },
+      snackBar (val) {
+        if (!val) {
+          this.message = ''
+        }
       },
     },
     methods: {
       closeSnackbar () {
         this.snackBar = false
-        // this.$store.commit('message', '')
-        // this.$store.commit('color', '')
       },
     },
   }
 </script>
+<style lang="scss">
+.alert-message {
+  .v-alert__content {
+    text-align: center;
+  }
+}
+</style>

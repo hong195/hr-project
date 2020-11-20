@@ -43,7 +43,7 @@
             mode: 'single',
             callbacks: {
               label: function (tooltipItems, data) {
-                return tooltipItems.yLabel + ' балл'
+                return `${tooltipItems.yLabel} ${tooltipItems.yLabel > 1 ? 'баллов' : 'балл'}`
               },
             },
           },

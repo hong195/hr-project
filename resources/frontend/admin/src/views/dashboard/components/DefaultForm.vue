@@ -82,10 +82,14 @@
         this.axios[this.method](this.endPointUrl, this.formValue)
           .then(({ data }) => {
             this.$store.commit('successMessage', data.message)
-            this.$router.push({ name: this.nextRouteName })
+
+            if (this.nextRouteName) {
+              this.$router.push({ name: this.nextRouteName })
+            }
           })
-          .catch(error => {
-            this.$store.commit('errorMessage', error)
+          .catch((error) => {
+            const { response } = error
+            this.$store.commit('errorMessage', response.data.message)
             console.error(error)
           })
         resolve()

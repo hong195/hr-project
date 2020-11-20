@@ -3,19 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PharmacyRatingRequest;
+use App\Query\PharmacyRatingQuery;
 use App\Repositories\Contracts\RatingRepositoryContract;
 use App\Repositories\PharmacyRepository;
 
 class PharmaciesRatingController extends Controller
 {
+    /**
+     * @var RatingRepositoryContract
+     */
     private $ratingRepository;
-    private $pharmacyRepository;
 
+    /**
+     * @var PharmacyRatingQuery
+     */
+    private $query;
 
-    public function __construct(RatingRepositoryContract $ratingRepository, PharmacyRepository $pharmacyRepository)
+    public function __construct(RatingRepositoryContract $ratingRepository, PharmacyRatingQuery $query)
     {
+        $this->query = $query;
         $this->ratingRepository = $ratingRepository;
-        $this->pharmacyRepository = $pharmacyRepository;
     }
 
     public function index(PharmacyRatingRequest $request)
@@ -23,27 +30,17 @@ class PharmaciesRatingController extends Controller
         $year = $request->get('year');
         $month = $request->get('month');
 
-        $pharmacies = $this->pharmacyRepository->all();
+        $pharmaciesWithRatings = $this->query->setYear($year)
+                                            ->setMonth($month)
+                                            ->execute();
 
-        $scores = [];
-        $pharmacyNames = [];
+        $pharmaciesWithRatings = $pharmaciesWithRatings->map(function($pharmacy) {
+            return [
+                'name' => $pharmacy->name,
+                'rating' => $pharmacy->ratings->first()
+            ];
+        });
 
-        foreach ($pharmacies as $pharmacy) {
-            $rating = $this->ratingRepository
-                ->getPharmacyLowestRatingByYearAndMonth($pharmacy->id, $year, $month);
-            array_push($scores, $rating ? (int)$rating->scored : 0);
-            array_push($pharmacyNames, $pharmacy->name);
-        }
-
-        return response()->json(['data' => $scores, 'labels' => $pharmacyNames ]);
-    }
-
-    public function show(PharmacyRatingRequest $pharmacyRatingRequest, $pharmacy_id)
-    {
-        $year = $pharmacyRatingRequest->get('year');
-        $month = $pharmacyRatingRequest->get('month');
-
-        $rating = $this->ratingRepository->getPharmacyLowestRatingByYearAndMonth($pharmacy_id, $year, $month);
-        return response()->json(['rating' => $rating]);
+        return response()->json(['data' => $pharmaciesWithRatings]);
     }
 }

@@ -30,6 +30,8 @@ Route::group(['middleware' => 'auth:api'], function() {
         'checks' => CheckController::class,
         'check-attribute-option' => CheckAttributeOptionController::class,
     ]);
+
+    Route::resource('pharmacy-rating',PharmaciesRatingController::class)->only(['index']);
 });
 
 Route::get('/roles', 'App\Http\Controllers\RoleController@index');
@@ -37,4 +39,3 @@ Route::get('/roles', 'App\Http\Controllers\RoleController@index');
 Route::post('user-rating', [UserRatingController::class, 'show']);
 Route::get('user-rating', [UserRatingController::class, 'index']);
 
-Route::resource('pharmacy-rating',PharmaciesRatingController::class)->only(['index', 'show']);
