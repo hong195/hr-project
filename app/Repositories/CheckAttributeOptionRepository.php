@@ -12,4 +12,9 @@ class CheckAttributeOptionRepository extends AbstractRepository
     {
         parent::__construct($option);
     }
+
+    public function with(array $relations)
+    {
+        return $this->model->with($relations)->get();
+    }
 }

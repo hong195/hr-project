@@ -54,13 +54,14 @@ abstract class AbstractRepository implements BaseEloquentRepositoryContract
         $this->model->destroy($id);
     }
 
-    public function all(array $relations = [])
+    public function all()
     {
-        if ($relations) {
-            return $this->model->with($relations)->get();
-        }
-
         return $this->model->all();
+    }
+
+    public function with(array $relations)
+    {
+        return $this->model->with($relations)->get();
     }
 
     public function setModel(Model $model)

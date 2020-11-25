@@ -5,7 +5,7 @@
     class="mt-3"
   >
     <default-form :base-url="baseUrl"
-                  next-route-name="attributes"
+                  next-route-name="attribute-options"
                   title-create="Создать опцию"
                   title-update="Обновить опцию"
     />

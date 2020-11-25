@@ -1,7 +1,7 @@
 <template>
   <v-dialog
     v-model="dialog"
-    max-width="500px"
+    max-width="700px"
   >
     <v-card v-if="item">
       <v-card-title>
@@ -103,6 +103,12 @@
     td{
       border-bottom: none;
     }
+  }
+  .option-action {
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
   }
 }
 </style>

@@ -34,7 +34,7 @@ class CheckAttributeOptionForm extends AbstractForm
             'validationRule' => 'required'
         ]);
         $this->formBuilder->add('text', 'name', 'Слаг', ['validationRule' => 'required|alpha']);
-        $this->formBuilder->add('text', 'label', 'Название', ['validationRule' => 'required|alpha']);
+        $this->formBuilder->add('text', 'label', 'Название', ['validationRule' => 'required']);
         $this->formBuilder->add('number', 'value', 'Значение');
     }
 

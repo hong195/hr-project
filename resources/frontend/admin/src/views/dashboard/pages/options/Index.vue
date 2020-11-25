@@ -9,20 +9,10 @@
     >
       <v-data-table
         :headers="headers"
-        :items="attributes"
+        :items="options"
         :search.sync="search"
         :sort-desc="[false, true]"
       >
-        <template v-slot:item.type="{ item }">
-          <tr>
-            <td>{{ item.type === 'radio' ? 'Радио кнопка' : 'Текстовое поле' }}</td>
-          </tr>
-        </template>
-        <template v-slot:item.use_in_rating="{ item }">
-          <tr>
-            <td>{{ item.use_in_rating ? 'Да' : 'Нет' }}</td>
-          </tr>
-        </template>
         <template v-slot:item.actions="{ item }">
           <v-btn
             v-for="(action, i) in actions"
@@ -38,20 +28,15 @@
         </template>
       </v-data-table>
     </base-material-card>
-    <detail ref="detail" :item="activeItem" />
     <div class="py-3" />
   </v-container>
 </template>
 
 <script>
-  import Detail from './Detail'
   export default {
     name: 'Index',
-    components: {
-      Detail,
-    },
     data: () => ({
-      attributes: [],
+      options: [],
       search: null,
       dialog: false,
       activeItem: null,
@@ -65,12 +50,16 @@
           value: 'label',
         },
         {
-          text: 'Учитывается при создания рейтинга',
-          value: 'use_in_rating',
+          text: 'Слаг',
+          value: 'name',
         },
         {
-          text: 'Порядок',
-          value: 'order',
+          text: 'Атрибут',
+          value: 'attribute.label',
+        },
+        {
+          text: 'Значение',
+          value: 'value',
         },
         {
           sortable: false,
@@ -80,12 +69,6 @@
         },
       ],
       actions: [
-        {
-          color: 'info',
-          icon: 'mdi-eye',
-          can: 'view',
-          method: 'viewItem',
-        },
         {
           color: 'success',
           icon: 'mdi-pencil',
@@ -101,35 +84,35 @@
       ],
     }),
     created () {
-      this.fetchAttributes()
+      this.fetchOptions()
     },
     methods: {
       actionMethod (funcName, item) {
         this[funcName](item)
       },
-      fetchAttributes () {
-        this.axios.get('check-attributes')
+      fetchOptions () {
+        this.axios.get('check-attribute-option')
           .then(({ data }) => {
-            this.attributes = data.data
+            this.options = data.data
           })
       },
+      editItem (item) {
+        this.$router.push({ name: 'update-attribute-options', params: { id: item.id } })
+      },
       deleteItem (item) {
-        this.axios.delete(`check-attributes/${item.id}`)
+        this.axios.delete(`check-attribute-option/${item.id}`)
           .then(({ data }) => {
-            this.fetchAttributes()
+            this.fetchOptions()
             this.$store.commit('successMessage', data.message)
           })
           .catch(error => {
             this.$store.commit('errorMessage', error)
           })
       },
-      editItem (item) {
-        this.$router.push({ name: 'update-attributes', params: { id: item.id } })
-      },
-      viewItem (item) {
-        this.activeItem = item
-        this.$refs.detail.dialog = true
-      },
     },
   }
 </script>
+
+<style scoped>
+
+</style>

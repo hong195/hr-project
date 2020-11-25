@@ -24,7 +24,7 @@ class CheckAttributeController extends Controller
     public function index()
     {
         // Todo make search by attribute
-        return new CheckAttributeResource($this->checkAttributeRepository->all());
+        return new CheckAttributeResource($this->checkAttributeRepository->with(['options']));
     }
 
     public function store(CheckAttributeRequest $checkAttributeRequest)

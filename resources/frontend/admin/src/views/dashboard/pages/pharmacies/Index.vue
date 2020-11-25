@@ -4,7 +4,7 @@
       color="success"
       icon="mdi-clipboard-text"
       inline
-      title="Список аптек с рейтингом аптек"
+      title="Список аптек с рейтингом"
       class="px-5 py-3 my-6"
     >
       <v-simple-table>

@@ -18,6 +18,10 @@ export default [
           title: 'create-attributes',
         },
         {
+          to: 'attribute-options',
+          title: 'attribute-options',
+        },
+        {
           to: 'create-attribute-options',
           title: 'create-attribute-options',
         },

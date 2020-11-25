@@ -4,11 +4,13 @@ namespace App\Forms;
 
 use App\Models\Pharmacy;
 use App\Models\User;
+use App\Repositories\Contracts\UserRepositoryContract;
 use Saodat\FormBase\Contracts\FormBuilderInterface;
 use Spatie\Permission\Models\Role;
 
 class UserForm extends AbstractForm
 {
+    private const SUBSCRIBER_ROLE_ID = 2;
     /**
      * @var string[]
      */
@@ -18,6 +20,7 @@ class UserForm extends AbstractForm
      * @var array
      */
     protected $defaultFieldsAttributes = ['outlined' => true, "cols" => 6];
+
 
     public function __construct(FormBuilderInterface $formBuilder)
     {
@@ -42,7 +45,7 @@ class UserForm extends AbstractForm
             ->add('text', 'first_name', 'Имя',
                 [
                     'attributes' => ['outlined' => true, "cols" => 4],
-                    'validationRule' => 'required|alpha',
+                    'validationRule' => 'required',
                 ]);
 
         $this->formBuilder
@@ -87,7 +90,7 @@ class UserForm extends AbstractForm
 
         $this->formBuilder
             ->add('date', 'meta.birthday', 'День рождения',
-                ['attributes' => ['min' => '1920-01-01', 'max'=> date("Y-m-d")]]
+                ['attributes' => ['min' => '1920-01-01', 'max' => date("Y-m-d")]]
             );
     }
 
@@ -104,9 +107,18 @@ class UserForm extends AbstractForm
     protected function getUserRoles()
     {
         $roles = Role::all();
-        $roles = $roles->map(function ($role) {
-            return ['id' => $role->id, 'name' => $role->name];
-        })->toArray();
+        $roles = $roles
+            ->filter(function ($role) {
+                if (auth()->user()->hasRole(['Editor'])) {
+                    return $role->id == self::SUBSCRIBER_ROLE_ID;
+                }
+                return $role;
+            })
+            ->map(function ($role) {
+                return ['id' => $role->id, 'name' => $role->name];
+            })
+            ->values()
+            ->toArray();
 
         return $roles;
     }

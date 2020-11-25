@@ -27,9 +27,10 @@
     "rating": "Рейтинг",
     "ratings": "Рейтинги",
     "ratings-staff": "Рейтинг сотрудников",
-    "checks": "Чеки",
+    "checks": "Список чеков",
     "checks-create": "Создать чек",
-    "attributes": "Атрибуты",
+    "attributes": "Список Атрибутов",
     "create-attributes": "Создать атрибут",
-    "create-attribute-options": "Создать опцию"
+    "create-attribute-options": "Создать опцию",
+    "attribute-options": "Список опций"
 }

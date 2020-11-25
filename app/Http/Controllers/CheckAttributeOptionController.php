@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Forms\CheckAttributeOptionForm;
 use App\Http\Requests\CheckAttributeOptionRequest;
+use App\Http\Resources\CheckAttributeOptionResource;
 use App\Repositories\CheckAttributeOptionRepository;
 
 class CheckAttributeOptionController extends Controller
@@ -16,6 +17,11 @@ class CheckAttributeOptionController extends Controller
     public function __construct(CheckAttributeOptionRepository $option)
     {
         $this->option = $option;
+    }
+
+    public function index()
+    {
+        return CheckAttributeOptionResource::collection($this->option->with(['attribute']));
     }
 
     public function create(CheckAttributeOptionForm $form)
@@ -44,7 +50,7 @@ class CheckAttributeOptionController extends Controller
         return response()->json(['message' => __('crud.option_updated')]);
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
         $this->option->delete($id);
 

@@ -169,8 +169,28 @@ const router = new Router({
           },
         },
         {
+          name: 'attribute-options',
+          path: 'attribute-options',
+          component: () => import('@/views/dashboard/pages/options/Index'),
+          meta: {
+            middleware: [
+              isAdmin,
+            ],
+          },
+        },
+        {
           name: 'create-attribute-options',
           path: 'create-attribute-options',
+          component: () => import('@/views/dashboard/pages/options/Create'),
+          meta: {
+            middleware: [
+              isAdmin,
+            ],
+          },
+        },
+        {
+          name: 'update-attribute-options',
+          path: 'update-attribute-options/:id',
           component: () => import('@/views/dashboard/pages/options/Create'),
           meta: {
             middleware: [

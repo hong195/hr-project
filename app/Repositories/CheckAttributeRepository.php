@@ -23,24 +23,13 @@ class CheckAttributeRepository extends AbstractRepository implements CheckAttrib
         $checkAttributeRequest = collect($checkAttributeRequest);
         $this->setAttributes($checkAttributeRequest);
 
-        $this->model = parent::create($this->attributes);
-
-        if ($checkAttributeRequest->has('options')) {
-            $this->saveOptions($checkAttributeRequest->get('options'));
-        }
-
-        return $this->model;
+        return parent::create($this->attributes);
     }
 
     public function update(int $id, array $checkAttributeRequest)
     {
         $checkAttributeRequest = collect($checkAttributeRequest);
         $this->model = $this->findById($id);
-
-        if ($checkAttributeRequest->has('options')) {
-            $this->deleteOptions();
-            $this->saveOptions($checkAttributeRequest->get('options'));
-        }
 
         return $this->setAttributes($checkAttributeRequest)->model->update($this->attributes);
     }
@@ -64,5 +53,15 @@ class CheckAttributeRepository extends AbstractRepository implements CheckAttrib
     public function deleteOptions()
     {
         $this->model->options()->delete();
+    }
+
+    public function all()
+    {
+        return parent::all()->sortBy('order');
+    }
+
+    public function with(array $relations)
+    {
+        return parent::with($relations)->sortByDesc('order');
     }
 }

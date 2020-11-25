@@ -11,7 +11,6 @@ class CheckAttribute extends Model
     use HasFactory;
 
     protected $guarded = [];
-    protected $with = ['options'];
 
     public function options() : HasMany
     {

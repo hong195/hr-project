@@ -1,5 +1,5 @@
 <template>
-    <router-view />
+  <router-view />
 </template>
 
 <script>
@@ -7,3 +7,12 @@
     name: 'App',
   }
 </script>
+<style lang="scss">
+@media (min-width: 480px) {
+  .v-data-table__wrapper {
+    td {
+      max-width: 700px;
+    }
+  }
+}
+</style>

@@ -137,6 +137,7 @@
 .rating-info {
   .v-list-item__title {
     font-size: 1.2rem;
+    white-space: normal;
   }
   .v-list-item {
     font-size: 1.1rem;
