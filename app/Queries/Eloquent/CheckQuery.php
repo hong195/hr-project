@@ -54,12 +54,12 @@ class CheckQuery implements CheckQueryInterface
     {
         return $this->getQuery()
             ->when($this->userId, function ($query){
+                $query->where('user_id', $this->userId);
+            })
+            ->when($this->ratingId, function ($query){
                 $query->whereHas('ratings', function ($query) {
                     return $query->where('ratings.id', $this->ratingId);
                 });
-            })
-            ->when($this->ratingId, function ($query){
-                $query->whereHas('user_id', $this->userId);
             })
             ->when($this->year, function ($query){
                 $query->whereYear('created_at', $this->year);
