@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Pagination;
 use App\Forms\PharmacyForm;
 use App\Http\Requests\PharmacyRequest;
 use App\Http\Resources\PharmacyResource;
-use App\Models\Pharmacy;
+use App\Queries\PharmacyQueryInterface;
 use App\Repositories\PharmacyRepository;
+use Illuminate\Http\Request;
 
 class PharmacyController extends Controller
 {
@@ -20,9 +22,13 @@ class PharmacyController extends Controller
         $this->pharmacyRepository = $pharmacyRepository;
     }
 
-    public function index()
+    public function index(Request $request, PharmacyQueryInterface $pharmacyQuery): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        return PharmacyResource::collection($this->pharmacyRepository->all());
+        $perPage = $request->get('perPage', Pagination::DEFAULT_PER_PAGE);
+        $page = $request->get('page', Pagination::DEFAULT_PAGE);
+        $pharmacies = $pharmacyQuery->execute($perPage,$page);
+
+        return PharmacyResource::collection($pharmacies);
     }
 
     public function create(PharmacyForm $form)

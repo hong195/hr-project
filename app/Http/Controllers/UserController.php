@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Pagination;
 use App\Forms\UserForm;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
+use App\Queries\UserQueryInterface;
 use App\Repositories\Contracts\UserRepositoryContract;
 use Illuminate\Http\Request;
 
@@ -17,9 +19,13 @@ class UserController extends Controller
         $this->userRepository = $userRepository;
     }
 
-    public function index(Request $request)
+    public function index(Request $request, UserQueryInterface $userQuery)
     {
-        return UserResource::collection($this->userRepository->all());
+        $page = $request->get('page', Pagination::DEFAULT_PAGE);
+        $perPage = $request->get('perPage', Pagination::DEFAULT_PER_PAGE);
+        $users = $userQuery->execute($perPage, $page);
+
+        return UserResource::collection($users);
     }
 
     public function create(UserForm $form)

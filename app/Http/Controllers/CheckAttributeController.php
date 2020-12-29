@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Pagination;
 use App\Forms\CheckAttributeForm;
 use App\Http\Requests\CheckAttributeRequest;
 use App\Http\Resources\CheckAttributeResource;
+use App\Queries\CheckAttributesQueryInterface;
 use App\Repositories\Contracts\CheckAttributeRepositoryContract;
+use Illuminate\Http\Request;
 
 class CheckAttributeController extends Controller
 {
@@ -21,10 +24,13 @@ class CheckAttributeController extends Controller
         return response()->json(['form' => $form->get()]);
     }
 
-    public function index()
+    public function index(Request $request, CheckAttributesQueryInterface $attributesQuery)
     {
-        // Todo make search by attribute
-        return new CheckAttributeResource($this->checkAttributeRepository->with(['options']));
+        $perPage = $request->get('perPage', Pagination::DEFAULT_PER_PAGE);
+        $page = $request->get('page', Pagination::DEFAULT_PAGE);
+        $attributes = $attributesQuery->execute($perPage, $page);
+
+        return new CheckAttributeResource($attributes);
     }
 
     public function store(CheckAttributeRequest $checkAttributeRequest)

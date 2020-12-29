@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\CheckLimit;
 use App\Exceptions\CheckExpcetion;
-use App\Exceptions\UserRatingException;
 use App\Forms\CheckForm;
 use App\Http\Requests\CheckRequest;
 use App\Http\Resources\CheckResource;
 use App\Models\Check;
+use App\Queries\CheckQueryInterface;
 use App\Repositories\Contracts\CheckRepositoryContract;
-use Illuminate\Http\Request;
 
 class CheckController extends Controller
 {
-    /**
-     * @var
-     */
     private $checkRepository;
 
     public function __construct(CheckRepositoryContract $checkRepository)
@@ -25,26 +22,9 @@ class CheckController extends Controller
     }
 
 
-    public function index(Request $request)
+    public function index(CheckQueryInterface $checkQuery): CheckResource
     {
-        //Todo move search login into search class
-        if ($ratingId = $request->get('rating_id')) {
-            $checks = Check::whereHas('ratings', function ($query) use ($ratingId) {
-                return $query->where('ratings.id', $ratingId);
-            })
-                ->get();
-        } else if ($request->get('with_user')) {
-            $checks = Check::with('user')->get();
-        } else if ($userId = $request->get('user_id')) {
-            $year = $request->get('year') ? $request->get('year') : now()->year;
-            $month = $request->get('month') ? $request->get('month') : now()->month;
-            $checks = Check::where('user_id', $userId)
-                ->whereYear('created_at', $year)
-                ->whereMonth('created_at', $month)
-                ->get();
-        } else {
-            $checks = Check::with('meta')->get();
-        }
+        $checks = $checkQuery->execute(CheckLimit::MINIMUM_FOR_CREATING_RATING);
 
         return new CheckResource($checks);
     }

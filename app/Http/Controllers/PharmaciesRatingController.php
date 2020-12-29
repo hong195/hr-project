@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PharmacyRatingRequest;
 use App\Query\PharmacyRatingQuery;
 use App\Repositories\Contracts\RatingRepositoryContract;
-use App\Repositories\PharmacyRepository;
 
 class PharmaciesRatingController extends Controller
 {

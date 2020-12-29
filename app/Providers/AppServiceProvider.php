@@ -4,6 +4,14 @@ namespace App\Providers;
 
 use App\Models\Check;
 use App\Observers\CheckObserver;
+use App\Queries\CheckAttributesQueryInterface;
+use App\Queries\CheckQueryInterface;
+use App\Queries\Eloquent\CheckAttributesQuery;
+use App\Queries\Eloquent\CheckQuery;
+use App\Queries\Eloquent\PharmacyQuery;
+use App\Queries\Eloquent\UserQuery;
+use App\Queries\PharmacyQueryInterface;
+use App\Queries\UserQueryInterface;
 use App\Repositories\CheckAttributeRepository;
 use App\Repositories\CheckRepository;
 use App\Repositories\Contracts\CheckAttributeRepositoryContract;
@@ -33,6 +41,50 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CheckRepositoryContract::class, CheckRepository::class);
         $this->app->bind(RatingRepositoryContract::class, RatingRepository::class);
         $this->app->bind(PharmacyRepository::class, PharmacyRepository::class);
+
+        $this->app->bind(CheckQueryInterface::class, function () {
+            $withUser = request()->get('with_user') ? 'user' : null;
+            $withMeta = !$withUser ? 'meta' : null;
+
+            $query = new CheckQuery(
+                request()->get('user_id'),
+                request()->get('name'),
+                request()->get('year'),
+                request()->get('month'),
+                request()->get('rating_id')
+            );
+            $query->with([$withUser, $withMeta]);
+
+            return $query->setOrderBy(request()->get('orderBy', ''))->setDirection(request()->get('direction', ''));
+        });
+
+        $this->app->bind(PharmacyQueryInterface::class, function () {
+            $query = new PharmacyQuery(
+                request()->get('id'),
+                request()->get('name'),
+            );
+
+            return $query->setOrderBy(request()->get('orderBy', ''))->setDirection(request()->get('direction', ''));
+        });
+
+        $this->app->bind(UserQueryInterface::class, function () {
+            $query = new UserQuery(
+                request()->get('id'),
+                request()->get('name'),
+            );
+
+            return $query->setOrderBy(request()->get('orderBy', ''))->setDirection(request()->get('direction', ''));
+        });
+
+        $this->app->bind(CheckAttributesQueryInterface::class, function () {
+            $query = new CheckAttributesQuery(
+                request()->get('label'),
+                request()->get('name'),
+                request()->get('type'),
+                request()->get('used_in_rating', false),
+            );
+            return $query->setOrderBy(request()->get('orderBy', ''))->setDirection(request()->get('direction', ''));
+        });
     }
 
     /**
