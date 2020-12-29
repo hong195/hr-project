@@ -52,7 +52,7 @@ class UserForm extends AbstractForm
             ->add('text', 'last_name', 'Фамилия',
                 [
                     'attributes' => ['outlined' => true, "cols" => 4],
-                    'validationRule' => 'required|alpha',
+                    'validationRule' => 'required',
                 ]
             );
 
@@ -60,7 +60,7 @@ class UserForm extends AbstractForm
             ->add('text', 'patronymic', 'Отчество',
                 [
                     'attributes' => ['outlined' => true, "cols" => 4],
-                    'validationRule' => 'required|alpha',
+                    'validationRule' => 'required',
                 ]
             );
 

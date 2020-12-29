@@ -42,6 +42,18 @@ class CheckForm extends AbstractForm
                 [
                     'options' => $this->getUsers(),
                     'validationRule' => 'required',
+                    'attributes' => [
+                        'cols' => 6
+                    ]
+                ]);
+
+        $this->formBuilder
+            ->add('number', 'meta.sum', 'Сумма чека',
+                [
+                    'validationRule' => 'required',
+                    'attributes' => [
+                        'cols' => 6
+                    ]
                 ]);
 
         $this->formBuilder->add('date', 'created_at', 'Дата проверки',[
