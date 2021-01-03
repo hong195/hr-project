@@ -8,7 +8,7 @@
     >
       <div class="d-flex">
         <v-text-field
-          v-model="search"
+          v-model="searchParams.query_search"
           append-icon="mdi-magnify"
           class="ml-auto mr-3"
           label="Поиск"
@@ -24,14 +24,11 @@
       </div>
 
       <v-divider class="mt-3" />
-
-      <v-data-table
+      <data-table
+        ref="data-table"
+        fetch-url="users"
         :headers="headers"
-        :items="items"
-        :search.sync="search"
-        :sort-by="['name', 'office']"
-        :sort-desc="[false, true]"
-        multi-sort
+        :search-options="searchParams"
       >
         <template v-slot:item.actions="{ item }">
           <actions :item="item" @actionDeletedResponse="actionDeletedResponse" />
@@ -41,7 +38,7 @@
             Чек
           </v-btn>
         </template>
-      </v-data-table>
+      </data-table>
     </base-material-card>
     <checks ref="checksDialog" />
   </v-container>
@@ -50,9 +47,10 @@
 <script>
   import Actions from '@/views/dashboard/components/Actions/StaffActions'
   import Checks from '@/views/dashboard/pages/checks/Index'
+  import DataTable from '@/views/dashboard/components/DataTable'
   export default {
     name: 'Staff',
-    components: { Checks, Actions },
+    components: { Checks, Actions, DataTable },
     data () {
       return {
         headers: [
@@ -87,13 +85,10 @@
             align: 'right',
           },
         ],
-        items: [],
-        search: null,
+        searchParams: {
+          query_search: '',
+        },
       }
-    },
-    async mounted () {
-      const response = await this.$http.get('users')
-      this.items = response.data.data
     },
     methods: {
       openChecksDialog (id) {

@@ -7,11 +7,11 @@
       title="Список Атрибутов"
       class="px-5 py-3 my-6"
     >
-      <v-data-table
+      <data-table
+        ref="data-table"
+        fetch-url="check-attribute-option"
         :headers="headers"
-        :items="options"
-        :search.sync="search"
-        :sort-desc="[false, true]"
+        :search-options="searchParams"
       >
         <template v-slot:item.actions="{ item }">
           <v-btn
@@ -26,20 +26,20 @@
             <v-icon small v-text="action.icon" />
           </v-btn>
         </template>
-      </v-data-table>
+      </data-table>
     </base-material-card>
     <div class="py-3" />
   </v-container>
 </template>
 
 <script>
+  import DataTable from '@/views/dashboard/components/DataTable'
   export default {
     name: 'Index',
+    components: { DataTable },
     data: () => ({
       options: [],
-      search: null,
       dialog: false,
-      activeItem: null,
       headers: [
         {
           text: 'Идентефикатор',
@@ -82,19 +82,13 @@
           method: 'deleteItem',
         },
       ],
+      searchParams: {
+        query_search: '',
+      },
     }),
-    created () {
-      this.fetchOptions()
-    },
     methods: {
       actionMethod (funcName, item) {
         this[funcName](item)
-      },
-      fetchOptions () {
-        this.axios.get('check-attribute-option')
-          .then(({ data }) => {
-            this.options = data.data
-          })
       },
       editItem (item) {
         this.$router.push({ name: 'update-attribute-options', params: { id: item.id } })
@@ -102,7 +96,10 @@
       deleteItem (item) {
         this.axios.delete(`check-attribute-option/${item.id}`)
           .then(({ data }) => {
-            this.fetchOptions()
+            this.options.splice(
+              this.options.findIndex(({ id }) => id === item.id),
+              1,
+            )
             this.$store.commit('successMessage', data.message)
           })
           .catch(error => {

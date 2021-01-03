@@ -77,8 +77,8 @@
         date: null,
         headers: [
           {
-            text: 'ID',
-            value: 'id',
+            text: '№',
+            value: 'key',
           },
           {
             text: 'Наименование',
@@ -139,6 +139,7 @@
           .then(({ data }) => {
             this.isLoading = false
             this.checks = data.data
+            this.checks.forEach((item, key) => { item.key = key + 1 })
           }).catch(e => {
             this.isLoading = false
             console.log(e)

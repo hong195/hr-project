@@ -8,17 +8,17 @@ Vue.use(VueI18n)
 
 const messages = {
   ru: {
-    ...require('@/locales/ar.json'),
+    ...require('@/locales/ru.json'),
     $vuetify: ru,
   },
   en: {
-    ...require('@/locales/en.json'),
+    ...require('@/locales/ru.json'),
     $vuetify: en,
   },
 }
 
 export default new VueI18n({
-  locale: process.env.VUE_APP_I18N_LOCALE || 'en',
-  fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'en',
+  locale: process.env.VUE_APP_I18N_LOCALE || 'ru',
+  fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'ru',
   messages,
 })

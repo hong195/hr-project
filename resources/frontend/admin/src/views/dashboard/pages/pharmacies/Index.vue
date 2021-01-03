@@ -7,38 +7,25 @@
       title="Список аптек с рейтингом"
       class="px-5 py-3 my-6"
     >
-      <v-simple-table>
-        <thead>
-          <tr>
-            <th>Название аптеки</th>
-            <th>Количество сотрудников</th>
-            <th>Адресс аптеки</th>
-            <th class="text-right">
-              **Действия
-            </th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr v-for="(item, i) in items" :key="i">
-            <td v-text="item.name" />
-            <td v-text="item.users_count" />
-            <td v-if="item.coordinates">
-              <a :href="`http://www.google.com/maps/place/${item.coordinates[1]},${item.coordinates[0]}`"
-                 target="_blank"
-                 v-text="item.address"
-              />
-            </td>
-            <td v-else>
-              {{ item.address }}
-            </td>
-
-            <td class="text-right">
-              <actions :item="item" @actionDeletedResponse="actionDeletedResponse" />
-            </td>
-          </tr>
-        </tbody>
-      </v-simple-table>
+      <data-table
+        ref="data-table"
+        fetch-url="pharmacies"
+        :headers="headers"
+        :search-options="searchParams"
+      >
+        <template v-slot:item.actions="{ item }">
+          <actions :item="item" @actionDeletedResponse="actionDeletedResponse" />
+        </template>
+        <template v-slot:item.address="{ item }">
+          <a v-if="item.coordinates" :href="`http://www.google.com/maps/place/${item.coordinates[1]},${item.coordinates[0]}`"
+             target="_blank"
+             v-text="item.address"
+          />
+          <div v-else>
+            {{ item.address }}
+          </div>
+        </template>
+      </data-table>
     </base-material-card>
     <div class="py-3" />
   </v-container>
@@ -47,19 +34,37 @@
 <script>
   import can from '@/plugins/directives/v-can'
   import Actions from '@/views/dashboard/components/Actions/PharmacyActions'
+  import DataTable from '@/views/dashboard/components/DataTable'
   export default {
     name: 'Pharmacy',
-    components: { Actions },
+    components: { DataTable, Actions },
     directives: {
       can: can,
     },
     data: () => ({
-      items: [],
+      headers: [
+        {
+          text: 'Название аптеки',
+          value: 'name',
+        },
+        {
+          text: 'Количество сотрудников',
+          value: 'users_count',
+        },
+        {
+          text: 'Адресс аптеки',
+          value: 'address',
+        },
+        {
+          text: '**Действия',
+          value: 'actions',
+          align: 'right',
+        },
+      ],
+      searchParams: {
+        query_search: '',
+      },
     }),
-    async mounted () {
-      const response = await this.$http.get('pharmacies')
-      this.items = response.data.data
-    },
     methods: {
       actionDeletedResponse (val) {
         this.items.splice(

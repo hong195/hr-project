@@ -75,14 +75,11 @@
       </v-row>
 
       <v-divider class="mt-3" />
-
-      <v-data-table
+      <data-table
+        ref="data-table"
+        fetch-url="user-rating"
         :headers="headers"
-        :items="items"
-        :search.sync="search"
-        :sort-by="['first_name']"
-        :sort-desc="[false, true]"
-        :multi-sort="false"
+        :search-options="searchParams"
       >
         <template v-slot:item.rating="{ item }">
           <tr>
@@ -106,7 +103,39 @@
             </td>
           </tr>
         </template>
-      </v-data-table>
+      </data-table>
+
+      <!--      <v-data-table-->
+      <!--        :headers="headers"-->
+      <!--        :items="items"-->
+      <!--        :search.sync="search"-->
+      <!--        :sort-by="['first_name']"-->
+      <!--        :sort-desc="[false, true]"-->
+      <!--        :multi-sort="false"-->
+      <!--      >-->
+      <!--        <template v-slot:item.rating="{ item }">-->
+      <!--          <tr>-->
+      <!--            <td v-if="item.ratings.length">-->
+      <!--              <v-tooltip bottom>-->
+      <!--                <template v-slot:activator="{ on, attrs }">-->
+      <!--                  <span-->
+      <!--                    v-bind="attrs"-->
+      <!--                    v-on="on"-->
+      <!--                  >-->
+      <!--                    <a href="#" @click.prevent="setRating(item.ratings[0])">-->
+      <!--                      {{ `${item.ratings[0].scored}/${item.ratings[0].out_of}` }}-->
+      <!--                    </a>-->
+      <!--                  </span>-->
+      <!--                </template>-->
+      <!--                <span>Нажмите, чтобы просмотреть подробную информацию о рейтинге</span>-->
+      <!--              </v-tooltip>-->
+      <!--            </td>-->
+      <!--            <td v-else>-->
+      <!--              Нет Рейтинга-->
+      <!--            </td>-->
+      <!--          </tr>-->
+      <!--        </template>-->
+      <!--      </v-data-table>-->
     </base-material-card>
 
     <single-user-rating
@@ -120,10 +149,11 @@
 <script>
   import moment from 'moment'
   import SingleUserRating from './SingleUserRating'
+  import DataTable from '@/views/dashboard/components/DataTable'
 
   export default {
     name: 'StaffRating',
-    components: { SingleUserRating },
+    components: { DataTable, SingleUserRating },
     data () {
       return {
         date: null,
@@ -135,6 +165,9 @@
         rating: {},
         pharmacies: [],
         pharmacy_id: null,
+        // searchParams: {
+        //   query_search: '',
+        // },
         headers: [
           {
             text: 'Фамилия',
@@ -164,23 +197,32 @@
       locale () {
         return process.env.VUE_APP_I18N_LOCALE || process.env.VUE_APP_I18N_FALLBACK_LOCALE
       },
+      searchParams () {
+        const date = moment(this.date ?? null)
+        return {
+          query_search: this.search,
+          year: date.format('YYYY'),
+          month: date.format('M'),
+          pharmacy_id: this.pharmacy_id,
+        }
+      },
     },
     watch: {
-      pharmacy_id: {
-        handler () {
-          this.fetchUsersWithRating()
-        },
-      },
-      date: {
-        handler () {
-          this.fetchUsersWithRating()
-        },
-      },
+      // pharmacy_id: {
+      //   handler () {
+      //     this.fetchUsersWithRating()
+      //   },
+      // },
+      // date: {
+      //   handler () {
+      //     this.fetchUsersWithRating()
+      //   },
+      // },
     },
     mounted () {
       this.date = moment().format('YYYY-M')
-      this.fetchUsersWithRating()
-      this.fetchPharmacies()
+      // this.fetchUsersWithRating()
+      // this.fetchPharmacies()
     },
     methods: {
       closeDialog () {
@@ -194,26 +236,26 @@
         dialog.save(date)
         this.date = date
       },
-      fetchPharmacies () {
-        this.axios.get('pharmacies')
-          .then(({ data }) => {
-            this.pharmacies = data.data
-          })
-      },
-      fetchUsersWithRating () {
-        const date = moment(this.date ?? null)
-
-        this.axios.get('user-rating', {
-          params: {
-            year: date.format('YYYY'),
-            month: date.format('M'),
-            pharmacy_id: this.pharmacy_id,
-          },
-        })
-          .then(({ data }) => {
-            this.items = data.data
-          })
-      },
+      // fetchPharmacies () {
+      //   this.axios.get('pharmacies')
+      //     .then(({ data }) => {
+      //       this.pharmacies = data.data
+      //     })
+      // },
+      // fetchUsersWithRating () {
+      //   const date = moment(this.date ?? null)
+      //
+      //   this.axios.get('user-rating', {
+      //     params: {
+      //       year: date.format('YYYY'),
+      //       month: date.format('M'),
+      //       pharmacy_id: this.pharmacy_id,
+      //     },
+      //   })
+      //     .then(({ data }) => {
+      //       this.items = data.data
+      //     })
+      // },
     },
   }
 </script>

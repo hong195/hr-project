@@ -7,11 +7,11 @@
       title="Список Атрибутов"
       class="px-5 py-3 my-6"
     >
-      <v-data-table
+      <data-table
+        ref="data-table"
+        fetch-url="check-attributes"
         :headers="headers"
-        :items="attributes"
-        :search.sync="search"
-        :sort-desc="[false, true]"
+        :search-options="searchParams"
       >
         <template v-slot:item.type="{ item }">
           <tr>
@@ -36,7 +36,7 @@
             <v-icon small v-text="action.icon" />
           </v-btn>
         </template>
-      </v-data-table>
+      </data-table>
     </base-material-card>
     <detail ref="detail" :item="activeItem" />
     <div class="py-3" />
@@ -45,9 +45,11 @@
 
 <script>
   import Detail from './Detail'
+  import DataTable from '@/views/dashboard/components/DataTable'
   export default {
     name: 'Index',
     components: {
+      DataTable,
       Detail,
     },
     data: () => ({
@@ -99,6 +101,9 @@
           method: 'deleteItem',
         },
       ],
+      searchParams: {
+        query_search: '',
+      },
     }),
     created () {
       this.fetchAttributes()

@@ -30,7 +30,7 @@ class CheckAttributeController extends Controller
         $page = $request->get('page', Pagination::DEFAULT_PAGE);
         $attributes = $attributesQuery->execute($perPage, $page);
 
-        return new CheckAttributeResource($attributes);
+        return CheckAttributeResource::collection($attributes);
     }
 
     public function store(CheckAttributeRequest $checkAttributeRequest)
