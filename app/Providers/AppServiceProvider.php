@@ -9,8 +9,10 @@ use App\Queries\CheckQueryInterface;
 use App\Queries\Eloquent\CheckAttributesQuery;
 use App\Queries\Eloquent\CheckQuery;
 use App\Queries\Eloquent\PharmacyQuery;
+use App\Queries\Eloquent\PharmacyRatingQuery;
 use App\Queries\Eloquent\UserQuery;
 use App\Queries\PharmacyQueryInterface;
+use App\Queries\PharmacyRatingQueryInterface;
 use App\Queries\UserQueryInterface;
 use App\Repositories\CheckAttributeRepository;
 use App\Repositories\CheckRepository;
@@ -85,6 +87,15 @@ class AppServiceProvider extends ServiceProvider
                 request()->get('name'),
                 request()->get('type'),
                 request()->get('used_in_rating', false),
+            );
+            return $query->setOrderBy(request()->get('orderBy', ''))->setDirection(request()->get('direction', ''));
+        });
+
+        $this->app->bind(PharmacyRatingQueryInterface::class, function () {
+            $query = new PharmacyRatingQuery(
+                request()->get('pharmacyId'),
+                request()->get('year'),
+                request()->get('month'),
             );
             return $query->setOrderBy(request()->get('orderBy', ''))->setDirection(request()->get('direction', ''));
         });

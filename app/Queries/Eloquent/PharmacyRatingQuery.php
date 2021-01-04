@@ -1,13 +1,14 @@
 <?php
 
-
-namespace App\Query;
-
+namespace App\Queries\Eloquent;
 
 use App\Models\Pharmacy;
+use App\Queries\PharmacyRatingQueryInterface;
+use App\Queries\Traits\OrderByTrait;
 
-class PharmacyRatingQuery
+class PharmacyRatingQuery implements PharmacyRatingQueryInterface
 {
+    use OrderByTrait;
     /**
      * @var int
      */
@@ -32,24 +33,6 @@ class PharmacyRatingQuery
         $this->pharmacyId = $pharmacyId;
         $this->year = $year ? $year : now()->year;
         $this->month = $month ? $month : now()->month;
-    }
-
-    public function setPharmacyId(int $pharmacyId)
-    {
-        $this->pharmacyId = $pharmacyId;
-        return $this;
-    }
-
-    public function setYear(int $year)
-    {
-        $this->year = $year;
-        return $this;
-    }
-
-    public function setMonth(int $month)
-    {
-        $this->month = $month;
-        return $this;
     }
 
     public function execute()

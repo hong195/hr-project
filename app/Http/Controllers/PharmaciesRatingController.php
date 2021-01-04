@@ -3,35 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PharmacyRatingRequest;
-use App\Query\PharmacyRatingQuery;
-use App\Repositories\Contracts\RatingRepositoryContract;
+use App\Queries\Eloquent\PharmacyRatingQuery;
+use App\Queries\PharmacyRatingQueryInterface;
 
 class PharmaciesRatingController extends Controller
 {
     /**
-     * @var RatingRepositoryContract
-     */
-    private $ratingRepository;
-
-    /**
      * @var PharmacyRatingQuery
      */
-    private $query;
+    private $pharmacyRatingQuery;
 
-    public function __construct(RatingRepositoryContract $ratingRepository, PharmacyRatingQuery $query)
+    public function __construct(PharmacyRatingQueryInterface $pharmacyRatingQuery)
     {
-        $this->query = $query;
-        $this->ratingRepository = $ratingRepository;
+        $this->pharmacyRatingQuery = $pharmacyRatingQuery;
     }
 
-    public function index(PharmacyRatingRequest $request)
+    public function index(PharmacyRatingRequest $request): \Illuminate\Http\JsonResponse
     {
-        $year = $request->get('year');
-        $month = $request->get('month');
-
-        $pharmaciesWithRatings = $this->query->setYear($year)
-                                            ->setMonth($month)
-                                            ->execute();
+        $pharmaciesWithRatings = $this->pharmacyRatingQuery->execute();
 
         $pharmaciesWithRatings = $pharmaciesWithRatings->map(function($pharmacy) {
             return [
