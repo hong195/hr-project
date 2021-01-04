@@ -82,9 +82,7 @@
           method: 'deleteItem',
         },
       ],
-      searchParams: {
-        query_search: '',
-      },
+      searchParams: {},
     }),
     methods: {
       actionMethod (funcName, item) {
@@ -109,7 +107,3 @@
     },
   }
 </script>
-
-<style scoped>
-
-</style>

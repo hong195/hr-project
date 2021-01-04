@@ -12,7 +12,7 @@
     <template v-slot:activator="{ on, attrs }">
       <v-text-field
         v-model="date"
-        label="Месяц, Год"
+        label="Год, Месяц"
         hide-details
         prepend-inner-icon="mdi-calendar"
         readonly
@@ -25,7 +25,7 @@
       v-model.lazy="date"
       type="month"
       :scrollable="false"
-      :locale="locale"
+      :locale="$i18n.locale"
     >
       <v-spacer />
       <v-btn
@@ -55,23 +55,15 @@
         menu: false,
       }
     },
-    computed: {
-      locale () {
-        return process.env.VUE_APP_I18N_LOCALE || process.env.VUE_APP_I18N_FALLBACK_LOCALE
-      },
-    },
-    mounted () {
+    created () {
       this.date = moment().format('YYYY-M')
+      this.$emit('input', this.date)
     },
     methods: {
       setDate (date, dialog) {
         dialog.save(date)
         this.date = date
-        const formattedDate = {
-          year: moment(this.date ?? null).format('YYYY'),
-          month: moment(this.date ?? null).format('M'),
-        }
-        this.$emit('input', formattedDate)
+        this.$emit('input', this.date)
       },
     },
   }

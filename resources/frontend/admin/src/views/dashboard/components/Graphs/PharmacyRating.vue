@@ -16,8 +16,7 @@
           <month-picker v-model="date" />
         </v-col>
       </v-row>
-
-      <bar-chart ref="barChart" :chart-data="chart" />
+      <bar-chart v-if="date" ref="barChart" :chart-data="chart" />
     </base-material-card>
   </v-container>
 </template>
@@ -52,7 +51,7 @@
     },
     computed: {
       formattedDate () {
-        return moment(this.date.month).locale(process.env.VUE_APP_I18N_LOCALE).format('MMMM')
+        return moment(this.date.month).locale(this.$i18n.locale).format('MMMM')
       },
     },
     watch: {
@@ -78,11 +77,12 @@
         return pool
       },
       fetchData () {
+        const date = moment(this.date)
         this.isLoading = true
         this.axios.get('pharmacy-rating', {
           params: {
-            year: this.date ? this.date.year : null,
-            month: this.date ? this.date.month : null,
+            year: date.format('YYYY'),
+            month: date.format('M'),
           },
         })
           .then(({ data }) => {

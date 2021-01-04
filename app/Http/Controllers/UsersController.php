@@ -10,7 +10,7 @@ use App\Queries\UserQueryInterface;
 use App\Repositories\Contracts\UserRepositoryContract;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class UsersController extends Controller
 {
     private $userRepository;
 

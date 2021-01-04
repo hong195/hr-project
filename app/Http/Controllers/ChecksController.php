@@ -11,7 +11,7 @@ use App\Models\Check;
 use App\Queries\CheckQueryInterface;
 use App\Repositories\Contracts\CheckRepositoryContract;
 
-class CheckController extends Controller
+class ChecksController extends Controller
 {
     private $checkRepository;
 

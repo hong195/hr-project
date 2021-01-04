@@ -47,11 +47,11 @@ class AppServiceProvider extends ServiceProvider
             $withMeta = !$withUser ? 'meta' : null;
 
             $query = new CheckQuery(
-                request()->get('user_id'),
+                request()->get('userId'),
                 request()->get('name'),
                 request()->get('year'),
                 request()->get('month'),
-                request()->get('rating_id')
+                request()->get('ratingId')
             );
             $query->with([$withUser, $withMeta]);
 
@@ -69,8 +69,11 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(UserQueryInterface::class, function () {
             $query = new UserQuery(
-                request()->get('id'),
+                request()->get('userId'),
+                request()->get('pharmacyId'),
                 request()->get('name'),
+                request()->get('ratingMonth'),
+                request()->get('ratingYear'),
             );
 
             return $query->setOrderBy(request()->get('orderBy', ''))->setDirection(request()->get('direction', ''));

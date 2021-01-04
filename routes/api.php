@@ -1,14 +1,14 @@
 <?php
 
-use App\Http\Controllers\CheckAttributeController;
+use App\Http\Controllers\CheckAttributesController;
 use App\Http\Controllers\CheckAttributeOptionController;
-use App\Http\Controllers\CheckController;
+use App\Http\Controllers\ChecksController;
 use App\Http\Controllers\PharmaciesRatingController;
-use App\Http\Controllers\PharmacyController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\PharmaciesController;
+use App\Http\Controllers\RolesController;
+use App\Http\Controllers\UsersController;
 use App\Http\Controllers\UserRatingController;
 use Illuminate\Support\Facades\Route;
-
 
 Route::group([
     'middleware' => 'api',
@@ -24,18 +24,14 @@ Route::group([
 
 Route::group(['middleware' => 'auth:api'], function() {
     Route::resources([
-        'users' => UserController::class,
-        'pharmacies' => PharmacyController::class,
-        'check-attributes' => CheckAttributeController::class,
-        'checks' => CheckController::class,
+        'users' => UsersController::class,
+        'pharmacies' => PharmaciesController::class,
+        'check-attributes' => CheckAttributesController::class,
+        'checks' => ChecksController::class,
         'check-attribute-option' => CheckAttributeOptionController::class,
     ]);
-
     Route::resource('pharmacy-rating',PharmaciesRatingController::class)->only(['index']);
+    Route::resource('user-rating', UserRatingController::class)->only(['index']);
+    Route::resource('roles', RolesController::class)->only(['index']);
 });
-
-Route::get('/roles', 'App\Http\Controllers\RoleController@index');
-
-Route::post('user-rating', [UserRatingController::class, 'show']);
-Route::get('user-rating', [UserRatingController::class, 'index']);
 

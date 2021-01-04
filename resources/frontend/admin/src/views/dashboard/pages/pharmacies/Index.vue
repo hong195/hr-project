@@ -62,7 +62,7 @@
         },
       ],
       searchParams: {
-        query_search: '',
+        name: '',
       },
     }),
     methods: {

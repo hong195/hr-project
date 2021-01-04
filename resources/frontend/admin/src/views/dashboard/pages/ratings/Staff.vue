@@ -15,67 +15,32 @@
 
       <v-row justify="end">
         <v-col cols="12" sm="12" md="3" lg="2">
-          <v-menu
-            ref="menu"
-            v-model="menu"
-            :close-on-content-click="false"
-            :return-value.sync="date"
-            transition="scale-transition"
-            offset-y
-            max-width="290px"
-            min-width="290px"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                v-model="date"
-                label="Месяц, Год"
-                prepend-icon="mdi-calendar"
-                readonly
-                v-bind="attrs"
-                v-on="on"
-              />
-            </template>
-            <v-date-picker
-              v-model.lazy="date"
-              type="month"
-              :scrollable="false"
-              :locale="locale"
-            >
-              <v-spacer />
-              <v-btn
-                text
-                color="primary"
-                @click="modal = false"
-              >
-                Отмена
-              </v-btn>
-              <v-btn
-                text
-                color="primary"
-                @click="setDate(date, $refs.menu)"
-              >
-                Выбрать
-              </v-btn>
-            </v-date-picker>
-          </v-menu>
+          <month-picker v-model="date" />
         </v-col>
         <v-col cols="12" sm="12" md="3" lg="2">
-          <v-select v-model="pharmacy_id" :items="pharmacies" item-text="name" item-value="id" label="Аптека" clearable />
+          <v-select v-model="pharmacyId"
+                    :items="pharmacies"
+                    item-text="name"
+                    item-value="id"
+                    label="Аптека"
+                    clearable
+                    outlined
+          />
         </v-col>
         <v-col cols="12" sm="12" md="3" lg="2">
           <v-text-field
             v-model="search"
-            prepend-icon="mdi-magnify"
             class="ml-auto"
             label="Поиск"
-            hide-details
             single-line
+            outlined
           />
         </v-col>
       </v-row>
 
       <v-divider class="mt-3" />
       <data-table
+        v-if="date"
         ref="data-table"
         fetch-url="user-rating"
         :headers="headers"
@@ -83,7 +48,7 @@
       >
         <template v-slot:item.rating="{ item }">
           <tr>
-            <td v-if="item.ratings.length">
+            <td v-if="item.ratings && item.ratings.length">
               <v-tooltip bottom>
                 <template v-slot:activator="{ on, attrs }">
                   <span
@@ -104,38 +69,6 @@
           </tr>
         </template>
       </data-table>
-
-      <!--      <v-data-table-->
-      <!--        :headers="headers"-->
-      <!--        :items="items"-->
-      <!--        :search.sync="search"-->
-      <!--        :sort-by="['first_name']"-->
-      <!--        :sort-desc="[false, true]"-->
-      <!--        :multi-sort="false"-->
-      <!--      >-->
-      <!--        <template v-slot:item.rating="{ item }">-->
-      <!--          <tr>-->
-      <!--            <td v-if="item.ratings.length">-->
-      <!--              <v-tooltip bottom>-->
-      <!--                <template v-slot:activator="{ on, attrs }">-->
-      <!--                  <span-->
-      <!--                    v-bind="attrs"-->
-      <!--                    v-on="on"-->
-      <!--                  >-->
-      <!--                    <a href="#" @click.prevent="setRating(item.ratings[0])">-->
-      <!--                      {{ `${item.ratings[0].scored}/${item.ratings[0].out_of}` }}-->
-      <!--                    </a>-->
-      <!--                  </span>-->
-      <!--                </template>-->
-      <!--                <span>Нажмите, чтобы просмотреть подробную информацию о рейтинге</span>-->
-      <!--              </v-tooltip>-->
-      <!--            </td>-->
-      <!--            <td v-else>-->
-      <!--              Нет Рейтинга-->
-      <!--            </td>-->
-      <!--          </tr>-->
-      <!--        </template>-->
-      <!--      </v-data-table>-->
     </base-material-card>
 
     <single-user-rating
@@ -150,10 +83,11 @@
   import moment from 'moment'
   import SingleUserRating from './SingleUserRating'
   import DataTable from '@/views/dashboard/components/DataTable'
+  import MonthPicker from '@/views/dashboard/components/MonthPicker'
 
   export default {
     name: 'StaffRating',
-    components: { DataTable, SingleUserRating },
+    components: { DataTable, SingleUserRating, MonthPicker },
     data () {
       return {
         date: null,
@@ -164,10 +98,7 @@
         checks: [],
         rating: {},
         pharmacies: [],
-        pharmacy_id: null,
-        // searchParams: {
-        //   query_search: '',
-        // },
+        pharmacyId: null,
         headers: [
           {
             text: 'Фамилия',
@@ -194,36 +125,20 @@
       }
     },
     computed: {
-      locale () {
-        return process.env.VUE_APP_I18N_LOCALE || process.env.VUE_APP_I18N_FALLBACK_LOCALE
-      },
       searchParams () {
-        const date = moment(this.date ?? null)
+        const date = moment(this.date)
         return {
-          query_search: this.search,
-          year: date.format('YYYY'),
-          month: date.format('M'),
-          pharmacy_id: this.pharmacy_id,
+          name: this.search,
+          ratingYear: date.format('YYYY'),
+          ratingMonth: date.format('M'),
+          pharmacyId: this.pharmacyId,
         }
       },
     },
-    watch: {
-      // pharmacy_id: {
-      //   handler () {
-      //     this.fetchUsersWithRating()
-      //   },
-      // },
-      // date: {
-      //   handler () {
-      //     this.fetchUsersWithRating()
-      //   },
-      // },
-    },
     mounted () {
-      this.date = moment().format('YYYY-M')
-      // this.fetchUsersWithRating()
-      // this.fetchPharmacies()
+      this.fetchPharmacies()
     },
+
     methods: {
       closeDialog () {
         this.dialog = false
@@ -236,26 +151,12 @@
         dialog.save(date)
         this.date = date
       },
-      // fetchPharmacies () {
-      //   this.axios.get('pharmacies')
-      //     .then(({ data }) => {
-      //       this.pharmacies = data.data
-      //     })
-      // },
-      // fetchUsersWithRating () {
-      //   const date = moment(this.date ?? null)
-      //
-      //   this.axios.get('user-rating', {
-      //     params: {
-      //       year: date.format('YYYY'),
-      //       month: date.format('M'),
-      //       pharmacy_id: this.pharmacy_id,
-      //     },
-      //   })
-      //     .then(({ data }) => {
-      //       this.items = data.data
-      //     })
-      // },
+      fetchPharmacies () {
+        this.axios.get('pharmacies')
+          .then(({ data }) => {
+            this.pharmacies = data.data
+          })
+      },
     },
   }
 </script>

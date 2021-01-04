@@ -112,7 +112,7 @@
       fetchRatingsChecks () {
         this.axios.get('checks', {
           params: {
-            rating_id: this.rating.id,
+            ratingId: this.rating.id,
           },
         })
           .then(({ data }) => {

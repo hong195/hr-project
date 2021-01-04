@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Pagination;
 use App\Forms\CheckAttributeOptionForm;
 use App\Http\Requests\CheckAttributeOptionRequest;
 use App\Http\Resources\CheckAttributeOptionResource;
+use App\Models\CheckAttributeOption;
 use App\Repositories\CheckAttributeOptionRepository;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class CheckAttributeOptionController extends Controller
 {
@@ -19,12 +23,16 @@ class CheckAttributeOptionController extends Controller
         $this->option = $option;
     }
 
-    public function index()
+    public function index(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        return CheckAttributeOptionResource::collection($this->option->with(['attribute']));
+        $perPage = $request->get('perPage', Pagination::DEFAULT_PER_PAGE);
+        $page = $request->get('page', Pagination::DEFAULT_PAGE);
+        $result = CheckAttributeOption::with('attribute')->paginate($perPage, '*', 'page', $page);
+
+        return CheckAttributeOptionResource::collection($result);
     }
 
-    public function create(CheckAttributeOptionForm $form)
+    public function create(CheckAttributeOptionForm $form): JsonResponse
     {
         return response()->json(['form' => $form->get()]);
     }

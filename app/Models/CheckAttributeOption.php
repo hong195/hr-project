@@ -14,8 +14,6 @@ class CheckAttributeOption extends Model
 
     protected $guarded = [];
 
-    public $timestamps = false;
-
     public function attribute() : BelongsTo
     {
         return $this->belongsTo(CheckAttribute::class, 'check_attribute_id');

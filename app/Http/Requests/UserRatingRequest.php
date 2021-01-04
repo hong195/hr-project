@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
 class UserRatingRequest extends AbstractRequest
 {
     /**
@@ -11,7 +9,7 @@ class UserRatingRequest extends AbstractRequest
      *
      * @return bool
      */
-    public function authorize() : bool
+    public function authorize(): bool
     {
         return true;
     }
@@ -21,12 +19,14 @@ class UserRatingRequest extends AbstractRequest
      *
      * @return array
      */
-    public function rules() : array
+    public function rules(): array
     {
         return [
-            'user_id' => ['required', 'integer'],
-            'year' => ['required', 'integer'],
-            'month' => ['required', 'integer'],
+            'ratingYear' => ['required', 'integer'],
+            'ratingMonth' => ['required', 'integer'],
+            'userId' => ['nullable', 'integer'],
+            'perPage' => ['integer', 'nullable'],
+            'page' => ['integer', 'nullable'],
         ];
     }
 }

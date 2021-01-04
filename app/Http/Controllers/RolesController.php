@@ -6,7 +6,7 @@ use Spatie\Permission\Models\Role;
 
 use Illuminate\Http\Request;
 
-class RoleController extends Controller
+class RolesController extends Controller
 {
     public function index()
     {

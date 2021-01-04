@@ -131,7 +131,7 @@
         this.isLoading = true
         this.axios.get('checks', {
           params: {
-            user_id: this.userId,
+            userId: this.userId,
             year: this.date ? this.date.year : null,
             month: this.date ? this.date.month : null,
           },

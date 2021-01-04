@@ -127,10 +127,11 @@
           itemsPerPage = 10,
           sortBy = null,
         } = this.options
+
         this.$http.get(this.fetchUrl, {
           params: {
             ...this.searchOptions,
-            per_page: itemsPerPage || 10,
+            perPage: itemsPerPage,
             page: page,
             orderBy: sortBy ? sortBy[0] : null,
           },
@@ -184,7 +185,3 @@
     },
   }
 </script>
-
-<style scoped>
-
-</style>

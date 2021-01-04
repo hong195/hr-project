@@ -10,7 +10,7 @@ use App\Queries\CheckAttributesQueryInterface;
 use App\Repositories\Contracts\CheckAttributeRepositoryContract;
 use Illuminate\Http\Request;
 
-class CheckAttributeController extends Controller
+class CheckAttributesController extends Controller
 {
     private $checkAttributeRepository;
 

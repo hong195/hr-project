@@ -8,7 +8,7 @@
     >
       <div class="d-flex">
         <v-text-field
-          v-model="searchParams.query_search"
+          v-model="searchParams.name"
           append-icon="mdi-magnify"
           class="ml-auto mr-3"
           label="Поиск"
@@ -86,7 +86,7 @@
           },
         ],
         searchParams: {
-          query_search: '',
+          name: '',
         },
       }
     },

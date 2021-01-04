@@ -10,7 +10,7 @@ use App\Queries\PharmacyQueryInterface;
 use App\Repositories\PharmacyRepository;
 use Illuminate\Http\Request;
 
-class PharmacyController extends Controller
+class PharmaciesController extends Controller
 {
     /**
      * @var PharmacyRepository
