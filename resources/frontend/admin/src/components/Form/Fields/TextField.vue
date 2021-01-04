@@ -19,6 +19,7 @@
 <script>
 
   import FieldMixin from '@/components/Form/Mixins/FieldMixin'
+  import debounce from 'lodash.debounce'
 
   export default {
     name: 'TextField',
@@ -38,6 +39,14 @@
             'hidden',
             'number'].indexOf(type) !== -1
         },
+      },
+    },
+    watch: {
+      innerValue (newVal) {
+        debounce(this.$emit('input', {
+          name: this.name,
+          value: newVal,
+        }), 500)
       },
     },
   }

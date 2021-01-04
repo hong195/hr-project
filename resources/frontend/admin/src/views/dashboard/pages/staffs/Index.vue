@@ -8,7 +8,7 @@
     >
       <div class="d-flex">
         <v-text-field
-          v-model="searchParams.name"
+          v-model.lazy="searchParams.name"
           append-icon="mdi-magnify"
           class="ml-auto mr-3"
           label="Поиск"

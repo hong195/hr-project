@@ -29,7 +29,7 @@
         </v-col>
         <v-col cols="12" sm="12" md="3" lg="2">
           <v-text-field
-            v-model="search"
+            v-model.lazy="search"
             class="ml-auto"
             label="Поиск"
             single-line
