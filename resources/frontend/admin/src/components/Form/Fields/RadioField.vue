@@ -5,6 +5,7 @@
       tag="div"
       :rules="validationRule"
       :name="label"
+      :vid="name"
     >
       <v-col
         v-if="label"

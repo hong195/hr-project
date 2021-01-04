@@ -23,7 +23,7 @@ class UserRequest extends AbstractRequest
     }
 
     protected $rules = [
-        'pharmacy_id' => ['exists:pharmacies,id'],
+        'pharmacy_id' => ['required_if:role,2', 'nullable', 'exists:pharmacies,id'],
         'first_name' => ['required'],
         'last_name' => ['required'],
         'patronymic' => ['required'],

@@ -4,6 +4,7 @@
     tag="div"
     :rules="validationRule"
     :name="label"
+    :vid="name"
   >
     <v-text-field
       v-model="innerValue"
@@ -43,10 +44,12 @@
     },
     watch: {
       innerValue (newVal) {
-        debounce(this.$emit('input', {
-          name: this.name,
-          value: newVal,
-        }), 500)
+        debounce(() => {
+          this.$emit('input', {
+            name: this.name,
+            value: newVal,
+          })
+        }, 500)
       },
     },
   }

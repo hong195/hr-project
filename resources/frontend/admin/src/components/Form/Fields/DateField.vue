@@ -13,6 +13,7 @@
         :rules="validationRule"
         tag="div"
         :name="label"
+        :vid="name"
       >
         <v-text-field
           v-model="innerValue"

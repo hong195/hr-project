@@ -4,6 +4,7 @@
     tag="div"
     :rules="validationRule"
     :name="label"
+    :vid="name"
   >
     <v-select
       v-model="innerValue"

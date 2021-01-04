@@ -5,6 +5,7 @@
     :rules="validationRule"
     :name="label"
     class="treeselect-container"
+    :vid="name"
   >
     <label
       class="treeselect-label"

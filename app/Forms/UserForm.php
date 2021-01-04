@@ -36,7 +36,7 @@ class UserForm extends AbstractForm
             ->add('select', 'pharmacy_id', 'Аптека',
                 [
                     'attributes' => ['outlined' => true, "cols" => 12],
-                    'validationRule' => 'required',
+                    'validationRule' => "required_if:role,". self::SUBSCRIBER_ROLE_ID,
                     'options' => $this->getPharmacies(),
                 ]
             );

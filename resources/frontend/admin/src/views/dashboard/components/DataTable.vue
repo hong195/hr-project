@@ -77,10 +77,6 @@
         type: String,
         required: true,
       },
-      shouldUpdate: {
-        type: Boolean,
-        default: false,
-      },
       headers: {
         type: Array,
         default: () => ([]),
@@ -105,8 +101,8 @@
       },
     },
     watch: {
-      shouldUpdate () {
-        this.fetchPosts()
+      options (val) {
+        console.log(val)
       },
     },
     mounted () {
@@ -131,7 +127,7 @@
         this.$http.get(this.fetchUrl, {
           params: {
             ...this.searchOptions,
-            perPage: itemsPerPage,
+            perPage: itemsPerPage === -1 ? 10000000 : itemsPerPage,
             page: page,
             orderBy: sortBy ? sortBy[0] : null,
           },
@@ -151,7 +147,6 @@
           })
       },
       setOptions (options) {
-        options.itemsPerPage = options.itemsPerPage === -1 ? 1000000000 : options.itemsPerPage
         this.options = options
       },
       rowExpandedClass (item) {
@@ -171,8 +166,13 @@
         let value = ''
         const keys = header.split('.')
         value = item[keys[0]]
+
+        if (!value) {
+          return value
+        }
+
         const lastKeyIndex = keys.length - 1
-        for (var i = 1; i <= lastKeyIndex; ++i) {
+        for (let i = 1; i <= lastKeyIndex; ++i) {
           value = value[keys[i]]
         }
         return value
