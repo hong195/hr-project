@@ -61,7 +61,7 @@
               {{ $t('admin_panel.loading') }}
             </template>
             <template v-else>
-              {{ $t('$vuetify.noDataText') }}
+              {{ $t('admin_panel.noDataText') }}
             </template>
           </td>
         </tr>

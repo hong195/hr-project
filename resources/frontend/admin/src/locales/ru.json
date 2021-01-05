@@ -32,5 +32,9 @@
     "attributes": "Список Атрибутов",
     "create-attributes": "Создать атрибут",
     "create-attribute-options": "Создать опцию",
-    "attribute-options": "Список опций"
+    "attribute-options": "Список опций",
+    "admin_panel": {
+        "loading": "Загрузка",
+        "noDataText": "Нет данных"
+    }
 }
