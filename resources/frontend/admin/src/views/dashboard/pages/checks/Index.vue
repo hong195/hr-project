@@ -129,11 +129,12 @@
       },
       fetchUserChecks () {
         this.isLoading = true
+        const date = moment(this.date || new Date())
         this.axios.get('checks', {
           params: {
             userId: this.userId,
-            year: this.date ? this.date.year : null,
-            month: this.date ? this.date.month : null,
+            year: date.format('Y'),
+            month: date.format('M'),
           },
         })
           .then(({ data }) => {
