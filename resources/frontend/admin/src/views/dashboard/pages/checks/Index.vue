@@ -22,6 +22,7 @@
       <v-card-text>
         <v-data-table
           :headers="headers"
+          width="700px"
           :loading="isLoading"
           :items="checks"
           :search.sync="search"

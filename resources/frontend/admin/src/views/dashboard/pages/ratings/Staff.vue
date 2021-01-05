@@ -89,10 +89,12 @@
   import SingleUserRating from './SingleUserRating'
   import DataTable from '@/views/dashboard/components/DataTable'
   import MonthPicker from '@/views/dashboard/components/MonthPicker'
+  import RatingColor from '@/views/dashboard/components/mixins/RatingColor'
 
   export default {
     name: 'StaffRating',
     components: { DataTable, SingleUserRating, MonthPicker },
+    mixins: [RatingColor],
     data () {
       return {
         date: null,
@@ -165,11 +167,6 @@
           .then(({ data }) => {
             this.pharmacies = data.data
           })
-      },
-      getColor (scored) {
-        if (scored > 70) { return 'success' }
-        if (scored > 50) { return 'warning' }
-        return 'red'
       },
     },
   }

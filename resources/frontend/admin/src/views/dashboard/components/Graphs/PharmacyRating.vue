@@ -4,7 +4,7 @@
       color="primary"
       icon="mdi-poll-box"
       inline
-      class="px-5 py-3 mt-6"
+      class="px-5 py-3 my-10"
     >
       <v-row>
         <v-col>
@@ -16,7 +16,27 @@
           <month-picker v-model="date" />
         </v-col>
       </v-row>
-      <bar-chart v-if="date" ref="barChart" :chart-data="chart" />
+      <v-tabs v-model="tab" centered>
+        <v-tab href="#graph">
+          График
+        </v-tab>
+        <v-tab href="#table">
+          Таблица
+        </v-tab>
+        <v-tabs-items v-model="tab" style="margin-top: 15px;">
+          <v-tab-item :value="'graph'">
+            <v-progress-linear
+              v-if="isLoading"
+              indeterminate
+              color="primary"
+            />
+            <bar-chart v-if="date" ref="barChart" :chart-data="chart" />
+          </v-tab-item>
+          <v-tab-item :value="'table'">
+            <table-chart :items="items" :is-loading="isLoading" />
+          </v-tab-item>
+        </v-tabs-items>
+      </v-tabs>
     </base-material-card>
   </v-container>
 </template>
@@ -25,17 +45,20 @@
   import MonthPicker from '@/views/dashboard/components/MonthPicker'
   import BarChart from '@/views/dashboard/components/Graphs/BarChart'
   import moment from 'moment'
+  import TableChart from '@/views/dashboard/components/Graphs/TableChart'
 
   export default {
     name: 'PharmacyRating',
-    components: { BarChart, MonthPicker },
+    components: { TableChart, BarChart, MonthPicker },
     data () {
       return {
         date: {
           year: moment().format('YYYY'),
           month: moment().format('M'),
         },
-        isLoading: false,
+        items: [],
+        tab: 'graph',
+        isLoading: true,
         chart: {
           labels: [],
           datasets: [
@@ -58,9 +81,6 @@
       date () {
         this.fetchData()
       },
-    },
-    mounted () {
-      this.fetchData()
     },
     methods: {
       dynamicColor () {
@@ -87,6 +107,7 @@
         })
           .then(({ data }) => {
             this.isLoading = false
+            this.items = data.data
             this.chart.labels = data.data.map((pharmacy) => ([pharmacy.name]))
             this.chart.datasets[0].data = data.data.map((pharmacy) => (pharmacy.rating ? pharmacy.rating.scored : 0))
             this.chart.datasets[0].backgroundColor = this.poolColors(data.data.length)
@@ -99,3 +120,9 @@
     },
   }
 </script>
+<style >
+.v-slide-group__content.v-tabs-bar__content {
+  max-width: 250px;
+  margin: 0 auto;
+}
+</style>

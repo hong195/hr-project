@@ -22,7 +22,7 @@ class Pharmacy extends Model
         return $this->hasMany(User::class);
     }
 
-    public function ratings()
+    public function ratings(): \Illuminate\Database\Eloquent\Relations\HasManyThrough
     {
         return $this->hasManyThrough(Rating::class, User::class);
     }

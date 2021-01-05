@@ -7,10 +7,19 @@ import './plugins/vee-validate'
 import './plugins/axios/index'
 import vuetify from './plugins/vuetify'
 import i18n from './i18n'
+import { mapMutations, mapActions } from 'vuex'
 
 Vue.config.productionTip = false
+
 function boot () {
   new Vue({
+    created () {
+      this.removePreloader()
+    },
+    methods: {
+      ...mapMutations(['removePreloader']),
+      ...mapActions('user', ['fetchUser']),
+    },
     router,
     store,
     vuetify,

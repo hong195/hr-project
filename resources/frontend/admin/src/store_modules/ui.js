@@ -14,6 +14,9 @@ export default {
     SET_SCRIM (state, payload) {
       state.barColor = payload
     },
+    removePreloader () {
+      document.querySelector('body').removeAttribute('class')
+    },
   },
   actions: {
 

@@ -9,6 +9,7 @@ use App\Queries\Traits\OrderByTrait;
 class PharmacyRatingQuery implements PharmacyRatingQueryInterface
 {
     use OrderByTrait;
+
     /**
      * @var int
      */
@@ -41,10 +42,14 @@ class PharmacyRatingQuery implements PharmacyRatingQueryInterface
             ->when($this->pharmacyId, function ($query) {
                 return $query->where('pharmacy_id', $this->pharmacyId);
             })
-            ->with(['ratings' => function ($query) {
-                return $query->whereMonth('ratings.created_at', $this->month)
-                    ->whereYear('ratings.created_at', $this->year)->orderByRaw('ABS(ratings.scored/ratings.out_of)');
-            }])
+            ->with(
+                [
+                    'ratings' => function ($query) {
+                        return $query->whereMonth('ratings.created_at', $this->month)
+                            ->whereYear('ratings.created_at', $this->year)->orderByRaw('ABS(ratings.scored/ratings.out_of)');
+                    },
+                ]
+            )
             ->get();
     }
 }
