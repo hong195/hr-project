@@ -5,6 +5,7 @@
       fullscreen
       hide-overlay
       transition="dialog-bottom-transition"
+      class="rating-info-wrapper"
     >
       <v-card class="rating-info">
         <v-toolbar
@@ -28,41 +29,26 @@
           subheader
         >
           <v-row class="main-content">
-            <v-col md="12" xl="2" offset-md="1" class="mr-auto">
-              <h3>Список чеков</h3>
+            <v-col sm="12" xl="3">
+              <h3 class="text-center">
+                Список чеков
+              </h3>
               <v-list>
                 <v-select v-model="activeCheckId" :items="checks" item-text="name" item-value="id" />
               </v-list>
             </v-col>
-            <v-col md="12" xl="5">
-              <h3>Информация о чеке</h3>
-              <v-list v-if="activeCheck">
-                <v-list-item v-for="(criteria, index) in activeCheck.criteria" :key="activeCheck.id + index">
-                  <v-list-item-content>
-                    <v-list-item-title>
-                      {{ index + 1 }}. {{ criteria.label }}
-                    </v-list-item-title>
-                    <v-row v-if="criteria.use_in_rating">
-                      <v-col v-for="(option) in criteria.options" :key="`option-${option.id}`">
-                        <v-radio-group
-                          :value="option.selected ? option.label : '1'"
-                          column
-                        >
-                          <v-radio :value="option.label" :label="option.label" readonly disabled />
-                        </v-radio-group>
-                      </v-col>
-                    </v-row>
-                    <v-row v-else>
-                      <v-col>
-                        {{ criteria.value }}
-                      </v-col>
-                    </v-row>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list>
+            <v-col sm="12" xl="6">
+              <div style="margin: 0 50px;">
+                <h3 class="text-center">
+                  Информация о чеке
+                </h3>
+                <view-check :active-check="activeCheck" class="active-check" />
+              </div>
             </v-col>
-            <v-col md="12" xl="3">
-              <h3>Итоговый рейтинг</h3>
+            <v-col sm="12" xl="3">
+              <h3 class="text-center">
+                Итоговый рейтинг
+              </h3>
               <rating-total-info :rating="rating" />
             </v-col>
           </v-row>
@@ -75,11 +61,13 @@
 <script>
   import moment from 'moment'
   import RatingTotalInfo from './RatingTotalInfo'
+  import ViewCheck from '@/views/dashboard/components/ViewCheck'
 
   export default {
     name: 'SingleUserRating',
     components: {
       RatingTotalInfo,
+      ViewCheck,
     },
     props: {
       showDialog: {
@@ -145,6 +133,15 @@
   }
   .main-content {
     padding: 20px;
+  }
+  .active-check {
+    .v-list-item__title {
+      font-size: 1.2rem;
+      line-height: 1.4rem;
+    }
+    .v-list {
+      margin-top: 10px;
+    }
   }
 }
 </style>

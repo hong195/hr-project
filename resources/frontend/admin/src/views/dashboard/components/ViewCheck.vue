@@ -1,8 +1,5 @@
 <template>
-  <div class="py-3">
-    <h3 class="text-center">
-      Информация о чеке
-    </h3>
+  <div>
     <v-list v-if="activeCheck" dense>
       <v-list-item v-for="(criteria, index) in activeCheck.criteria" :key="activeCheck.id + index">
         <v-list-item-content>
@@ -17,6 +14,9 @@
               >
                 <v-radio :value="option.label" :label="option.label" readonly disabled />
               </v-radio-group>
+              <div v-if="option.description" class="grey--text mb-2 caption ml-2" style="margin-top: -10px;">
+                {{ option.description }}
+              </div>
             </v-col>
           </v-row>
           <v-row v-else>
@@ -32,6 +32,11 @@
 <script>
   export default {
     name: 'ViewCheck',
-    props: ['activeCheck'],
+    props: {
+      activeCheck: {
+        type: Object,
+        default: () => ({}),
+      },
+    },
   }
 </script>

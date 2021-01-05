@@ -17,7 +17,8 @@ class CheckAttributeOptionRequest extends AbstractRequest
             'check_attribute_id' => 'required',
             'name' => ['required', 'alpha'],
             'label'=> ['required', 'alpha'],
-            'value' => 'nullable'
+            'value' => ['nullable'],
+            'description' => ['nullable']
         ];
     }
 }

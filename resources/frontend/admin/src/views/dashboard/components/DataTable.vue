@@ -100,11 +100,6 @@
         return this.meta.total ? this.meta.total : 0
       },
     },
-    watch: {
-      options (val) {
-        console.log(val)
-      },
-    },
     mounted () {
       this.$watch('searchOptions', this.fetchPosts, {
         deep: true,
@@ -178,9 +173,15 @@
         return value
       },
       getHeaderClass (header) {
-        if (header.value === 'data-table-expand') { return 'text-right' }
-        if (header.align) { return ' text-' + header.align }
-        return 'text-start'
+        const defaultClass = header.value.split('.').join(' ')
+
+        if (header.value === 'data-table-expand') {
+          return `text-right ${defaultClass}`
+        }
+        if (header.align) {
+          return `text-${header.align} ${defaultClass}`
+        }
+        return `text-start ${defaultClass}`
       },
     },
   }

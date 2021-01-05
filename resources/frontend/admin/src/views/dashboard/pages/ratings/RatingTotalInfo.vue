@@ -4,8 +4,8 @@
       <v-list-item-title>
         <v-row>
           <v-col>Дата создания рейтинга:</v-col>
-          <v-col class="font-weight-medium">
-            {{ formatCreationDate(rating.created_at) }}
+          <v-col class="font-weight-medium creation_date">
+            {{ formattedDate(rating.created_at) }}
           </v-col>
         </v-row>
       </v-list-item-title>
@@ -45,13 +45,15 @@
       },
     },
     methods: {
-      formatCreationDate (date, format = 'MMMM YYYY') {
-        return moment(date).format(format)
+      formattedDate (date) {
+        return moment(date).locale(this.$i18n.locale).format('MMMM Y')
       },
     },
   }
 </script>
 
 <style scoped>
-
+  .creation_date {
+    text-transform: capitalize;
+  }
 </style>

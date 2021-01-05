@@ -37,6 +37,9 @@
           </template>
           <template v-slot:expanded-item="{ headers, item }">
             <td :colspan="headers.length">
+              <h3 class="text-center py-3">
+                Информация о чеке
+              </h3>
               <view-check :active-check="item" />
             </td>
           </template>
@@ -85,7 +88,7 @@
             value: 'name',
           },
           {
-            text: 'Дата Чека',
+            text: 'Дата создания чека',
             value: 'created_at',
             align: 'left',
           },

@@ -12,6 +12,7 @@
         fetch-url="check-attribute-option"
         :headers="headers"
         :search-options="searchParams"
+        class="options-table"
       >
         <template v-slot:item.actions="{ item }">
           <v-btn
@@ -42,10 +43,6 @@
       dialog: false,
       headers: [
         {
-          text: 'Идентефикатор',
-          value: 'id',
-        },
-        {
           text: 'Название',
           value: 'label',
         },
@@ -60,6 +57,11 @@
         {
           text: 'Значение',
           value: 'value',
+        },
+        {
+          text: 'Примечание',
+          value: 'description',
+          sortable: false,
         },
         {
           sortable: false,
@@ -107,3 +109,17 @@
     },
   }
 </script>
+<style  lang="scss">
+.options-table {
+  .description {
+    max-width: 350px;
+  }
+  .value {
+    min-width: 100px;
+    max-width: 100px;
+  }
+  .attribute.label {
+    max-width: 350px;
+  }
+}
+</style>

@@ -8,6 +8,9 @@
   }
 </script>
 <style lang="scss">
+.v-dialog--fullscreen {
+  overflow-x: hidden;
+}
 @media (min-width: 480px) {
   .v-data-table__wrapper {
     td {
