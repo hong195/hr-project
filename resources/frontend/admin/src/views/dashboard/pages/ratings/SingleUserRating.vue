@@ -145,6 +145,10 @@
             this.activeCheckId = this.rating.checks[0] ? this.rating.checks[0].id : null
             this.overlay = false
           })
+          .catch(() => {
+            this.$store.commit('errorMessage', 'Рейтинг не найден')
+            this.closeDialog()
+          })
       },
       closeDialog () {
         this.$emit('close-dialog')

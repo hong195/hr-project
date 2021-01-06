@@ -137,8 +137,12 @@
     },
     mounted () {
       this.fetchPharmacies()
+      if (this.$route.query.rating_id) {
+        this.rating = {}
+        this.rating.id = parseInt(this.$route.query.rating_id)
+        this.dialog = true
+      }
     },
-
     methods: {
       closeDialog () {
         this.dialog = false

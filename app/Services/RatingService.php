@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Enums\CheckLimit;
 use App\Exceptions\UserRatingException;
+use App\Models\Rating;
 use App\Models\User;
 use App\Repositories\Contracts\CheckAttributeRepositoryContract;
 use App\Repositories\Contracts\RatingRepositoryContract;
@@ -60,7 +61,7 @@ class RatingService
      * Get possible total points, total depends on check attributes
      * @throws UserRatingException
      */
-    public function createRating()
+    public function createRating(): Rating
     {
         $scored = $this->getScoredPoints();
         $out_of = $this->getTotalPoints();
@@ -81,7 +82,11 @@ class RatingService
         return $rating;
     }
 
-    protected function getTotalPoints(): int
+    /**
+     * Get Users scored points, depends on checks criteria
+     * @return int|float
+     */
+    protected function getTotalPoints()
     {
         return $this->checkAttributesRepository->getUsedInRating()->sum(function ($attribute) {
             return $attribute->options->max->value * CheckLimit::MINIMUM_FOR_CREATING_RATING;
@@ -90,9 +95,9 @@ class RatingService
 
     /**
      * Get Users scored points, depends on checks criteria
-     * @return int
+     * @return int|float
      */
-    protected function getScoredPoints(): int
+    protected function getScoredPoints()
     {
         return $this->checks->sum(function ($check) {
             return collect($check->criteria)->filter->use_in_rating->sum(function ($criteria) {

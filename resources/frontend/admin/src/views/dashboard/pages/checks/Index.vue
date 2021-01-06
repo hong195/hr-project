@@ -88,7 +88,7 @@
             value: 'name',
           },
           {
-            text: 'Дата создания чека',
+            text: 'Дата чека',
             value: 'created_at',
             align: 'left',
           },

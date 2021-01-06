@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Enums\CheckLimit;
 use App\Exceptions\UserRatingException;
 use App\Models\Check;
+use App\Notifications\RatingCreated;
 use App\Repositories\Contracts\CheckRepositoryContract;
 use App\Services\RatingService;
 
@@ -39,7 +40,14 @@ class CheckObserver
         }
 
         try {
-            $this->ratingService->setUser($user)->setCreationDate($created_at)->setChecks($userChecks)->createRating();
+            $rating = $this->ratingService
+                        ->setUser($user)
+                        ->setCreationDate($created_at)
+                        ->setChecks($userChecks)
+                        ->createRating();
+
+            $user->notify(new RatingCreated($rating));
+
         } catch (UserRatingException $e) {
             report($e);
         }
