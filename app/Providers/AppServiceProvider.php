@@ -52,7 +52,6 @@ class AppServiceProvider extends ServiceProvider
                 request()->get('name'),
                 request()->get('year'),
                 request()->get('month'),
-                request()->get('ratingId')
             );
 
             $query->with($relations);

@@ -31,23 +31,17 @@ class CheckQuery implements CheckQueryInterface
      * @var array
      */
     private $relations;
-    /**
-     * @var int|null
-     */
-    private $ratingId;
 
     public function __construct(int $user_id = null,
                                 string $name = null,
                                 int $year = null ,
-                                int $month = null,
-                                int $ratingId = null)
+                                int $month = null)
     {
 
         $this->userId = $user_id;
         $this->name = $name;
         $this->year = $year;
         $this->month = $month;
-        $this->ratingId = $ratingId;
     }
 
     public function execute(int $perPage = 10, int $page = 1): \Illuminate\Contracts\Pagination\LengthAwarePaginator
@@ -55,11 +49,6 @@ class CheckQuery implements CheckQueryInterface
         return $this->getQuery()
             ->when($this->userId, function ($query){
                 $query->where('user_id', $this->userId);
-            })
-            ->when($this->ratingId, function ($query){
-                $query->whereHas('ratings', function ($query) {
-                    return $query->where('ratings.id', $this->ratingId);
-                });
             })
             ->when($this->year, function ($query){
                 $query->whereYear('created_at', $this->year);
@@ -111,12 +100,6 @@ class CheckQuery implements CheckQueryInterface
     public function setName(string $name = null): CheckQuery
     {
         $this->name = $name;
-        return $this;
-    }
-
-    public function setRatingId(int $ratingId = null): CheckQuery
-    {
-        $this->ratingId = $ratingId;
         return $this;
     }
 }

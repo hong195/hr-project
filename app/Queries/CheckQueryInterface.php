@@ -13,6 +13,4 @@ interface CheckQueryInterface
     public function setUserId(int $userId = null);
 
     public function setName(string $name = null);
-
-    public function setRatingId(int $ratingId = null);
 }
