@@ -73,7 +73,7 @@
 
     <single-user-rating
       :show-dialog="dialog"
-      :rating="rating"
+      :rating-id="rating.id"
       @close-dialog="closeDialog"
     />
   </v-container>

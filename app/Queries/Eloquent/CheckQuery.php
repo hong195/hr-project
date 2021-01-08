@@ -81,8 +81,17 @@ class CheckQuery implements CheckQueryInterface
         return $this->relations ? Check::with($this->relations) : Check::query();
     }
 
-    public function with(array $relations): CheckQuery
+    public function with($relations): CheckQuery
     {
+        if (!$relations) {
+            return $this;
+        }
+
+        if (is_string($relations)) {
+            $this->relations[] = $relations;
+            return $this;
+        }
+
         foreach ($relations as $single) {
             if (!$single) {
                 continue;

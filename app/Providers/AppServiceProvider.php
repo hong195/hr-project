@@ -45,8 +45,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(PharmacyRepository::class, PharmacyRepository::class);
 
         $this->app->bind(CheckQueryInterface::class, function () {
-            $withUser = request()->get('with_user') ? 'user' : null;
-            $withMeta = !$withUser ? 'meta' : null;
+            $relations = request()->with ?? [];
 
             $query = new CheckQuery(
                 request()->get('userId'),
@@ -55,7 +54,8 @@ class AppServiceProvider extends ServiceProvider
                 request()->get('month'),
                 request()->get('ratingId')
             );
-            $query->with([$withUser, $withMeta]);
+
+            $query->with($relations);
 
             return $query->setOrderBy(request()->get('orderBy', ''))->setDirection(request()->get('direction', ''));
         });

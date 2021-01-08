@@ -48,7 +48,7 @@ class CheckForm extends AbstractForm
                 ]);
 
         $this->formBuilder
-            ->add('number', 'meta.sum', 'Сумма чека',
+            ->add('number', 'sum', 'Сумма чека',
                 [
                     'validationRule' => 'required',
                     'attributes' => [
@@ -103,6 +103,10 @@ class CheckForm extends AbstractForm
 
             if ('user_id' === $field->getName()) {
                 $value = $check->user_id;
+            }
+
+            if ('sum' === $field->getName()) {
+                $value = $check->sum;
             }
 
             if ('created_at' === $field->getName()) {

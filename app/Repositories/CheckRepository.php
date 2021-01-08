@@ -12,6 +12,7 @@ use App\Services\Contracts\CriteriaInterface;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as SupportCollection;
+use Illuminate\Support\Facades\Auth;
 
 class CheckRepository extends AbstractRepository implements CheckRepositoryContract
 {
@@ -69,6 +70,7 @@ class CheckRepository extends AbstractRepository implements CheckRepositoryContr
     public function setAttributes(SupportCollection $checkRequest)
     {
         $this->modelAttributes = $checkRequest->except('meta')->toArray();
+        $this->modelAttributes['reviewer_id'] = Auth::user()->id;
         $this->modelAttributes['criteria'] = $this->criteriaService
             ->generate($checkRequest->get('meta'))->getCriteriaList();
     }

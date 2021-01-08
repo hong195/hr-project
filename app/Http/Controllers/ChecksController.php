@@ -22,11 +22,11 @@ class ChecksController extends Controller
     }
 
 
-    public function index(CheckQueryInterface $checkQuery): CheckResource
+    public function index(CheckQueryInterface $checkQuery): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $checks = $checkQuery->execute(CheckLimit::MINIMUM_FOR_CREATING_RATING);
 
-        return new CheckResource($checks);
+        return CheckResource::collection($checks);
     }
 
 

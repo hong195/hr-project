@@ -30,11 +30,29 @@
         </v-row>
       </v-list-item-title>
     </v-list-item>
+    <v-list-item v-if="reviewersName.length && isAdmin">
+      <v-list-item-title>
+        <v-row>
+          <v-col>
+            <span v-if="reviewersName.length > 1">
+              Провели оценку
+            </span>
+            <span v-else>
+              Провел(а) оценку
+            </span>
+          </v-col>
+          <v-col class="font-weight-medium">
+            {{ reviewersName.join() }}
+          </v-col>
+        </v-row>
+      </v-list-item-title>
+    </v-list-item>
   </v-list>
 </template>
 
 <script>
   import moment from 'moment'
+  import { mapState } from 'vuex'
 
   export default {
     name: 'RatingTotalInfo',
@@ -43,6 +61,13 @@
         type: Object,
         default: () => ({}),
       },
+      reviewersName: {
+        type: Array,
+        default: () => [],
+      },
+    },
+    computed: {
+      ...mapState({ isAdmin: state => state.user.isAdmin }),
     },
     methods: {
       formattedDate (date) {

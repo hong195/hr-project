@@ -29,12 +29,30 @@
           subheader
         >
           <v-row class="main-content">
+            <v-overlay :value="overlay" opacity="1" color="white">
+              <v-progress-circular
+                color="primary"
+                indeterminate
+                size="128"
+              />
+            </v-overlay>
             <v-col sm="12" xl="3">
               <h3 class="text-center">
                 Список чеков
               </h3>
-              <v-list>
-                <v-select v-model="activeCheckId" :items="checks" item-text="name" item-value="id" />
+              <v-list v-if="activeCheck && rating && rating.checks">
+                <v-select v-model="activeCheckId" :items="rating.checks" item-text="name" item-value="id" />
+                <v-row>
+                  <v-col cols="12">
+                    <strong>Дата чека:</strong> {{ formatCreationDate(activeCheck.created_at, 'LL') }}
+                  </v-col>
+                  <v-col v-if="activeCheck.sum" cols="12">
+                    <strong>Дата чека:</strong> {{ activeCheck.sum }}
+                  </v-col>
+                  <v-col v-if="isAdmin && activeCheck.reviewer" cols="12">
+                    <strong>Провел(а) оценку чека:</strong> {{ activeCheck.reviewer.full_name }}
+                  </v-col>
+                </v-row>
               </v-list>
             </v-col>
             <v-col sm="12" xl="6">
@@ -49,7 +67,7 @@
               <h3 class="text-center">
                 Итоговый рейтинг
               </h3>
-              <rating-total-info :rating="rating" />
+              <rating-total-info v-if="rating" :rating="rating" :reviewers-name="reviewersNames" />
             </v-col>
           </v-row>
         </v-list>
@@ -62,6 +80,7 @@
   import moment from 'moment'
   import RatingTotalInfo from './RatingTotalInfo'
   import ViewCheck from '@/views/dashboard/components/ViewCheck'
+  import { mapState } from 'vuex'
 
   export default {
     name: 'SingleUserRating',
@@ -74,23 +93,44 @@
         type: Boolean,
         default: false,
       },
-      rating: {
-        type: Object,
+      ratingId: {
+        type: Number,
+        default: 0,
       },
     },
     data: () => ({
       activeCheckId: null,
-      checks: [],
+      rating: null,
+      overlay: true,
     }),
     computed: {
+      ...mapState({ isAdmin: state => state.user.isAdmin }),
       activeCheck () {
-        return this.checks.find((el) => {
+        if (!this.rating) {
+          return
+        }
+        return this.rating.checks.find((el) => {
           return el.id === this.activeCheckId
         })
       },
+      reviewersNames () {
+        const reviewersNames = []
+
+        if (!this.rating) {
+          return reviewersNames
+        }
+
+        this.rating.checks.forEach((check) => {
+          if (check.reviewer && !reviewersNames.includes(check.reviewer.full_name)) {
+            reviewersNames.push(check.reviewer.full_name)
+          }
+        })
+
+        return reviewersNames
+      },
     },
     watch: {
-      rating: {
+      ratingId: {
         handler () {
           this.fetchRatingsChecks()
         },
@@ -98,24 +138,19 @@
     },
     methods: {
       fetchRatingsChecks () {
-        this.axios.get('checks', {
-          params: {
-            ratingId: this.rating.id,
-          },
-        })
+        this.overlay = true
+        this.axios.get(`ratings/${this.ratingId}`)
           .then(({ data }) => {
-            this.checks = data.data
-            this.activeCheckId = this.checks[0].id
+            this.rating = data.data
+            this.activeCheckId = this.rating.checks[0] ? this.rating.checks[0].id : null
+            this.overlay = false
           })
       },
       closeDialog () {
         this.$emit('close-dialog')
       },
       formatCreationDate (date, format = 'MMMM YYYY') {
-        return moment(date).format(format)
-      },
-      setActiveCheck (check) {
-        this.activeCheck = check
+        return moment(date).locale(this.$i18n.locale).format(format)
       },
     },
   }

@@ -24,9 +24,10 @@ class CheckRequest extends AbstractRequest
     }
 
     protected $rules = [
-        'user_id' => 'required|exists:users,id',
-        'name' => 'required',
-        'created_at' => 'required|date|before:today'
+        'user_id' => ['required', 'exists:users,id'],
+        'name' => ['required'],
+        'created_at' => ['required','date','before:today'],
+        'sum' => ['required', 'integer']
     ];
 
     /**

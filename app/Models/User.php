@@ -78,6 +78,11 @@ class User extends Authenticatable implements JWTSubject
         $this->attributes['password'] = bcrypt($value);
     }
 
+    public function getFullNameAttribute(): string
+    {
+        return "{$this->last_name} {$this->first_name} {$this->patronymic}";
+    }
+
     public function hasRating($created_at) : bool
     {
         $created_at = $created_at instanceof Carbon ? $created_at : Carbon::parse($created_at);
