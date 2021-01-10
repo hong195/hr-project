@@ -55,9 +55,14 @@
                     v-bind="attrs"
                     v-on="on"
                   >
-                    <a href="#" @click.prevent="setRating(item.ratings[0])">
+                    <v-btn :color="getColor(item.ratings[0].scored)"
+                           rounded
+                           class="rating__btn"
+                           depressed
+                           @click.prevent="setRating(item.ratings[0])"
+                    >
                       {{ `${item.ratings[0].scored}/${item.ratings[0].out_of}` }}
-                    </a>
+                    </v-btn>
                   </span>
                 </template>
                 <span>Нажмите, чтобы просмотреть подробную информацию о рейтинге</span>
@@ -161,6 +166,20 @@
             this.pharmacies = data.data
           })
       },
+      getColor (scored) {
+        if (scored > 70) { return 'success' }
+        if (scored > 50) { return 'warning' }
+        return 'red'
+      },
     },
   }
 </script>
+<style lang="scss">
+.rating {
+  &__btn {
+    & .v-btn__content {
+      color: #fff;
+    }
+  }
+}
+</style>

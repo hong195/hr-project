@@ -31,6 +31,7 @@
           :single-expand="true"
           show-expand
           :expanded.sync="expanded"
+          class="table-checks"
         >
           <template v-slot:item.created_at="{ item }">
             {{ formattedDate(item.created_at) }}
@@ -173,6 +174,11 @@
   }
 </script>
 <style lang="scss">
+.table-checks {
+  .v-list-item__title {
+    white-space: normal !important;
+  }
+}
 .table-detail {
   width: 100%;
 
