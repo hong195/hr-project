@@ -120,9 +120,9 @@
             })
             .catch(({ response }) => {
               console.error(response)
-              this.message = response.data.error
               this.loading = false
               this.error = true
+              this.message = response.data.error
             })
         }
       },

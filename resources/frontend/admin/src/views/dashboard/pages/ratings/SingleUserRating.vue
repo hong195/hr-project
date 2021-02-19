@@ -109,9 +109,20 @@
         if (!this.rating) {
           return
         }
-        return this.rating.checks.find((el) => {
+        let activeCheck = this.rating.checks.find((el) => {
           return el.id === this.activeCheckId
+        }).criteria
+
+        activeCheck = Object.values(activeCheck).sort((a, b) => (a.order > b.order) ? 1 : ((b.order > a.order) ? -1 : 0))
+        let i = 1
+        Object.values(activeCheck).forEach(item => {
+          if (item.use_in_rating) {
+            item.index = i
+            i++
+          }
         })
+
+        return activeCheck
       },
       reviewersNames () {
         const reviewersNames = []

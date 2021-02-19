@@ -1,16 +1,18 @@
 <template>
   <div>
     <v-list v-if="activeCheck" dense>
-      <v-list-item v-for="(criteria, index) in activeCheck.criteria" :key="activeCheck.id + index">
-        <v-list-item-content>
+      <v-list-item v-for="(criteria, index) in activeCheck" :key="criteria.label + index">
+        <v-list-item-content v-if="criteria.use_in_rating === 1">
           <v-list-item-title>
-            {{ index + 1 }}. {{ criteria.label }}
+            {{ criteria.index }}.
+            {{ criteria.label }}
           </v-list-item-title>
-          <v-row v-if="criteria.use_in_rating" no-gutters>
+          <v-row no-gutters>
             <v-col v-for="(option) in criteria.options" :key="`option-${option.id}`">
               <v-radio-group
                 :value="option.selected ? option.label : '1'"
                 column
+                hide-details
               >
                 <v-radio :value="option.label" :label="option.label" readonly disabled />
               </v-radio-group>
@@ -19,11 +21,12 @@
               </div>
             </v-col>
           </v-row>
-          <v-row v-else>
-            <v-col>
-              {{ criteria.value }}
-            </v-col>
-          </v-row>
+        </v-list-item-content>
+        <v-list-item-content v-else-if="criteria.value">
+          <v-list-item-title>
+            <h4>Примечание:</h4>
+            <v-text-field :value="criteria.value" :disabled="true" />
+          </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -34,7 +37,7 @@
     name: 'ViewCheck',
     props: {
       activeCheck: {
-        type: Object,
+        type: [Object, Array],
         default: () => ({}),
       },
     },
