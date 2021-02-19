@@ -16,7 +16,7 @@
               >
                 <v-radio :value="option.label" :label="option.label" readonly disabled />
               </v-radio-group>
-              <div v-if="option.description" class="grey--text mb-2 caption ml-2" style="margin-top: -10px;">
+              <div v-if="option.description" class="grey--text mb-2 caption ml-2">
                 {{ option.description }}
               </div>
             </v-col>
