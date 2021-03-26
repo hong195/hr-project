@@ -6,7 +6,7 @@
     worksheet="My Worksheet"
     name="filename.xls"
   >
-    <v-btn outlined small>
+    <v-btn outlined large>
       Скачать <v-icon color="green">
         mdi-file-excel
       </v-icon>

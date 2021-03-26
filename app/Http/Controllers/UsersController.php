@@ -6,6 +6,7 @@ use App\Enums\Pagination;
 use App\Forms\UserForm;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
+use App\Models\User;
 use App\Queries\UserQueryInterface;
 use App\Repositories\Contracts\UserRepositoryContract;
 use Illuminate\Http\Request;
@@ -17,6 +18,14 @@ class UsersController extends Controller
     public function __construct(UserRepositoryContract $userRepository)
     {
         $this->userRepository = $userRepository;
+    }
+
+    public function byPharmacy(Request $request)
+    {
+
+        $users = User::where('pharmacy_id', $request->input('pharmacy_id'))->get();
+
+        return UserResource::collection($users);
     }
 
     public function index(Request $request, UserQueryInterface $userQuery)

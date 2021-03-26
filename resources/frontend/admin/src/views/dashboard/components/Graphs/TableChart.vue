@@ -2,7 +2,7 @@
   <div>
     <div class="d-flex">
       <v-spacer />
-      <v-btn outlined small class="mr-3" @click="sortRatings">
+      <v-btn outlined large class="mr-3" @click="sortRatings">
         Сортировать рейтинги <v-icon>
           {{ asc ? 'mdi-menu-up' : 'mdi-menu-down' }}
         </v-icon>

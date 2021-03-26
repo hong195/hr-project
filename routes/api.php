@@ -35,5 +35,6 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::resource('user-rating', UserRatingController::class)->only(['index']);
     Route::resource('roles', RolesController::class)->only(['index']);
     Route::resource('ratings', RatingsController::class)->only(['show']);
+    Route::get('users-by-pharmacy','App\Http\Controllers\UsersController@byPharmacy');
 });
 

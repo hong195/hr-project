@@ -108,9 +108,10 @@
           .then(({ data }) => {
             this.isLoading = false
             this.items = data.data
-            this.chart.labels = data.data.map((pharmacy) => ([pharmacy.name]))
-            this.chart.datasets[0].data = data.data.map((pharmacy) => (pharmacy.rating ? pharmacy.rating.scored : 0))
-            this.chart.datasets[0].backgroundColor = this.poolColors(data.data.length)
+            const filteredData = data.data.filter(item => item.rating.scored)
+            this.chart.labels = filteredData.map((pharmacy) => ([pharmacy.name]))
+            this.chart.datasets[0].data = filteredData.map((pharmacy) => pharmacy.rating.scored)
+            this.chart.datasets[0].backgroundColor = this.poolColors(filteredData.length)
             this.$refs.barChart.updateChart()
           }).catch(e => {
             this.isLoading = false

@@ -13,14 +13,17 @@
     >
       <v-icon small v-text="action.icon" />
     </v-btn>
+    <pharmacy-detail ref="pharmacyDetail" :item="item" />
   </div>
 </template>
 
 <script>
   import can from '@/plugins/directives/v-can'
+  import PharmacyDetail from '@/views/dashboard/pages/pharmacies/Detail'
 
   export default {
     name: 'Actions',
+    components: { PharmacyDetail },
     directives: {
       can: can,
     },
@@ -34,6 +37,12 @@
       return {
         activeItem: {},
         actions: [
+          {
+            color: 'info',
+            icon: 'mdi-eye',
+            can: 'read',
+            method: 'viewItem',
+          },
           {
             color: 'success',
             icon: 'mdi-pencil',
@@ -52,6 +61,11 @@
     methods: {
       actionMethod (funcName, item) {
         this[funcName](item)
+      },
+      viewItem () {
+        this.activeItem = this.item
+        this.$refs.pharmacyDetail.dialog = true
+        this.$refs.pharmacyDetail.getUsers()
       },
       editItem () {
         this.$router.push({
