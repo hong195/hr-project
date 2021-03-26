@@ -42,7 +42,7 @@
               <h3 class="text-center py-3">
                 Информация о чеке
               </h3>
-              <view-check :active-check="item" />
+              <view-check :active-check="addIndex(item.criteria)" />
             </td>
           </template>
           <template v-slot:item.actions="{ item }">
@@ -129,6 +129,17 @@
       },
     },
     methods: {
+      addIndex (activeCheck) {
+        activeCheck = Object.values(activeCheck).sort((a, b) => (a.order > b.order) ? 1 : ((b.order > a.order) ? -1 : 0))
+        let i = 1
+        Object.values(activeCheck).forEach(item => {
+          if (item.use_in_rating) {
+            item.index = i
+            i++
+          }
+        })
+        return activeCheck
+      },
       formattedDate (val) {
         return moment(val).locale('ru').format('D MMMM YYYY')
       },
