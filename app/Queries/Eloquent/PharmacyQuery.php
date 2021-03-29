@@ -24,7 +24,7 @@ class PharmacyQuery implements PharmacyQueryInterface
         $this->name = $name;
     }
 
-    public function execute(int $perPage = 10, int $page = 1): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    public function execute(int $perPage = 10): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         return Pharmacy::query()
             ->when($this->id, function ($query) {
@@ -36,7 +36,7 @@ class PharmacyQuery implements PharmacyQueryInterface
             ->when($this->orderBy, function($query) {
                 $query->orderBy($this->orderBy, $this->direction = 'ASC');
             })
-            ->paginate($perPage, $columns = ['*'], $pageName = 'page', $page);
+            ->paginate($perPage);
     }
 
     public function setId(int $id = null): PharmacyQuery

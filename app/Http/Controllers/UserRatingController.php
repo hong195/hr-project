@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\Pagination;
 use App\Http\Requests\UserRatingRequest;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\EmployeeResource;
 use App\Queries\UserQueryInterface;
 
 class UserRatingController extends Controller
@@ -23,10 +23,9 @@ class UserRatingController extends Controller
     {
         $request = $request->validated();
         $perPage = $request['perPage'] ?? Pagination::DEFAULT_PER_PAGE;
-        $page = $request['page'] ?? Pagination::DEFAULT_PAGE;
 
-        $userWithRatings = $this->userQuery->execute($perPage, $page);
+        $userWithRatings = $this->userQuery->execute($perPage);
 
-        return UserResource::collection($userWithRatings);
+        return EmployeeResource::collection($userWithRatings);
     }
 }

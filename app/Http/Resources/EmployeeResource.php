@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class EmployeeResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -22,8 +22,8 @@ class UserResource extends JsonResource
             'full_name' => $this->full_name,
             'email' => $this->email,
             'meta' => $this->whenLoaded('meta'),
-            'role' => RoleResource::make($this->whenLoaded('roles')->first()),
-            'permissions' => $this->getPermissionsViaRoles()->map->name,
+            'ratings' => $this->whenLoaded('ratings'),
+            'pharmacy' => new PharmacyResource($this->whenLoaded('pharmacy')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

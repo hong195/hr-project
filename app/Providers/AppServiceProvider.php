@@ -69,12 +69,14 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(UserQueryInterface::class, function () {
+
             $query = new UserQuery(
                 request()->get('userId'),
                 request()->get('pharmacyId'),
                 request()->get('name'),
                 request()->get('ratingMonth'),
                 request()->get('ratingYear'),
+                (bool) request()->get('withRating'),
             );
 
             return $query->setOrderBy(request()->get('orderBy', ''))->setDirection(request()->get('direction', ''));

@@ -42,6 +42,11 @@ class PharmacyRatingQuery implements PharmacyRatingQueryInterface
             ->when($this->pharmacyId, function ($query) {
                 return $query->where('pharmacy_id', $this->pharmacyId);
             })
+            ->whereHas(
+                'ratings', function ($query) {
+                return $query->whereMonth('ratings.created_at', $this->month)
+                    ->whereYear('ratings.created_at', $this->year)->orderByRaw('ABS(ratings.scored/ratings.out_of)');
+            })
             ->with(
                 [
                     'ratings' => function ($query) {

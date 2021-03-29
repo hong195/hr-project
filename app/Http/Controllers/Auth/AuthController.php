@@ -45,7 +45,7 @@ class AuthController extends Controller
     public function me()
     {
         return response()->json([
-            'user' => new UserResource($this->guard()->user())
+            'user' => new UserResource($this->guard()->user()->loadMissing(['roles', 'permissions']))
         ]);
     }
 

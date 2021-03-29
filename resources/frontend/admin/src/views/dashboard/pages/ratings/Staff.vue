@@ -28,6 +28,16 @@
           />
         </v-col>
         <v-col cols="12" sm="12" md="3" lg="2">
+          <v-select v-model="withRating"
+                    :items="showRating"
+                    item-text="label"
+                    item-value="id"
+                    label="Показать"
+                    clearable
+                    outlined
+          />
+        </v-col>
+        <v-col cols="12" sm="12" md="3" lg="2">
           <v-text-field
             v-model.lazy="search"
             class="ml-auto"
@@ -106,6 +116,17 @@
         rating: {},
         pharmacies: [],
         pharmacyId: null,
+        showRating: [
+          {
+            id: 0,
+            label: 'Без рейтинга',
+          },
+          {
+            id: 1,
+            label: 'С рейтингом',
+          },
+        ],
+        withRating: null,
         headers: [
           {
             text: 'Фамилия',
@@ -139,6 +160,7 @@
           ratingYear: date.format('YYYY'),
           ratingMonth: date.format('M'),
           pharmacyId: this.pharmacyId,
+          withRating: this.withRating,
         }
       },
     },

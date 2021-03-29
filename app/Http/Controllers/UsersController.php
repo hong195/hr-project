@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\Pagination;
 use App\Forms\UserForm;
 use App\Http\Requests\UserRequest;
+use App\Http\Resources\EmployeeResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Queries\UserQueryInterface;
@@ -30,11 +31,10 @@ class UsersController extends Controller
 
     public function index(Request $request, UserQueryInterface $userQuery)
     {
-        $page = $request->get('page', Pagination::DEFAULT_PAGE);
         $perPage = $request->get('perPage', Pagination::DEFAULT_PER_PAGE);
-        $users = $userQuery->execute($perPage, $page);
+        $users = $userQuery->execute($perPage);
 
-        return UserResource::collection($users);
+        return EmployeeResource::collection($users);
     }
 
     public function create(UserForm $form)
