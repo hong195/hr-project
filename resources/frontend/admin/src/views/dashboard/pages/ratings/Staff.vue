@@ -163,7 +163,11 @@
         this.date = date
       },
       fetchPharmacies () {
-        this.axios.get('pharmacies')
+        this.axios.get('pharmacies', {
+          params: {
+            perPage: 100000,
+          },
+        })
           .then(({ data }) => {
             this.pharmacies = data.data
           })
