@@ -67,10 +67,6 @@
             value: 'pharmacy.name',
           },
           {
-            text: 'Роль',
-            value: 'role.name',
-          },
-          {
             text: 'Электронная почта',
             value: 'email',
           },

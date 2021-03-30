@@ -37,7 +37,7 @@
               {{ item.email }}
             </td>
           </tr>
-          <tr>
+          <tr v-if="item.role && item.role.name">
             <td>
               Роль
             </td>

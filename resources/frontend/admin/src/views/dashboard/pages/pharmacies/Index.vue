@@ -54,15 +54,18 @@
         {
           text: 'Адресс аптеки',
           value: 'address',
+          sortable: false,
         },
         {
           text: '**Действия',
           value: 'actions',
           align: 'right',
+          sortable: false,
         },
       ],
       searchParams: {
         name: '',
+        with: 'users',
       },
     }),
     methods: {

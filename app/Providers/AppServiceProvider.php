@@ -65,6 +65,10 @@ class AppServiceProvider extends ServiceProvider
                 request()->get('name'),
             );
 
+            if (request()->get('with')) {
+                $query->setWith((array) request()->get('with'));
+            }
+
             return $query->setOrderBy(request()->get('orderBy', ''))->setDirection(request()->get('direction', ''));
         });
 

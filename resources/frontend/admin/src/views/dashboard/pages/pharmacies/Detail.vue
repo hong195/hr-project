@@ -1,7 +1,7 @@
 <template>
   <v-dialog
     v-model="dialog"
-    fullscreen
+    max-width="768"
   >
     <v-card>
       <v-card-title>
@@ -56,14 +56,21 @@
           :items="users"
           :headers="headers"
           :loading="loading"
-        />
+        >
+          <template v-slot:item.actions="{ item }">
+            <actions :item="item" @actionDeletedResponse="actionDeletedResponse" />
+          </template>
+        </v-data-table>
       </v-card-text>
     </v-card>
   </v-dialog>
 </template>
 <script>
+  import Actions from '@/views/dashboard/components/Actions/StaffActions'
+
   export default {
     name: 'PharmacyDetail',
+    components: { Actions },
     props: ['item'],
     data () {
       return {
@@ -89,8 +96,8 @@
           },
           {
             sortable: false,
-            text: 'Рейтинг',
-            value: 'rating',
+            text: 'Действия',
+            value: 'actions',
           },
         ],
       }
@@ -103,6 +110,12 @@
         }).finally(() => {
           this.loading = false
         })
+      },
+      actionDeletedResponse (val) {
+        this.items.splice(
+          this.items.findIndex(({ id }) => id === val),
+          1,
+        )
       },
     },
   }

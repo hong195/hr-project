@@ -26,7 +26,7 @@ class UsersController extends Controller
 
         $users = User::where('pharmacy_id', $request->input('pharmacy_id'))->get();
 
-        return UserResource::collection($users);
+        return EmployeeResource::collection($users);
     }
 
     public function index(Request $request, UserQueryInterface $userQuery)
