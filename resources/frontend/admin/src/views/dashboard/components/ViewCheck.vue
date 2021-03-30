@@ -1,14 +1,14 @@
 <template>
   <div>
     <v-list v-if="activeCheck" dense>
-      <v-list-item v-for="(criteria, index) in activeCheck" :key="criteria.label + index">
-        <v-list-item-content v-if="criteria.use_in_rating === 1">
+      <v-list-item v-for="(criterion, index) in activeCheck.criteria" :key="index">
+        <v-list-item-content v-if="criterion.use_in_rating === 1">
           <v-list-item-title>
-            {{ criteria.index }}.
-            {{ criteria.label }}
+            {{ index + 1 }}.
+            {{ criterion.label }}
           </v-list-item-title>
           <v-row no-gutters>
-            <v-col v-for="(option) in criteria.options" :key="`option-${option.id}`">
+            <v-col v-for="(option) in criterion.options" :key="`option-${option.id}`">
               <v-radio-group
                 :value="option.selected ? option.label : '1'"
                 column
@@ -22,10 +22,10 @@
             </v-col>
           </v-row>
         </v-list-item-content>
-        <v-list-item-content v-else-if="criteria.value">
+        <v-list-item-content v-else-if="criterion.value">
           <v-list-item-title>
             <h4>Примечание:</h4>
-            <v-text-field :value="criteria.value" :disabled="true" />
+            <v-text-field :value="criterion.value" :disabled="true" />
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
