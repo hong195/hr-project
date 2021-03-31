@@ -4,7 +4,7 @@
       <v-list-item v-for="(criterion, index) in activeCheck.criteria" :key="index">
         <v-list-item-content v-if="criterion.use_in_rating === 1">
           <v-list-item-title>
-            {{ index + 1 }}.
+            {{ lastIndex(index) }}.
             {{ criterion.label }}
           </v-list-item-title>
           <v-row no-gutters>
@@ -39,6 +39,11 @@
       activeCheck: {
         type: [Object, Array],
         default: () => ({}),
+      },
+    },
+    methods: {
+      lastIndex (current) {
+        return parseInt(current) + 1
       },
     },
   }

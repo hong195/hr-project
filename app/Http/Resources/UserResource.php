@@ -22,7 +22,9 @@ class UserResource extends JsonResource
             'full_name' => $this->full_name,
             'email' => $this->email,
             'meta' => $this->whenLoaded('meta'),
-            'role' => RoleResource::make($this->whenLoaded('roles')->first()),
+            'role' => $this->whenLoaded('roles', function() {
+                return RoleResource::make($this->roles)->first();
+            }),
             'permissions' => $this->getPermissionsViaRoles()->map->name,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

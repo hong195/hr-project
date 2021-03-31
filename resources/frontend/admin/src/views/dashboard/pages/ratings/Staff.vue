@@ -119,14 +119,14 @@
         showRating: [
           {
             id: 0,
-            label: 'Без рейтинга',
+            label: 'Всех',
           },
           {
             id: 1,
-            label: 'С рейтингом',
+            label: 'С только тех у кого есть рейтингом',
           },
         ],
-        withRating: null,
+        withRating: 0,
         headers: [
           {
             text: 'Фамилия',

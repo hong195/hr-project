@@ -65,6 +65,7 @@
           {
             text: 'Аптека',
             value: 'pharmacy.name',
+            sortable: false,
           },
           {
             text: 'Электронная почта',
@@ -73,6 +74,7 @@
           {
             text: 'Чек',
             value: 'check',
+            sortable: false,
           },
           {
             sortable: false,

@@ -70,6 +70,7 @@ class CheckRepository extends AbstractRepository implements CheckRepositoryContr
     public function setAttributes(SupportCollection $checkRequest)
     {
         $this->modelAttributes = $checkRequest->except('meta')->toArray();
+        $this->modelAttributes['name'] = '';
         $this->modelAttributes['reviewer_id'] = Auth::user()->id;
         $this->modelAttributes['criteria'] = $this->criteriaService
             ->generate($checkRequest->get('meta'))->getCriteriaList();

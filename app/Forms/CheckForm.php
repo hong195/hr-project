@@ -33,10 +33,6 @@ class CheckForm extends AbstractForm
 
     protected function buildForm()
     {
-        $this->formBuilder->add('text', 'name', 'Наименование', [
-            'validationRule' => 'required'
-        ]);
-
         $this->formBuilder
             ->add('select', 'user_id', 'Сотрудник',
                 [

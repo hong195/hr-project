@@ -40,14 +40,15 @@
               <h3 class="text-center">
                 Список чеков
               </h3>
+
               <v-list v-if="activeCheck && rating && rating.checks">
-                <v-select v-model="activeCheckId" :items="rating.checks" item-text="name" item-value="id" />
+                <v-select v-model="activeCheckId" :items="ratingChecks" item-text="name" item-value="id" />
                 <v-row>
                   <v-col cols="12">
                     <strong>Дата чека:</strong> {{ formatCreationDate(activeCheck.created_at, 'LL') }}
                   </v-col>
                   <v-col v-if="activeCheck.sum" cols="12">
-                    <strong>Дата чека:</strong> {{ activeCheck.sum }}
+                    <strong>Сумма:</strong> {{ activeCheck.sum }} сум.
                   </v-col>
                   <v-col v-if="isAdmin && activeCheck.reviewer" cols="12">
                     <strong>Провел(а) оценку чека:</strong> {{ activeCheck.reviewer.full_name }}
@@ -109,8 +110,20 @@
         if (!this.rating) {
           return
         }
-        return this.rating.checks.find((el) => {
+        return this.ratingChecks.find((el) => {
           return el.id === this.activeCheckId
+        })
+      },
+      ratingChecks () {
+        if (!this.rating && (this.rating && this.rating.checks.length < 0)) {
+          return []
+        }
+        return this.rating.checks.map((item, index) => {
+          return {
+            ...item,
+            name: `Чек № ${index + 1}`,
+            value: item.id,
+          }
         })
       },
       reviewersNames () {
@@ -120,7 +133,7 @@
           return reviewersNames
         }
 
-        this.rating.checks.forEach((check) => {
+        this.ratingChecks.forEach((check) => {
           if (check.reviewer && !reviewersNames.includes(check.reviewer.full_name)) {
             reviewersNames.push(check.reviewer.full_name)
           }

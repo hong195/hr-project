@@ -22,7 +22,7 @@ class CheckResource extends JsonResource
             'name' => $this->name,
             'sum' => $this->sum,
             'criteria' => $this->criteria,
-            'user' => new UserResource($this->whenLoaded('user')),
+            'user' => new EmployeeResource($this->whenLoaded('user')),
             'reviewer' => new UserResource($this->whenLoaded('reviewer')),
             'ratings' => $this->whenLoaded('ratings'),
             'created_at' => $this->created_at,
