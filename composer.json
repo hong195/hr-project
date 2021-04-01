@@ -24,7 +24,7 @@
         "laravel-lang/lang": "~7.0",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
-        "saodat/formbase": "v3.x-dev",
+        "saodat/formbase": "dev-master",
         "spatie/laravel-permission": "^3.17",
         "tymon/jwt-auth": "^1.0"
     },
