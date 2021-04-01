@@ -91,8 +91,8 @@ class CheckRepository extends AbstractRepository implements CheckRepositoryContr
         if ($user->hasRating($created_at = $checkRequest->get('created_at'))) {
             throw new CheckExpcetion(
                 __('check.failed_to_update',
-                ['date' => Carbon::parse($created_at)->translatedFormat('F Y')]
-            ));
+                    ['date' => Carbon::parse($created_at)->translatedFormat('F Y')]
+                ));
         }
 
         if ($checkRequest->has('meta')) {
@@ -111,10 +111,12 @@ class CheckRepository extends AbstractRepository implements CheckRepositoryContr
         $this->model->meta()->delete();
 
 
-        $meta = $meta->map(function ($value, $key) {
-            return ['value' => $value, 'name' => $key];
-        })
+        $meta = $meta->except('notice')
+            ->map(function ($value, $key) {
+                return ['value' => $value, 'name' => $key];
+            })
             ->values()
+            ->except('notice')
             ->all();
 
         $this->model->meta()->createMany($meta);

@@ -25,8 +25,9 @@ class CheckRequest extends AbstractRequest
 
     protected $rules = [
         'user_id' => ['required', 'exists:users,id'],
-        'created_at' => ['required','date','before:today'],
-        'sum' => ['required', 'integer']
+        'created_at' => ['required','date','before:tomorrow'],
+        'sum' => ['required', 'integer'],
+        'meta.*' => ['nullable'],
     ];
 
     /**
@@ -36,7 +37,7 @@ class CheckRequest extends AbstractRequest
      */
     public function rules(): array
     {
-        return $this->getRules();
+        return $this->rules;
     }
 
     protected function getCheckAttributes()

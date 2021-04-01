@@ -14,10 +14,7 @@ class CheckAttributeRequest extends AbstractRequest
     {
         return [
             'name' => ['string', 'required'],
-            'type' => ['required'],
             'label' => ['required'],
-            'validation_rule' => ['nullable'],
-            'use_in_rating' => ['boolean', 'nullable'],
             'order' => ['nullable', 'integer'],
         ];
     }

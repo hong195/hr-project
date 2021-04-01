@@ -16,35 +16,6 @@ class CheckAttributeForm extends AbstractForm
         $this->formBuilder->add('text', 'name', 'Слаг',
             ['validationRule' => 'required']);
 
-        $this->formBuilder->add('select', 'type', 'Тип', [
-            'options' => [
-                [
-                    'id' => 'radio',
-                    'name' => 'Радио кнопка'
-                ],
-                [
-                    'id' => 'textarea',
-                    'name' => 'Текстовое поле'
-                ]
-            ],
-            'value' => 'radio'
-        ]);
-
-        $this->formBuilder->add('radio', 'use_in_rating', 'Учитывать ли при создании рейтинга', [
-            'options' => [
-                [
-                    'value' => 1,
-                    'name' => 'yes',
-                    'label' => 'Да',
-                ],
-                [
-                    'value' => 0,
-                    'name' => 'no',
-                    'label' => 'Нет',
-                ],
-            ],
-            'value' => 0
-        ]);
 
         $this->formBuilder->add('number', 'order', 'Порядок', ['value' => 0]);
     }

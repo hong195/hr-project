@@ -23,7 +23,11 @@ class CheckAttributeRepository extends AbstractRepository implements CheckAttrib
         $checkAttributeRequest = collect($checkAttributeRequest);
         $this->setAttributes($checkAttributeRequest);
 
-        return parent::create($this->attributes);
+        $attributes = $this->attributes;
+        $attributes['type'] = 'radio';
+        $attributes['use_in_rating'] = true;
+
+        return parent::create($attributes);
     }
 
     public function update(int $id, array $checkAttributeRequest)

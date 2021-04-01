@@ -54,7 +54,7 @@ class CheckForm extends AbstractForm
 
         $this->formBuilder->add('date', 'created_at', 'Дата проверки',[
             'validationRule' => 'required',
-            'attributes' => ['min' => '2020-01-01', 'max'=> date("Y-m-d", strtotime("-1 days"))]
+            'attributes' => ['min' => '2020-01-01', 'max'=> date("Y-m-d", strtotime("today"))]
         ]);
 
         $this->checkAttributes->each(function($attribute) {
@@ -68,6 +68,8 @@ class CheckForm extends AbstractForm
                         ];
                     }),
                 ]);
+
+                $this->formBuilder->add('textarea', "meta.notice.{$attribute->name}", 'Примечание');
             }
 
             if (!$attribute->use_in_rating && $attribute->type === 'textarea') {
