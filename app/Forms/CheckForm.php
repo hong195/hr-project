@@ -52,7 +52,7 @@ class CheckForm extends AbstractForm
                     ]
                 ]);
 
-        $this->formBuilder->add('date', 'created_at', 'Дата проверки',[
+        $this->formBuilder->add('date', 'created_at', 'Дата чека',[
             'validationRule' => 'required',
             'attributes' => ['min' => '2020-01-01', 'max'=> date("Y-m-d", strtotime("today"))]
         ]);
