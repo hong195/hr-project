@@ -49,6 +49,7 @@
   import FileField from './Fields/FileField'
   import DateField from './Fields/DateField'
   import FormActionMixin from '@/components/Form/Mixins/FormActionsMixin'
+  import moment from 'moment'
 
   export default {
     name: 'FormBase',
@@ -136,6 +137,11 @@
       },
       setFieldValue ({ name, value }) {
         const field = this.getFieldByName(name)
+
+        if (value instanceof Date) {
+          value = moment(value).format('YYYY-MM-DD HH:mm')
+        }
+
         field.value = value
       },
       async reset () {

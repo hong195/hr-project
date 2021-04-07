@@ -2,9 +2,10 @@ import '@mdi/font/css/materialdesignicons.css'
 import Vue from 'vue'
 import Vuetify from 'vuetify/lib'
 import ru from 'vuetify/lib/locale/ru'
-import i18n from '@/i18n'
+import DatetimePicker from 'vuetify-datetime-picker'
 
 Vue.use(Vuetify)
+Vue.use(DatetimePicker)
 
 const theme = {
   primary: '#2f8cff',

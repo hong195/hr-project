@@ -130,7 +130,7 @@
     },
     methods: {
       formattedDate (val) {
-        return moment(val).locale('ru').format('D MMMM YYYY')
+        return moment(val).locale('ru').format('D MMMM YYYY HH:mm')
       },
       fetchUserChecks () {
         this.isLoading = true

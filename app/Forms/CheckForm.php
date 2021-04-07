@@ -8,6 +8,7 @@ use App\Models\Check;
 use App\Models\User;
 use App\Repositories\Contracts\CheckAttributeRepositoryContract;
 use App\Repositories\Contracts\UserRepositoryContract;
+use Carbon\Carbon;
 use Saodat\FormBase\Contracts\FormBuilderInterface;
 
 class CheckForm extends AbstractForm
@@ -54,7 +55,10 @@ class CheckForm extends AbstractForm
 
         $this->formBuilder->add('date', 'created_at', 'Дата чека',[
             'validationRule' => 'required',
-            'attributes' => ['min' => '2020-01-01', 'max'=> date("Y-m-d", strtotime("today"))]
+            'attributes' => ['min' => '2020-01-01',
+                'max'=> date("Y-m-d", strtotime("today")),
+                'timepicker' => true
+            ]
         ]);
 
         $this->checkAttributes->each(function($attribute) {
@@ -108,7 +112,7 @@ class CheckForm extends AbstractForm
             }
 
             if ('created_at' === $field->getName()) {
-                $value = date("Y-m-d", strtotime($check->created_at));
+                $value = Carbon::parse($check->created_at)->format('Y-m-d H:i');
             }
 
             $field->setValue($value);

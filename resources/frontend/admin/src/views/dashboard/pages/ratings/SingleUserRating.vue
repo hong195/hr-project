@@ -45,7 +45,7 @@
                 <v-select v-model="activeCheckId" :items="ratingChecks" item-text="name" item-value="id" />
                 <v-row>
                   <v-col cols="12">
-                    <strong>Дата чека:</strong> {{ formatCreationDate(activeCheck.created_at, 'LL') }}
+                    <strong>Дата чека:</strong> {{ formatCreationDate(activeCheck.created_at, 'LL , HH:mm') }}
                   </v-col>
                   <v-col v-if="activeCheck.sum" cols="12">
                     <strong>Сумма:</strong> {{ activeCheck.sum }} сум.
