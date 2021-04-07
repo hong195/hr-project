@@ -4,6 +4,7 @@
       v-if="attributes.timepicker"
       v-model="innerValue"
       :label="label"
+      :v-bing="attributes"
       outlined
       time-format="HH:mm"
       :text-field-props="{outlined: true, 'prepend-inner-icon': 'mdi-calendar'}"
