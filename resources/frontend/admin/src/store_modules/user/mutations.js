@@ -26,12 +26,12 @@ export default {
       state.permissions = payload.user.permissions
     }
 
-    if (payload.user.role && ['Admin'].includes(payload.user.role.name)) {
+    if (payload.user.role && ['admin'].includes(payload.user.role.name)) {
       state.isAdmin = true
       state.isEditor = true
     }
 
-    if (payload.user.role && ['Editor'].includes(payload.user.role.name)) {
+    if (payload.user.role && ['editor'].includes(payload.user.role.name)) {
       state.isEditor = true
     }
   },

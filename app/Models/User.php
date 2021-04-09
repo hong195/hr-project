@@ -15,6 +15,10 @@ class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable, HasRoles;
 
+    const ADMIN_ROLE = 1;
+    const SUBSCRIBER_ROLE = 2;
+    const EDITOR_ROLE = 3;
+
     protected $with = ['pharmacy'];
     /**
      * The attributes that are mass assignable.

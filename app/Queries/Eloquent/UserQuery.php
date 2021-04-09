@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\DB;
 
 class UserQuery implements UserQueryInterface
 {
-
     use OrderByTrait;
 
     private $userId;
@@ -55,6 +54,9 @@ class UserQuery implements UserQueryInterface
     public function execute(int $perPage = 10, int $page = 1): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         $query =  $this->getQuery()
+            ->whereHas('roles', function ($query) {
+                $query->whereNotIn('id', [User::ADMIN_ROLE, User::EDITOR_ROLE]);
+            })
             ->when($this->userId, function ($query) {
                 $query->where('id', $this->userId);
             })

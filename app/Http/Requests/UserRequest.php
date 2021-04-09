@@ -6,16 +6,7 @@ class UserRequest extends AbstractRequest
 {
     public function authorize(): bool
     {
-        $currentUser = auth()->user();
-        $userId = (int) $this->route()->user;
-
-        if ($this->isUpdating() && $currentUser && $currentUser->id === $userId) {
-            return true;
-        }
-
-        $hasAdminOrEditorRole = parent::authorize();
-
-        if ($hasAdminOrEditorRole) {
+        if ($this->user() && $this->user()->hasRole(['admin', 'editor'])) {
             return true;
         }
 
