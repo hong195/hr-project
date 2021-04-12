@@ -72,34 +72,12 @@ class UserQuery implements UserQueryInterface
                 $query->orderBy($this->orderBy, $this->direction = 'ASC');
             });
 
-        return $this->paginate($query);
+        return $query->paginate($perPage);
     }
 
     private function getQuery()
     {
-        if ($this->withRating && $this->ratingYear && $this->ratingMonth) {
-            $query = Db::table('users')->select('*')
-                ->join('ratings', 'ratings.user_id', '=', 'users.id')
-                ->select('users.*', 'ratings.id as rating_id',
-                    'ratings.scored as rating_scored',
-                    'ratings.user_id as rating_user_id',
-                    'ratings.out_of as rating_out_of',
-                    'ratings.created_at as rating_create_at'
-                )
-                ->whereYear('ratings.created_at', $this->ratingYear)
-                ->whereMonth('ratings.created_at', $this->ratingMonth)
-                ->orderByRaw('ABS(scored/out_of) DESC');
-        } else if ($this->ratingYear && $this->ratingMonth) {
-            $query = User::with([
-                'ratings' => function ($query) {
-                    return $query->whereYear('created_at', $this->ratingYear)->whereMonth('created_at', $this->ratingMonth);
-                },
-            ]);
-        } else {
-            $query = User::with('pharmacy');
-        }
-
-        return $query;
+        return User::with('pharmacy');
     }
 
     public function setId(int $id = null): UserQuery
@@ -112,51 +90,5 @@ class UserQuery implements UserQueryInterface
     {
         $this->name = $name;
         return $this;
-    }
-
-    private function paginate($query, $perPage = 10)
-    {
-        $total = $query->get()->count();
-        $page = Paginator::resolveCurrentPage();
-        $items = $query->forPage($page, $perPage)->get();
-        $items = $this->hydrateResults($items);
-
-        return new LengthAwarePaginator($items, $total, $perPage, $page);
-    }
-
-    private function hydrateResults($result): \Illuminate\Support\Collection
-    {
-        return collect($result)->map(function($item) {
-
-            if (!($item instanceof User)) {
-                $user = User::hydrate([
-                    [
-                        'id' => $item->id,
-                        'first_name' => $item->first_name,
-                        'last_name' => $item->last_name,
-                        'patronymic' => $item->patronymic,
-                        'email' => $item->email,
-                    ]
-                ])->first();
-
-                if (property_exists($item,'rating_id')) {
-                    $rating = Rating::hydrate([
-                        [
-                            'id' => $item->rating_id,
-                            'user_id' => $item->rating_user_id,
-                            'scored' => $item->rating_scored,
-                            'out_of' => $item->rating_out_of,
-                            'created_at' => $item->rating_create_at
-                        ]
-                    ]);
-
-                    $user->setRelation('ratings', $rating);
-                }
-
-                $item = $user;
-            }
-
-            return $item;
-        });
     }
 }

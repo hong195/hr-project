@@ -28,16 +28,6 @@
           />
         </v-col>
         <v-col cols="12" sm="12" md="3" lg="2">
-          <v-select v-model="withRating"
-                    :items="showRating"
-                    item-text="label"
-                    item-value="id"
-                    label="Показать"
-                    clearable
-                    outlined
-          />
-        </v-col>
-        <v-col cols="12" sm="12" md="3" lg="2">
           <v-text-field
             v-model.lazy="search"
             class="ml-auto"
@@ -58,20 +48,20 @@
       >
         <template v-slot:item.rating="{ item }">
           <tr>
-            <td v-if="item.ratings && item.ratings.length">
+            <td v-if="item">
               <v-tooltip bottom>
                 <template v-slot:activator="{ on, attrs }">
                   <span
                     v-bind="attrs"
                     v-on="on"
                   >
-                    <v-btn :color="getColor(item.ratings[0].scored)"
+                    <v-btn :color="getColor(item.scored)"
                            rounded
                            class="rating__btn"
                            depressed
-                           @click.prevent="setRating(item.ratings[0])"
+                           @click.prevent="setRating(item)"
                     >
-                      {{ `${item.ratings[0].scored}/${item.ratings[0].out_of}` }}
+                      {{ `${item.scored}/${item.out_of}` }}
                     </v-btn>
                   </span>
                 </template>
@@ -130,22 +120,25 @@
         headers: [
           {
             text: 'Фамилия',
-            value: 'last_name',
+            value: 'user.last_name',
+            sortable: false,
           },
           {
             text: 'Имя',
-            value: 'first_name',
+            value: 'user.first_name',
+            sortable: false,
           },
           {
             text: 'Отчество',
-            value: 'patronymic',
+            value: 'user.patronymic',
+            sortable: false,
           },
           {
             text: 'Электронная почта',
-            value: 'email',
+            value: 'user.email',
+            sortable: false,
           },
           {
-            sortable: false,
             text: 'Рейтинг',
             value: 'rating',
           },

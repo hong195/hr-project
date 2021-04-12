@@ -20,7 +20,8 @@ class RatingResource extends JsonResource
             'scored' => $this->scored,
             'out_of' => $this->out_of,
             'created_at' => $this->created_at,
-            'checks' => CheckResource::collection($this->whenLoaded('checks'))
+            'checks' => CheckResource::collection($this->whenLoaded('checks')),
+            'user'  => EmployeeResource::make($this->whenLoaded('user'))
         ];
     }
 }

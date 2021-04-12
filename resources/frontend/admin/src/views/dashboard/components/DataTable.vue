@@ -123,11 +123,11 @@
 
         this.$http.get(this.fetchUrl, {
           params: {
-            ...this.searchOptions,
             perPage: itemsPerPage === -1 ? 10000000 : itemsPerPage,
             page: page,
             orderBy: sortBy ? sortBy[0] : null,
             direction: sortDesc,
+            ...this.searchOptions,
           },
         })
           .then(({ data }) => {
