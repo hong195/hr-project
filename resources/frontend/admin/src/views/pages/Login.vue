@@ -26,10 +26,10 @@
             @submit.prevent="auth"
           >
             <v-text-field
-              id="email"
-              v-model="email"
-              :rules="emailRules"
-              label="Электронная почта"
+              id="login"
+              v-model="userLogin"
+              :rules="loginRules"
+              label="Ваш логин"
             />
             <v-text-field
               id="password"
@@ -79,16 +79,11 @@
 
     data () {
       return {
-        email: '',
+        userLogin: '',
         password: '',
         showPassword: false,
         rememberMe: false,
-        emailRules: [
-          v => !!v || 'Пожалуйста, введите значение',
-          v =>
-            /.+@.+\..+/.test(v || 'name@mail.uz') ||
-            'E-mail должен быть действительным',
-        ],
+        loginRules: [v => !!v || 'Пожалуйста, введите значение'],
         passwordRules: [v => !!v || 'Пожалуйста, введите значение'],
         scope: 'login-form',
         loading: false,
@@ -106,7 +101,7 @@
       auth () {
         this.error = false
         const data = {
-          email: this.email,
+          login: this.userLogin,
           password: this.password,
           remember: true,
         }

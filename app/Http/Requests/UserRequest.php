@@ -18,7 +18,7 @@ class UserRequest extends AbstractRequest
         'first_name' => ['required'],
         'last_name' => ['required'],
         'patronymic' => ['required'],
-        'email' => ['required', 'email', 'unique:users,email'],
+        'login' => ['required', 'min:6', 'alpha_dash', 'unique:users,login'],
         'password' => ['required', 'min:6', 'alpha_dash'],
         'role' => ['required', 'exists:roles,id'],
         'meta.gender' => ['nullable'],
@@ -33,7 +33,7 @@ class UserRequest extends AbstractRequest
     public function rules(): array
     {
         if ($this->isUpdating()) {
-            $this->rules['email'] = 'required|email';
+            $this->rules['login'] = ['required', 'min:6', 'alpha_dash', 'unique:users,login,' . $this->route('user')];
             $this->rules['password'] = 'nullable';
         }
 

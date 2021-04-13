@@ -16,6 +16,12 @@ class PharmacyForm extends AbstractForm
             ]);
 
         $this->formBuilder
+            ->add('text', 'email', 'Эмэил', [
+                'attributes' => ['outlined' => true],
+                'validationRule' => 'required'
+            ]);
+
+        $this->formBuilder
             ->add('text', 'address', 'Адрес', [
                 'attributes' => ['outlined' => true]
             ]);
@@ -25,15 +31,7 @@ class PharmacyForm extends AbstractForm
     public function fill(Pharmacy $pharmacy)
     {
         foreach ($this->formBuilder->getFields() as $field) {
-            $value = null;
-
-            if ('name' === $field->getName()) {
-                $value = $pharmacy->name;
-            } else if ('address' === $field->getName()) {
-                $value = $pharmacy->address;
-            }
-
-            $field->setValue($value);
+            $field->setValue($pharmacy->{$field->getName()} ?? null);
         }
 
         return $this->formBuilder;

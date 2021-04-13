@@ -27,7 +27,7 @@ class AuthController extends Controller
      */
     public function login()
     {
-        $credentials = request(['email', 'password']);
+        $credentials = request(['login', 'password']);
 
         //Todo make remember me, correctly
         if (! $token = auth()->attempt($credentials)) {

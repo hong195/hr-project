@@ -11,13 +11,21 @@ class PharmacyRequest extends AbstractRequest
      *
      * @return array
      */
-    public function rules() : array
+    public function rules(): array
     {
-        return [
+        $rules = [
             'name' => ['required','min:2'],
             'address' => ['string', 'nullable'],
+            'email' =>['required', 'email', 'unique:pharmacies,email'],
             'coordinates' => ['array', 'nullable'],
             'order' => ['numeric', 'nullable']
         ];
+
+        if ($this->isUpdating()) {
+            $rules['email'] = ['required', 'email', 'unique:pharmacies,email,' . $this->route('pharmacy')];
+            $rules['password'] = 'nullable';
+        }
+
+        return $rules;
     }
 }

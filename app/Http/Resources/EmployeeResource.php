@@ -19,7 +19,7 @@ class EmployeeResource extends JsonResource
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'patronymic' => $this->patronymic,
-            'email' => $this->email,
+            'login' => $this->login,
             'meta' => $this->whenLoaded('meta'),
             'ratings' => $this->whenLoaded('ratings'),
             'pharmacy' => new PharmacyResource($this->whenLoaded('pharmacy')),

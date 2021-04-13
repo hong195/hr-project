@@ -134,8 +134,8 @@
             sortable: false,
           },
           {
-            text: 'Электронная почта',
-            value: 'user.email',
+            text: 'Логин',
+            value: 'login',
             sortable: false,
           },
           {

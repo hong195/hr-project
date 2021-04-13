@@ -20,7 +20,7 @@ class UserResource extends JsonResource
             'last_name' => $this->last_name,
             'patronymic' => $this->patronymic,
             'full_name' => $this->full_name,
-            'email' => $this->email,
+            'login' => $this->login,
             'meta' => $this->whenLoaded('meta'),
             'role' => $this->whenLoaded('roles', function() {
                 return RoleResource::make($this->roles)->first();

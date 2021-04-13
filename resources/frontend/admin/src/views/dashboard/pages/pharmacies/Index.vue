@@ -52,6 +52,11 @@
           value: 'users_count',
         },
         {
+          text: 'Электронная почта',
+          value: 'email',
+          sortable: false,
+        },
+        {
           text: 'Адресс аптеки',
           value: 'address',
           sortable: false,

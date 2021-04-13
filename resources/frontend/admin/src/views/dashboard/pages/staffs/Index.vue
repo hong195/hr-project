@@ -68,8 +68,9 @@
             sortable: false,
           },
           {
-            text: 'Электронная почта',
-            value: 'email',
+            text: 'Логин',
+            value: 'login',
+            sortable: false,
           },
           {
             text: 'Чек',

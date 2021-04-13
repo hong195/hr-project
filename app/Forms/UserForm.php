@@ -65,9 +65,9 @@ class UserForm extends AbstractForm
             );
 
         $this->formBuilder
-            ->add('email', 'email', 'Электронная почта',
+            ->add('email', 'login', 'Логин',
                 [
-                    'validationRule' => 'required|email',
+                    'validationRule' => 'required|min:6',
                 ]
             );
 
