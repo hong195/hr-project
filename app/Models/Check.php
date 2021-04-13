@@ -13,7 +13,7 @@ class Check extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'user_id', 'reviewer_id', 'criteria', 'sum', 'created_at'];
+    protected $fillable = ['name', 'user_id', 'reviewer_id', 'criteria', 'sum', 'created_at', 'conversion'];
 
     protected $casts = [
         'criteria' => CastJsonAttribute::class

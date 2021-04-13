@@ -5,7 +5,6 @@ namespace App\Forms;
 
 
 use App\Models\Check;
-use App\Models\User;
 use App\Repositories\Contracts\CheckAttributeRepositoryContract;
 use App\Repositories\Contracts\UserRepositoryContract;
 use Carbon\Carbon;
@@ -53,18 +52,30 @@ class CheckForm extends AbstractForm
                     ]
                 ]);
 
-        $this->formBuilder->add('date', 'created_at', 'Дата чека',[
-            'validationRule' => 'required',
-            'attributes' => ['min' => '2020-01-01',
-                'max'=> date("Y-m-d", strtotime("today")),
-                'timepicker' => true
-            ]
-        ]);
+        $this->formBuilder->add('date', 'created_at', 'Дата чека',
+            [
+                'validationRule' => 'required',
+                'attributes' => ['min' => '2020-01-01',
+                    'max' => date("Y-m-d", strtotime("today")),
+                    'timepicker' => true,
+                    'cols' => 6
+                ]
+            ]);
 
-        $this->checkAttributes->each(function($attribute) {
+        $this->formBuilder
+            ->add('number', 'conversion', 'Конверсия',
+                [
+                    'validationRule' => 'required|max_value:10',
+                    'attributes' => [
+                        'cols' => 6
+                    ],
+                    'value' => 0,
+                ]);
+
+        $this->checkAttributes->each(function ($attribute) {
             if ($attribute->type === 'radio') {
                 $this->formBuilder->add($attribute->type, "meta.$attribute->name", $attribute->label, [
-                    'options' => $attribute->options->map(function($option) {
+                    'options' => $attribute->options->map(function ($option) {
                         return [
                             'value' => $option->id,
                             'label' => $option->label,
@@ -87,7 +98,7 @@ class CheckForm extends AbstractForm
     {
         $users = $this->userRepository->all();
         $users = $users->map(function ($user) {
-            return ['id' => $user->id, 'name' => $user->first_name.' '.$user->last_name];
+            return ['id' => $user->id, 'name' => $user->first_name . ' ' . $user->last_name];
         })->toArray();
 
         return $users;
@@ -120,8 +131,8 @@ class CheckForm extends AbstractForm
 
         $criterias = $check->criteria;
 
-        collect($this->formBuilder->getFields())->each(function($field) use ($criterias){
-            collect($criterias)->each(function($criteria) use ($field){
+        collect($this->formBuilder->getFields())->each(function ($field) use ($criterias) {
+            collect($criterias)->each(function ($criteria) use ($field) {
                 if ($field->getName() === "meta.$criteria->name") {
                     $value = null;
                     if ($criteria->options) {

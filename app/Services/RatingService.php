@@ -75,6 +75,7 @@ class RatingService
                 'user_id' => $this->user->id,
                 'scored' => $this->getScoredPoints(),
                 'out_of' => $this->getTotalPoints(),
+                'conversion' => $this->getConversion(),
                 'created_at' => $this->creationDate->toDateString()
             ]);
         $rating->checks()->sync($this->checks->map->id);
@@ -108,6 +109,12 @@ class RatingService
         });
     }
 
+    public function getConversion()
+    {
+        return $this->checks->sum(function ($check) {
+            return $check->conversion;
+        });
+    }
     /**
      * @param array|iterable $checks
      * @return RatingService

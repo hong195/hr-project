@@ -33,6 +33,8 @@ class UserRatingController extends Controller
                 ->when($request->get('orderBy'), function($query, $orderBy) use ($request){
                     if ($orderBy === 'rating') {
                         $query->orderByRaw('ABS(scored/out_of) ' . $request->get('direction', 'ASC'));
+                    }else {
+                        $query->orderBy($orderBy, $request->get('direction', 'ASC'));
                     }
                 })
 

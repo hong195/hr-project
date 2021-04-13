@@ -10,7 +10,7 @@ abstract class AbstractRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        if ($this->user() && $this->user()->hasRole(['admin', 'editor'])) {
+        if ($this->user() && $this->user()->hasRole(['Admin', 'Editor'])) {
             return true;
         }
 

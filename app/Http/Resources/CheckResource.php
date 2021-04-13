@@ -21,6 +21,7 @@ class CheckResource extends JsonResource
             'reviewer_id' => $this->reviewer_id,
             'name' => $this->name,
             'sum' => $this->sum,
+            'conversion' => $this->conversion,
             'criteria' => $this->criteria,
             'user' => new EmployeeResource($this->whenLoaded('user')),
             'reviewer' => new UserResource($this->whenLoaded('reviewer')),

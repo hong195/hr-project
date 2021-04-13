@@ -73,6 +73,19 @@
             </td>
           </tr>
         </template>
+        <template v-slot:item.conversion="{ item }">
+          <tr>
+            <td v-if="item">
+              <v-btn :color="getColor(item.conversion)"
+                     rounded
+                     class="rating__btn"
+                     depressed
+              >
+                {{ `${item.conversion}` }}%
+              </v-btn>
+            </td>
+          </tr>
+        </template>
       </data-table>
     </base-material-card>
 
@@ -134,13 +147,12 @@
             sortable: false,
           },
           {
-            text: 'Логин',
-            value: 'login',
-            sortable: false,
-          },
-          {
             text: 'Рейтинг',
             value: 'rating',
+          },
+          {
+            text: 'Конверсия',
+            value: 'conversion',
           },
         ],
       }
