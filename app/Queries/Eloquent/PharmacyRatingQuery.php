@@ -46,7 +46,7 @@ class PharmacyRatingQuery implements PharmacyRatingQueryInterface
     {
         return $this->pharmacy
             ->when($this->pharmacyId, function ($query) {
-                return $query->where('pharmacy_id', $this->pharmacyId);
+                return $query->where('id', $this->pharmacyId);
             })
             ->whereHas(
                 'ratings', function ($query) {
