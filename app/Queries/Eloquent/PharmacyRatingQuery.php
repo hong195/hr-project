@@ -36,6 +36,12 @@ class PharmacyRatingQuery implements PharmacyRatingQueryInterface
         $this->month = $month ? $month : now()->month;
     }
 
+    public function setPharmacyId(int $pharmacyId)
+    {
+        $this->pharmacyId = $pharmacyId;
+        return $this;
+    }
+
     public function execute()
     {
         return $this->pharmacy
@@ -53,8 +59,29 @@ class PharmacyRatingQuery implements PharmacyRatingQueryInterface
                         return $query->whereMonth('ratings.created_at', $this->month)
                             ->whereYear('ratings.created_at', $this->year)->orderByRaw('ABS(ratings.scored/ratings.out_of)');
                     },
+                    'ratings.user'
                 ]
             )
             ->get();
+    }
+
+    /**
+     * @param int $year
+     * @return PharmacyRatingQuery
+     */
+    public function setYear(int $year): PharmacyRatingQuery
+    {
+        $this->year = $year;
+        return $this;
+    }
+
+    /**
+     * @param int $month
+     * @return PharmacyRatingQuery
+     */
+    public function setMonth(int $month): PharmacyRatingQuery
+    {
+        $this->month = $month;
+        return $this;
     }
 }
