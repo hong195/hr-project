@@ -19,7 +19,7 @@
 
 <script>
   import can from '@/plugins/directives/v-can'
-  import PharmacyDetail from '@/views/dashboard/pages/pharmacies/Detail'
+  import PharmacyDetail from '@/views/dashboard/pharmacies/Detail'
 
   export default {
     name: 'Actions',

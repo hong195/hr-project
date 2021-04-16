@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import PharmacyRating from '@/views/dashboard/components/Graphs/PharmacyRating'
+  import PharmacyRating from '@/components/dashboard/Graphs/PharmacyRating'
   export default {
     name: 'DashBoard',
     components: { PharmacyRating },

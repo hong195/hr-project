@@ -1,5 +1,5 @@
 <script>
-  import BarChart from '@/views/dashboard/components/Graphs/BarChart'
+  import BarChart from '@/components/dashboard/Graphs/BarChart'
 
   export default {
     components: { BarChart },

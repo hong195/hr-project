@@ -100,9 +100,9 @@
 <script>
   import moment from 'moment'
   import SingleUserRating from './SingleUserRating'
-  import DataTable from '@/views/dashboard/components/DataTable'
-  import MonthPicker from '@/views/dashboard/components/MonthPicker'
-  import RatingColor from '@/views/dashboard/components/mixins/RatingColor'
+  import DataTable from '@/components/dashboard/DataTable'
+  import MonthPicker from '@/components/dashboard/MonthPicker'
+  import RatingColor from '@/components/dashboard/mixins/RatingColor'
   import { mapActions, mapGetters } from 'vuex'
 
   export default {

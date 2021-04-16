@@ -33,8 +33,8 @@
 
 <script>
   import can from '@/plugins/directives/v-can'
-  import Actions from '@/views/dashboard/components/Actions/PharmacyActions'
-  import DataTable from '@/views/dashboard/components/DataTable'
+  import Actions from '@/components/dashboard/Actions/PharmacyActions'
+  import DataTable from '@/components/dashboard/DataTable'
   export default {
     name: 'Pharmacy',
     components: { DataTable, Actions },

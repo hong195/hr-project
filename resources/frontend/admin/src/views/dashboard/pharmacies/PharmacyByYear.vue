@@ -44,10 +44,10 @@
 </template>
 
 <script>
-  import MonthPicker from '@/views/dashboard/components/MonthPicker'
+  import MonthPicker from '@/components/dashboard/MonthPicker'
   import moment from 'moment'
-  import TableChart from '@/views/dashboard/components/Graphs/TableChart'
-  import BarChartMixin from '@/views/dashboard/components/mixins/BarChartMixin'
+  import TableChart from '@/components/dashboard/Graphs/TableChart'
+  import BarChartMixin from '@/components/dashboard/mixins/BarChartMixin'
   import { mapActions, mapGetters } from 'vuex'
   export default {
     name: 'PharmacyByYear',

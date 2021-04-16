@@ -20,7 +20,7 @@
 <script>
   import can from '@/plugins/directives/v-can'
 
-  import StaffDetail from '@/views/dashboard/pages/staffs/Detail'
+  import StaffDetail from '@/views/dashboard/staffs/Detail'
   export default {
     name: 'Actions',
     directives: {

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-  import DefaultForm from '@/views/dashboard/components/DefaultForm'
+  import DefaultForm from '@/components/dashboard/DefaultForm'
   import { mapGetters } from 'vuex'
   export default {
     name: 'CreateUpdate',

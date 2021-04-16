@@ -38,9 +38,9 @@
 </template>
 
 <script>
-  import ExportToPdf from '@/views/dashboard/components/ExportToPdf'
-  import UsersRatingByPharmacy from '@/views/dashboard/components/Graphs/table_parts/UsersRatingByPharmacy'
-  import RatingScore from '@/views/dashboard/components/Graphs/table_parts/RatingScore'
+  import ExportToPdf from '@/components/dashboard/ExportToPdf'
+  import UsersRatingByPharmacy from '@/components/dashboard/Graphs/table_parts/UsersRatingByPharmacy'
+  import RatingScore from '@/components/dashboard/Graphs/table_parts/RatingScore'
   export default {
     name: 'TableChart',
     components: { RatingScore, UsersRatingByPharmacy, ExportToPdf },

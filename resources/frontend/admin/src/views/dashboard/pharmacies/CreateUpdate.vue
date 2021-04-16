@@ -6,15 +6,15 @@
     class="mt-3"
   >
     <default-form :base-url="baseUrl"
-                  next-route-name=""
-                  title-create="Создать чек"
-                  title-update="Обновить чек"
+                  next-route-name="pharmacy"
+                  title-create="Создать аптеку"
+                  title-update="Редактировать аптеку"
     />
   </v-container>
 </template>
 
 <script>
-  import DefaultForm from '@/views/dashboard/components/DefaultForm'
+  import DefaultForm from '@/components/dashboard/DefaultForm'
 
   export default {
     name: 'CreateUpdate',
@@ -24,7 +24,7 @@
     data: () => ({
       schema: [],
       formValue: null,
-      baseUrl: 'checks',
+      baseUrl: 'pharmacies',
     }),
     computed: {
       isUpdate () {

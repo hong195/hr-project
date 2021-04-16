@@ -21,8 +21,8 @@
   </div>
 </template>
 <script>
-  import RatingColor from '@/views/dashboard/components/mixins/RatingColor'
-  import SingleUserRating from '@/views/dashboard/pages/ratings/SingleUserRating'
+  import RatingColor from '@/components/dashboard/mixins/RatingColor'
+  import SingleUserRating from '@/views/dashboard/ratings/SingleUserRating'
 
   export default {
     name: 'RatingScore',

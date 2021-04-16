@@ -80,7 +80,7 @@
 <script>
   import moment from 'moment'
   import RatingTotalInfo from './RatingTotalInfo'
-  import ViewCheck from '@/views/dashboard/components/ViewCheck'
+  import ViewCheck from '@/components/dashboard/ViewCheck'
   import { mapState } from 'vuex'
 
   export default {

@@ -1,30 +1,27 @@
 <template>
   <v-container
-    id="regular-forms"
     fluid
     tag="section"
     class="mt-3"
   >
     <default-form :base-url="baseUrl"
-                  next-route-name="pharmacy"
-                  title-create="Создать аптеку"
-                  title-update="Редактировать аптеку"
+                  next-route-name="attributes"
+                  title-create="Создать опцию"
+                  title-update="Создать атрибут"
     />
   </v-container>
 </template>
-
 <script>
-  import DefaultForm from '@/views/dashboard/components/DefaultForm'
-
+  import DefaultForm from '@/components/dashboard/DefaultForm'
   export default {
-    name: 'CreateUpdate',
+    name: 'Create',
     components: {
       DefaultForm,
     },
     data: () => ({
       schema: [],
       formValue: null,
-      baseUrl: 'pharmacies',
+      baseUrl: 'check-attributes',
     }),
     computed: {
       isUpdate () {
@@ -33,3 +30,7 @@
     },
   }
 </script>
+
+<style scoped>
+
+</style>

@@ -65,8 +65,8 @@
   </v-dialog>
 </template>
 <script>
-  import MonthPicker from '@/views/dashboard/components/MonthPicker'
-  import ViewCheck from '@/views/dashboard/components/ViewCheck'
+  import MonthPicker from '@/components/dashboard/MonthPicker'
+  import ViewCheck from '@/components/dashboard/ViewCheck'
   import moment from 'moment'
   export default {
     name: 'Checks',

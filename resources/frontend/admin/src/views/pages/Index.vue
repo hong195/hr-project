@@ -9,7 +9,7 @@
     name: 'PagesIndex',
 
     components: {
-      PagesCoreView: () => import('./components/core/View'),
+      PagesCoreView: () => import('@/components/pages/core/View'),
     },
 
     created () {

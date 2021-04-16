@@ -9,20 +9,11 @@
     >
       <data-table
         ref="data-table"
-        fetch-url="check-attributes"
+        fetch-url="check-attribute-option"
         :headers="headers"
         :search-options="searchParams"
+        class="options-table"
       >
-        <template v-slot:item.type="{ item }">
-          <tr>
-            <td>{{ item.type === 'radio' ? 'Радио кнопка' : 'Текстовое поле' }}</td>
-          </tr>
-        </template>
-        <template v-slot:item.use_in_rating="{ item }">
-          <tr>
-            <td>{{ item.use_in_rating ? 'Да' : 'Нет' }}</td>
-          </tr>
-        </template>
         <template v-slot:item.actions="{ item }">
           <v-btn
             v-for="(action, i) in actions"
@@ -38,41 +29,39 @@
         </template>
       </data-table>
     </base-material-card>
-    <detail ref="detail" :item="activeItem" />
     <div class="py-3" />
   </v-container>
 </template>
 
 <script>
-  import Detail from './Detail'
-  import DataTable from '@/views/dashboard/components/DataTable'
+  import DataTable from '@/components/dashboard/DataTable'
   export default {
     name: 'Index',
-    components: {
-      DataTable,
-      Detail,
-    },
+    components: { DataTable },
     data: () => ({
-      attributes: [],
-      search: null,
+      options: [],
       dialog: false,
-      activeItem: null,
       headers: [
-        {
-          text: 'Идентефикатор',
-          value: 'id',
-        },
         {
           text: 'Название',
           value: 'label',
         },
         {
-          text: 'Учитывается при создания рейтинга',
-          value: 'use_in_rating',
+          text: 'Слаг',
+          value: 'name',
         },
         {
-          text: 'Порядок',
-          value: 'order',
+          text: 'Атрибут',
+          value: 'attribute.label',
+        },
+        {
+          text: 'Значение',
+          value: 'value',
+        },
+        {
+          text: 'Примечание',
+          value: 'description',
+          sortable: false,
         },
         {
           sortable: false,
@@ -82,12 +71,6 @@
         },
       ],
       actions: [
-        {
-          color: 'info',
-          icon: 'mdi-eye',
-          can: 'view',
-          method: 'viewItem',
-        },
         {
           color: 'success',
           icon: 'mdi-pencil',
@@ -101,40 +84,42 @@
           method: 'deleteItem',
         },
       ],
-      searchParams: {
-        query_search: '',
-      },
+      searchParams: {},
     }),
-    created () {
-      this.fetchAttributes()
-    },
     methods: {
       actionMethod (funcName, item) {
         this[funcName](item)
       },
-      fetchAttributes () {
-        this.axios.get('check-attributes')
-          .then(({ data }) => {
-            this.attributes = data.data
-          })
+      editItem (item) {
+        this.$router.push({ name: 'update-attribute-options', params: { id: item.id } })
       },
       deleteItem (item) {
-        this.axios.delete(`check-attributes/${item.id}`)
+        this.axios.delete(`check-attribute-option/${item.id}`)
           .then(({ data }) => {
-            this.fetchAttributes()
+            this.options.splice(
+              this.options.findIndex(({ id }) => id === item.id),
+              1,
+            )
             this.$store.commit('successMessage', data.message)
           })
           .catch(error => {
             this.$store.commit('errorMessage', error)
           })
       },
-      editItem (item) {
-        this.$router.push({ name: 'update-attributes', params: { id: item.id } })
-      },
-      viewItem (item) {
-        this.activeItem = item
-        this.$refs.detail.dialog = true
-      },
     },
   }
 </script>
+<style  lang="scss">
+.options-table {
+  .description {
+    max-width: 350px;
+  }
+  .value {
+    min-width: 100px;
+    max-width: 100px;
+  }
+  .attribute.label {
+    max-width: 350px;
+  }
+}
+</style>

@@ -66,7 +66,7 @@
   </v-dialog>
 </template>
 <script>
-  import Actions from '@/views/dashboard/components/Actions/StaffActions'
+  import Actions from '@/components/dashboard/Actions/StaffActions'
 
   export default {
     name: 'PharmacyDetail',

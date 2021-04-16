@@ -51,7 +51,7 @@ const router = new Router({
         {
           name: 'pharmacy',
           path: 'pharmacy',
-          component: () => import('@/views/dashboard/pages/pharmacies/Index'),
+          component: () => import('@/views/dashboard/pharmacies/Index'),
           meta: {
             middleware: [
               isEditor,
@@ -61,7 +61,7 @@ const router = new Router({
         {
           name: 'create-pharmacy',
           path: 'create-pharmacy',
-          component: () => import('@/views/dashboard/pages/pharmacies/CreateUpdate'),
+          component: () => import('@/views/dashboard/pharmacies/CreateUpdate'),
           meta: {
             middleware: [
               isEditor,
@@ -71,7 +71,7 @@ const router = new Router({
         {
           name: 'pharmacy-rating',
           path: 'pharmacy-rating',
-          component: () => import('@/views/dashboard/pages/pharmacies/PharmacyByYear'),
+          component: () => import('@/views/dashboard/pharmacies/PharmacyByYear'),
           meta: {
             middleware: [
               isEditor,
@@ -81,7 +81,7 @@ const router = new Router({
         {
           name: 'update-pharmacy',
           path: 'update-pharmacy/:id',
-          component: () => import('@/views/dashboard/pages/pharmacies/CreateUpdate'),
+          component: () => import('@/views/dashboard/pharmacies/CreateUpdate'),
           meta: {
             middleware: [
               isEditor,
@@ -91,7 +91,7 @@ const router = new Router({
         {
           name: 'staff',
           path: 'staff',
-          component: () => import('@/views/dashboard/pages/staffs/Index'),
+          component: () => import('@/views/dashboard/staffs/Index'),
           meta: {
             middleware: [
               isEditor,
@@ -101,7 +101,7 @@ const router = new Router({
         {
           name: 'create-staff',
           path: 'create-staff',
-          component: () => import('@/views/dashboard/pages/staffs/CreateUpdate'),
+          component: () => import('@/views/dashboard/staffs/CreateUpdate'),
           meta: {
             middleware: [
               isEditor,
@@ -111,7 +111,7 @@ const router = new Router({
         {
           name: 'update-staff',
           path: 'update-staff/:id',
-          component: () => import('@/views/dashboard/pages/staffs/CreateUpdate'),
+          component: () => import('@/views/dashboard/staffs/CreateUpdate'),
           meta: {
             middleware: [
               auth,
@@ -121,7 +121,7 @@ const router = new Router({
         {
           name: 'ratings-staff',
           path: 'ratings-staff',
-          component: () => import('@/views/dashboard/pages/ratings/Staff'),
+          component: () => import('@/views/dashboard/ratings/Staff'),
           meta: {
             middleware: [
               auth,
@@ -131,7 +131,7 @@ const router = new Router({
         {
           name: 'create-checks',
           path: 'create-checks',
-          component: () => import('@/views/dashboard/pages/checks/Create'),
+          component: () => import('@/views/dashboard/checks/Create'),
           meta: {
             middleware: [
               isEditor,
@@ -141,7 +141,7 @@ const router = new Router({
         {
           name: 'update-checks',
           path: 'update-checks/:id',
-          component: () => import('@/views/dashboard/pages/checks/Create'),
+          component: () => import('@/views/dashboard/checks/Create'),
           meta: {
             middleware: [
               isEditor,
@@ -151,7 +151,7 @@ const router = new Router({
         {
           name: 'attributes',
           path: 'attributes',
-          component: () => import('@/views/dashboard/pages/attributes/Index'),
+          component: () => import('@/views/dashboard/attributes/Index'),
           meta: {
             middleware: [
               isAdmin,
@@ -161,7 +161,7 @@ const router = new Router({
         {
           name: 'create-attributes',
           path: 'create-attributes',
-          component: () => import('@/views/dashboard/pages/attributes/CreateUpdate'),
+          component: () => import('@/views/dashboard/attributes/CreateUpdate'),
           meta: {
             middleware: [
               isAdmin,
@@ -171,7 +171,7 @@ const router = new Router({
         {
           name: 'update-attributes',
           path: 'update-attributes/:id',
-          component: () => import('@/views/dashboard/pages/attributes/CreateUpdate'),
+          component: () => import('@/views/dashboard/attributes/CreateUpdate'),
           meta: {
             middleware: [
               isAdmin,
@@ -181,7 +181,7 @@ const router = new Router({
         {
           name: 'attribute-options',
           path: 'attribute-options',
-          component: () => import('@/views/dashboard/pages/options/Index'),
+          component: () => import('@/views/dashboard/options/Index'),
           meta: {
             middleware: [
               isAdmin,
@@ -191,7 +191,7 @@ const router = new Router({
         {
           name: 'create-attribute-options',
           path: 'create-attribute-options',
-          component: () => import('@/views/dashboard/pages/options/Create'),
+          component: () => import('@/views/dashboard/options/Create'),
           meta: {
             middleware: [
               isAdmin,
@@ -201,7 +201,7 @@ const router = new Router({
         {
           name: 'update-attribute-options',
           path: 'update-attribute-options/:id',
-          component: () => import('@/views/dashboard/pages/options/Create'),
+          component: () => import('@/views/dashboard/options/Create'),
           meta: {
             middleware: [
               isAdmin,
