@@ -103,6 +103,7 @@
   import DataTable from '@/views/dashboard/components/DataTable'
   import MonthPicker from '@/views/dashboard/components/MonthPicker'
   import RatingColor from '@/views/dashboard/components/mixins/RatingColor'
+  import { mapActions, mapGetters } from 'vuex'
 
   export default {
     name: 'StaffRating',
@@ -117,7 +118,6 @@
         search: undefined,
         checks: [],
         rating: {},
-        pharmacies: [],
         pharmacyId: null,
         showRating: [
           {
@@ -158,6 +158,7 @@
       }
     },
     computed: {
+      ...mapGetters({ pharmacies: 'getPharmacies' }),
       searchParams () {
         const date = moment(this.date)
         return {
@@ -170,7 +171,7 @@
       },
     },
     mounted () {
-      this.fetchPharmacies()
+      this.fetchAllPharmacies()
       if (this.$route.query.rating_id) {
         this.rating = {}
         this.rating.id = parseInt(this.$route.query.rating_id)
@@ -178,6 +179,7 @@
       }
     },
     methods: {
+      ...mapActions(['fetchAllPharmacies']),
       closeDialog () {
         this.dialog = false
       },
@@ -188,16 +190,6 @@
       setDate (date, dialog) {
         dialog.save(date)
         this.date = date
-      },
-      fetchPharmacies () {
-        this.axios.get('pharmacies', {
-          params: {
-            perPage: 100000,
-          },
-        })
-          .then(({ data }) => {
-            this.pharmacies = data.data
-          })
       },
     },
   }

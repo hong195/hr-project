@@ -43,13 +43,14 @@
 
 <script>
   import MonthPicker from '@/views/dashboard/components/MonthPicker'
-  import BarChart from '@/views/dashboard/components/Graphs/BarChart'
   import moment from 'moment'
   import TableChart from '@/views/dashboard/components/Graphs/TableChart'
+  import BarChartMixin from '@/views/dashboard/components/mixins/BarChartMixin'
 
   export default {
     name: 'PharmacyRating',
-    components: { TableChart, BarChart, MonthPicker },
+    components: { TableChart, MonthPicker },
+    mixins: [BarChartMixin],
     data () {
       return {
         date: {
@@ -59,17 +60,6 @@
         items: [],
         tab: 'graph',
         isLoading: true,
-        chart: {
-          labels: [],
-          datasets: [
-            {
-              backgroundColor: '#2f8cff',
-              borderWidth: 1,
-              data: [],
-            },
-          ],
-        },
-
       }
     },
     computed: {
@@ -83,19 +73,6 @@
       },
     },
     methods: {
-      dynamicColor () {
-        const r = Math.floor(Math.random() * 255)
-        const g = Math.floor(Math.random() * 255)
-        const b = Math.floor(Math.random() * 255)
-        return 'rgba(' + r + ',' + g + ',' + b + ', 0.5)'
-      },
-      poolColors (a) {
-        var pool = []
-        for (let i = 0; i < a; i++) {
-          pool.push(this.dynamicColor())
-        }
-        return pool
-      },
       fetchData () {
         const date = moment(this.date)
         this.isLoading = true

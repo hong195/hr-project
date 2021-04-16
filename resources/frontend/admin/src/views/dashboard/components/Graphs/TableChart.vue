@@ -61,14 +61,17 @@
           {
             text: 'Аптека',
             value: 'name',
+            width: '450',
           },
           {
             text: 'Рейтинг',
             value: 'rating',
+
           },
           {
             text: 'Конверсия',
             value: 'rating.conversion',
+            align: 'end',
           },
           { text: '', value: 'data-table-expand' },
         ],

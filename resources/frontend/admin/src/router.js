@@ -69,6 +69,16 @@ const router = new Router({
           },
         },
         {
+          name: 'pharmacy-rating',
+          path: 'pharmacy-rating',
+          component: () => import('@/views/dashboard/pages/pharmacies/PharmacyByYear'),
+          meta: {
+            middleware: [
+              isEditor,
+            ],
+          },
+        },
+        {
           name: 'update-pharmacy',
           path: 'update-pharmacy/:id',
           component: () => import('@/views/dashboard/pages/pharmacies/CreateUpdate'),
