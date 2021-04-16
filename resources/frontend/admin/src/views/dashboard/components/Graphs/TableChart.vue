@@ -16,41 +16,34 @@
       :headers="headers"
       :loading="isLoading"
       :disable-sort="true"
+      :single-expand="true"
+      item-key="name"
+      :expanded.sync="expanded"
+      show-expand
     >
       <template v-slot:item.rating="{ item }">
         <tr>
           <td v-if="item.rating.scored">
-            <v-btn :color="getColor(item.rating.scored)"
-                   rounded
-                   class="rating__btn"
-                   depressed
-                   @click="getRating(item.rating.id)"
-            >
-              <span style="color: white;">{{ `${item.rating.scored}/${item.rating.out_of}` }}</span>
-            </v-btn>
-          </td>
-          <td v-else>
-            Нет Рейтинга
+            <rating-score :rating="item.rating" />
           </td>
         </tr>
       </template>
+      <template v-slot:expanded-item="{ headers, item }">
+        <td class="pa-3" :colspan="headers.length">
+          <users-rating-by-pharmacy :ratings="item.ratings" />
+        </td>
+      </template>
     </v-data-table>
-    <single-user-rating
-      :show-dialog="dialog"
-      :rating-id="ratingId"
-      @close-dialog="dialog = false"
-    />
   </div>
 </template>
 
 <script>
-  import RatingColor from '@/views/dashboard/components/mixins/RatingColor'
-  import SingleUserRating from '@/views/dashboard/pages/ratings/SingleUserRating'
   import ExportToPdf from '@/views/dashboard/components/ExportToPdf'
+  import UsersRatingByPharmacy from '@/views/dashboard/components/Graphs/table_parts/UsersRatingByPharmacy'
+  import RatingScore from '@/views/dashboard/components/Graphs/table_parts/RatingScore'
   export default {
     name: 'TableChart',
-    components: { ExportToPdf, SingleUserRating },
-    mixins: [RatingColor],
+    components: { RatingScore, UsersRatingByPharmacy, ExportToPdf },
     props: {
       items: {
         type: Array,
@@ -63,8 +56,7 @@
     data () {
       return {
         asc: 0,
-        dialog: false,
-        ratingId: null,
+
         headers: [
           {
             text: 'Аптека',
@@ -74,6 +66,11 @@
             text: 'Рейтинг',
             value: 'rating',
           },
+          {
+            text: 'Конверсия',
+            value: 'rating.conversion',
+          },
+          { text: '', value: 'data-table-expand' },
         ],
         headersPdf: {
           '№': 'index',
@@ -86,6 +83,7 @@
           },
           Общий: 'rating.out_of',
         },
+        expanded: [],
       }
     },
     computed: {
@@ -107,10 +105,6 @@
         } else {
           this.items = this.items.sort((a, b) => (a.rating.scored < b.rating.scored) ? 1 : ((b.rating.scored < a.rating.scored) ? -1 : 0))
         }
-      },
-      getRating (ratingId) {
-        this.ratingId = ratingId
-        this.dialog = true
       },
     },
   }
