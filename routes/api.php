@@ -3,6 +3,7 @@
 use App\Http\Controllers\CheckAttributesController;
 use App\Http\Controllers\CheckAttributeOptionController;
 use App\Http\Controllers\ChecksController;
+use App\Http\Controllers\ChecksStaticsController;
 use App\Http\Controllers\PharmaciesRatingController;
 use App\Http\Controllers\PharmaciesController;
 use App\Http\Controllers\RatingsController;
@@ -33,6 +34,7 @@ Route::group(['middleware' => 'auth:api'], function() {
     ]);
     Route::resource('pharmacy-rating',PharmaciesRatingController::class)->only(['index', 'show']);
     Route::resource('user-rating', UserRatingController::class)->only(['index']);
+    Route::resource('checks-analytics', ChecksStaticsController::class)->only(['index']);
     Route::resource('roles', RolesController::class)->only(['index']);
     Route::resource('ratings', RatingsController::class)->only(['show']);
     Route::get('users-by-pharmacy','App\Http\Controllers\UsersController@byPharmacy');
