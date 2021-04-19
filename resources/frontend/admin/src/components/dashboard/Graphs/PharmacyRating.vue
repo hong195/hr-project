@@ -33,7 +33,7 @@
             <bar-chart v-if="date" ref="barChart" :chart-data="chart" />
           </v-tab-item>
           <v-tab-item :value="'table'">
-            <table-chart :items="items" :is-loading="isLoading" />
+            <table-chart :date="date" :items="items" :is-loading="isLoading" />
           </v-tab-item>
         </v-tabs-items>
       </v-tabs>

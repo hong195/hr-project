@@ -59,10 +59,6 @@
       activeItem: null,
       headers: [
         {
-          text: 'Идентефикатор',
-          value: 'id',
-        },
-        {
           text: 'Название',
           value: 'label',
         },

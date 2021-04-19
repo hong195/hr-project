@@ -7,9 +7,7 @@
           {{ asc ? 'mdi-menu-up' : 'mdi-menu-down' }}
         </v-icon>
       </v-btn>
-      <export-to-pdf :excel-data="excelData"
-                     :headers-pdf="headersPdf"
-      />
+      <export-to-pdf :excel-data="excelData" :max="items[0].rating.out_of" :date="date" />
     </div>
     <v-data-table
       :items="items"
@@ -52,6 +50,9 @@
       isLoading: {
         type: Boolean,
       },
+      date: {
+        type: String,
+      },
     },
     data () {
       return {
@@ -75,27 +76,24 @@
           },
           { text: '', value: 'data-table-expand' },
         ],
-        headersPdf: {
-          '№': 'index',
-          Аптека: 'name',
-          Рейтинг: {
-            field: 'rating',
-            callback: (value) => {
-              if (value) { return value.scored } else return 'Нет Рейтинга'
-            },
-          },
-          Общий: 'rating.out_of',
-        },
         expanded: [],
+
       }
     },
     computed: {
       excelData () {
-        var copy = this.items
-        let i = 1
-        copy.forEach((item) => {
-          item.index = i
-          i++
+        var copy = []
+        let arr = []
+        this.items.forEach((item) => {
+          item.ratings.forEach((el, key) => {
+            arr = []
+            arr.length = item.ratings.length
+            arr.pharmacy = item.name
+            arr.user = el.user.last_name + ' ' + el.user.first_name
+            arr.index = key + 1
+            arr.scored = el.scored
+            copy.push(arr)
+          })
         })
         return copy
       },
