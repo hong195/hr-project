@@ -26,9 +26,11 @@ class PharmaciesRatingController extends Controller
 
         $pharmaciesWithRatings = $pharmaciesWithRatings->map(function ($pharmacy) {
             return [
+                'id' => $pharmacy->id,
                 'name' => $pharmacy->name,
                 'rating' => $pharmacy->ratings->first() ? $pharmacy->ratings->first() : ['scored' => 0, 'out_of' => 'Нет Рейтинга'],
-                'ratings' => $pharmacy->ratings
+                'ratings' => $pharmacy->ratings,
+                'users' => $pharmacy->users
             ];
         });
 

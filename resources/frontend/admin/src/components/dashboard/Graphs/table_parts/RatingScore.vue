@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-btn
-      v-if="rating"
+      v-if="rating.id"
       :color="getColor(rating.scored)"
       rounded
       class="rating__btn"

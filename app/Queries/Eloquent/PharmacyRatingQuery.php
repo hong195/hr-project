@@ -59,7 +59,8 @@ class PharmacyRatingQuery implements PharmacyRatingQueryInterface
                         return $query->whereMonth('ratings.created_at', $this->month)
                             ->whereYear('ratings.created_at', $this->year)->orderByRaw('ABS(ratings.scored/ratings.out_of)');
                     },
-                    'ratings.user'
+                    'ratings.user',
+                    'users'
                 ]
             )
             ->get();

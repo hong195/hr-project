@@ -28,7 +28,7 @@
       </template>
       <template v-slot:expanded-item="{ headers, item }">
         <td class="pa-3" :colspan="headers.length">
-          <users-rating-by-pharmacy :ratings="item.ratings" />
+          <users-rating-by-pharmacy :ratings="item.ratings" :users="item.users" />
         </td>
       </template>
     </v-data-table>
@@ -72,7 +72,6 @@
           {
             text: 'Конверсия',
             value: 'rating.conversion',
-            align: 'end',
           },
           { text: '', value: 'data-table-expand' },
         ],
