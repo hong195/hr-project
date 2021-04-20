@@ -20,11 +20,7 @@
       show-expand
     >
       <template v-slot:item.rating="{ item }">
-        <tr>
-          <td v-if="item.rating.scored">
-            <rating-score :rating="item.rating" />
-          </td>
-        </tr>
+        <rating-score :rating="item.rating" />
       </template>
       <template v-slot:expanded-item="{ headers, item }">
         <td class="pa-3" :colspan="headers.length">
@@ -70,12 +66,11 @@
           {
             text: 'Рейтинг',
             value: 'rating',
-
+            width: '300',
           },
           {
             text: 'Конверсия',
             value: 'rating.conversion',
-            align: 'end',
           },
           { text: '', value: 'data-table-expand' },
         ],
