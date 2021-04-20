@@ -75,6 +75,7 @@
           {
             text: 'Конверсия',
             value: 'rating.conversion',
+            align: 'end',
           },
           { text: '', value: 'data-table-expand' },
         ],

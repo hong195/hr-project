@@ -14,7 +14,9 @@
           <td width="15" v-html="ratingsCount + index2" />
           <td width="400" v-html="user.first_name + ' ' + user.last_name" />
           <td>Нет рейтинга</td>
-          <td v-html="0.00" />
+          <td width="150">
+            <conversion :conversion="'0.00'" />
+          </td>
         </tr>
       </tbody>
     </template>

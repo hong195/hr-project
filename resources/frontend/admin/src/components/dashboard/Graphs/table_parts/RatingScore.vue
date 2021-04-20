@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-tooltip v-if="rating" bottom>
+    <v-tooltip v-if="rating.id" bottom>
       <template v-slot:activator="{ on, attrs }">
         <span
           v-bind="attrs"
