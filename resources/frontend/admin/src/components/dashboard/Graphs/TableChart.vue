@@ -31,6 +31,9 @@
           <users-rating-by-pharmacy :ratings="item.ratings" :users="item.users" />
         </td>
       </template>
+      <template v-slot:item.rating.conversion="{ item }">
+        <conversion :conversion="item.rating.conversion" />
+      </template>
     </v-data-table>
   </div>
 </template>
@@ -39,9 +42,10 @@
   import ExportToPdf from '@/components/dashboard/ExportToPdf'
   import UsersRatingByPharmacy from '@/components/dashboard/Graphs/table_parts/UsersRatingByPharmacy'
   import RatingScore from '@/components/dashboard/Graphs/table_parts/RatingScore'
+  import Conversion from '@/components/dashboard/Graphs/table_parts/Conversion'
   export default {
     name: 'TableChart',
-    components: { RatingScore, UsersRatingByPharmacy, ExportToPdf },
+    components: { Conversion, RatingScore, UsersRatingByPharmacy, ExportToPdf },
     props: {
       items: {
         type: Array,
@@ -57,7 +61,6 @@
     data () {
       return {
         asc: 0,
-
         headers: [
           {
             text: 'Аптека',

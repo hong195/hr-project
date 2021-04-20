@@ -47,67 +47,28 @@
         :search-options="searchParams"
       >
         <template v-slot:item.rating="{ item }">
-          <tr>
-            <td v-if="item">
-              <v-tooltip bottom>
-                <template v-slot:activator="{ on, attrs }">
-                  <span
-                    v-bind="attrs"
-                    v-on="on"
-                  >
-                    <v-btn :color="getColor(item.scored)"
-                           rounded
-                           class="rating__btn"
-                           depressed
-                           @click.prevent="setRating(item)"
-                    >
-                      {{ `${item.scored}/${item.out_of}` }}
-                    </v-btn>
-                  </span>
-                </template>
-                <span>Нажмите, чтобы просмотреть подробную информацию о рейтинге</span>
-              </v-tooltip>
-            </td>
-            <td v-else>
-              Нет Рейтинга
-            </td>
-          </tr>
+          <rating-score :rating="item" />
         </template>
         <template v-slot:item.conversion="{ item }">
-          <tr>
-            <td v-if="item">
-              <v-btn :color="getColor(item.conversion)"
-                     rounded
-                     class="rating__btn"
-                     depressed
-              >
-                {{ `${item.conversion}` }}%
-              </v-btn>
-            </td>
-          </tr>
+          <conversion :conversion="item.conversion" />
         </template>
       </data-table>
     </base-material-card>
-
-    <single-user-rating
-      :show-dialog="dialog"
-      :rating-id="rating.id"
-      @close-dialog="closeDialog"
-    />
   </v-container>
 </template>
 
 <script>
   import moment from 'moment'
-  import SingleUserRating from './SingleUserRating'
   import DataTable from '@/components/dashboard/DataTable'
   import MonthPicker from '@/components/dashboard/MonthPicker'
   import RatingColor from '@/components/dashboard/mixins/RatingColor'
   import { mapActions, mapGetters } from 'vuex'
+  import Conversion from '@/components/dashboard/Graphs/table_parts/Conversion'
+  import RatingScore from '@/components/dashboard/Graphs/table_parts/RatingScore'
 
   export default {
     name: 'StaffRating',
-    components: { DataTable, SingleUserRating, MonthPicker },
+    components: { RatingScore, Conversion, DataTable, MonthPicker },
     mixins: [RatingColor],
     data () {
       return {
