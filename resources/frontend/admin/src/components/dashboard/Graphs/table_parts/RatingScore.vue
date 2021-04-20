@@ -1,15 +1,24 @@
 <template>
   <div>
-    <v-btn
-      v-if="rating"
-      :color="getColor(rating.scored)"
-      rounded
-      class="rating__btn"
-      depressed
-      @click="getRating(rating.id)"
-    >
-      <span style="color: white;">{{ `${rating.scored}/${rating.out_of}` }}</span>
-    </v-btn>
+    <v-tooltip v-if="rating" bottom>
+      <template v-slot:activator="{ on, attrs }">
+        <span
+          v-bind="attrs"
+          v-on="on"
+        >
+          <v-btn
+            :color="getColor(rating.scored)"
+            rounded
+            class="rating__btn"
+            depressed
+            @click.prevent="getRating(rating.id)"
+          >
+            <span style="color: white;">{{ `${rating.scored}/${rating.out_of}` }}</span>
+          </v-btn>
+        </span>
+      </template>
+      <span>Нажмите, чтобы просмотреть подробную информацию о рейтинге</span>
+    </v-tooltip>
     <div v-else>
       Нет Рейтинга
     </div>
