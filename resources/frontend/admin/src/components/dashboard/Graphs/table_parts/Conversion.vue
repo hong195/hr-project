@@ -1,6 +1,7 @@
 <template>
   <v-btn :color="getColor(conversion)"
          rounded
+         dark
          class="rating__btn"
          depressed
   >
