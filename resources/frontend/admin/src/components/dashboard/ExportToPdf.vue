@@ -55,7 +55,6 @@
     },
     data () {
       return {
-        formatted: '',
         uri: 'data:application/vnd.ms-excel;base64,',
         template: '<html><head>' +
           '<style> td {border: thin solid black }' + '</style>' +
@@ -70,9 +69,13 @@
         },
       }
     },
-    async mounted () {
+    computed: {
+      formatted () {
+        return moment(this.date).format('MMMM YYYY') + ' года'
+      },
+    },
+    mounted () {
       moment.locale('ru')
-      this.formatted = await moment(this.date).format('MMMM YYYY') + ' года'
     },
     methods: {
       tableToExcel () {

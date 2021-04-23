@@ -16,7 +16,7 @@ class PharmacyForm extends AbstractForm
             ]);
 
         $this->formBuilder
-            ->add('text', 'email', 'Эмэил', [
+            ->add('text', 'email', 'Email аптеки', [
                 'attributes' => ['outlined' => true],
                 'validationRule' => 'required'
             ]);

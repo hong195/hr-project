@@ -57,7 +57,7 @@
           sortable: false,
         },
         {
-          text: 'Адресс аптеки',
+          text: 'Адрес аптеки',
           value: 'address',
           sortable: false,
         },
