@@ -62,7 +62,6 @@
   import DataTable from '@/components/dashboard/DataTable'
   import MonthPicker from '@/components/dashboard/MonthPicker'
   import RatingColor from '@/components/dashboard/mixins/RatingColor'
-  import { mapActions, mapGetters } from 'vuex'
   import Conversion from '@/components/dashboard/Graphs/table_parts/Conversion'
   import RatingScore from '@/components/dashboard/Graphs/table_parts/RatingScore'
 
@@ -80,6 +79,7 @@
         checks: [],
         rating: {},
         pharmacyId: null,
+        pharmacies: [],
         showRating: [
           {
             id: 0,
@@ -119,7 +119,6 @@
       }
     },
     computed: {
-      ...mapGetters({ pharmacies: 'getPharmacies' }),
       searchParams () {
         const date = moment(this.date)
         return {
@@ -131,8 +130,15 @@
         }
       },
     },
+    watch: {
+      date (val) {
+        const date = moment(val)
+        this.$http.get(`pharmacy-rating?year=${date.format('YYYY')}&month=${date.format('M')}`).then(res => {
+          this.pharmacies = res.data.data
+        })
+      },
+    },
     mounted () {
-      this.fetchAllPharmacies()
       if (this.$route.query.rating_id) {
         this.rating = {}
         this.rating.id = parseInt(this.$route.query.rating_id)
@@ -140,7 +146,6 @@
       }
     },
     methods: {
-      ...mapActions(['fetchAllPharmacies']),
       closeDialog () {
         this.dialog = false
       },

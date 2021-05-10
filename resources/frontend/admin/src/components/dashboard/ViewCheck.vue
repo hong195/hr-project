@@ -21,8 +21,7 @@
               </div>
             </v-col>
             <v-col v-if="criterion.notice" cols="12" class="mt-3 mb-3">
-              <h4>Примечание:</h4>
-              <v-text-field :value="criterion.notice" :disabled="true" />
+              <v-text-field label="Примечание:" :value="criterion.notice" outlined :disabled="true" />
             </v-col>
           </v-row>
         </v-list-item-content>
